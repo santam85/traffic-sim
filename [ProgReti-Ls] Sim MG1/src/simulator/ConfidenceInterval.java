@@ -22,14 +22,14 @@ public class ConfidenceInterval {
 		double[] vars = new double[nr.length];
 
 		            
-		Rnd rnd = new Rnd(RandomnessProvider.Java,1);
-		Distribution d = new Distribution(DistributionType.Uniform,0);
+		RandomProvider rnd = new RandomProvider(Provider.Java,1);
+		Distribution d = new ExponentialDistribution(0,rnd);
 		
 		for(int i = 0;i<nr.length;i++){
 			double[] run = new double[nr[i]];
 			
 			for (int j = 0; j<nr[i];j++){
-				run[j]=rnd.nextRandom(d);
+				run[j]=d.nextValue();
 			}
 			
 			means[i] = mean(run);

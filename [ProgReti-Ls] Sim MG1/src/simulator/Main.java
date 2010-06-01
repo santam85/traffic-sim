@@ -22,7 +22,8 @@ public class Main {
 		float mu = 10; 
 		float lambda= 8;
 		
-		Simulator s = new Simulator(new Distribution(DistributionType.Exponential, lambda),new Distribution(DistributionType.Exponential, mu),new Rnd(RandomnessProvider.Ran0,3));
+		RandomProvider r = new RandomProvider(Provider.Ran0,3);
+		Simulator s = new Simulator(new ExponentialDistribution(lambda,r),new ExponentialDistribution(mu,r));
 		s.run();
 		
 		

@@ -13,8 +13,8 @@ public class Uniformity {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Distribution d = new Distribution(DistributionType.Uniform, 0);
-		Rnd rnd = new Rnd(RandomnessProvider.Java,1);
+		RandomProvider rnd = new RandomProvider(Provider.Java,1);
+		Distribution d = new ExponentialDistribution(0,rnd);
 		
 		int N = 1000;
 		int K = 1;
@@ -23,11 +23,11 @@ public class Uniformity {
 		double[] ik = new double[N];
 		
 		for(int i = 0 ; i< N; i++){
-			ii[i] = rnd.nextRandom(d);
+			ii[i] = d.nextValue();
 			for(int j = 1 ; j< K; j++){
-				rnd.nextRandom(d);
+				d.nextValue();
 			}
-			ik[i] = rnd.nextRandom(d);
+			ik[i] = d.nextValue();
 		}
 	
 		double[][] data = new double[][]{ii,ik};

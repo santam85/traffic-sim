@@ -2,39 +2,39 @@ package simulator;
 
 import java.util.Random;
 
-public class Rnd {
+public class RandomProvider {
 	private long a = 16807,
 				 c = 0,
 				 m = 2147483647,
 				 z = -1;
 	
-	private RandomnessProvider p = RandomnessProvider.Java;
+	private Provider p = Provider.Java;
 	private Random rd;
 	
 	
-	public Rnd(){
-		this.p = RandomnessProvider.Ran0;
+	public RandomProvider(){
+		this.p = Provider.Ran0;
 	}
 	
-	public Rnd(RandomnessProvider p){
+	public RandomProvider(Provider p){
 		this.p = p;
 	}
 	
-	public Rnd(RandomnessProvider p,long seed){
+	public RandomProvider(Provider p,long seed){
 		this.p=p;
 		this.z=seed;
 	}
 	
-	public void setRandomnessProvider(RandomnessProvider p){
+	public void setRandomnessProvider(Provider p){
 		this.p=p;
 	}
 	
-	private double rnd(){
+	public double nextRandom(){
 		switch(p){
 		case Ran0: 
 			if (z == -1)
 				z=System.currentTimeMillis()%m;
-			return rnd(z);
+			return nextRandom(z);
 		default: 
 			if(rd==null)
 				rd=new Random();
@@ -43,7 +43,7 @@ public class Rnd {
 		
 	}
 	
-	private double rnd(long seed){
+	public double nextRandom(long seed){
 		
 		if(seed==0)
 			seed = 1;
@@ -57,13 +57,5 @@ public class Rnd {
 				rd=new Random(seed);
 			return rd.nextDouble();
 		}
-	}
-	
-	public float nextRandom(Distribution d){
-		switch(d.type){
-			case Uniform: return (float) (rnd()*1.0);
-			case Exponential: return (float) -Math.log(rnd()*1.0)/d.mu;		
-		}
-		return 0;
 	}
 }

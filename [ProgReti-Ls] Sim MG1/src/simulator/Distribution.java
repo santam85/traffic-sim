@@ -1,12 +1,16 @@
 package simulator;
 
-public class Distribution {
-	public float mu;
-	public DistributionType type;
+public abstract class Distribution {
 	
-	public Distribution(DistributionType type, float mu) {
-		this.mu = mu;
-		this.type = type;
+	protected RandomProvider rp;
+	
+	public Distribution() {
+		this(new RandomProvider());
 	}
 
+	public Distribution(RandomProvider rp) {
+		this.rp = rp;
+	}
+	
+	public abstract float nextValue();
 }

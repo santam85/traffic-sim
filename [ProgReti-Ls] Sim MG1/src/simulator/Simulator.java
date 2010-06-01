@@ -10,8 +10,6 @@ public class Simulator implements Runnable {
 	private float now, freeTime;
 	private float waitTime;
 	
-	private Rnd rnd;
-	
 	private Distribution arrivalTimeDistribution, serviceTimeDistribution;
 	private Object priorityDistribution;
 	
@@ -19,11 +17,9 @@ public class Simulator implements Runnable {
 	public LinkedList<Event> history;
 	
 	
-	public Simulator(Distribution arrivalTimeDistribution, Distribution serviceTimeDistribution, Rnd rnd){
+	public Simulator(Distribution arrivalTimeDistribution, Distribution serviceTimeDistribution){
 		history = new LinkedList<Event>();
 		eventList = new ConcurrentSkipListSet<Event>();
-		
-		this.rnd = rnd;
 		
 		this.arrivalTimeDistribution = arrivalTimeDistribution;
 		this.serviceTimeDistribution = serviceTimeDistribution;
@@ -70,16 +66,16 @@ public class Simulator implements Runnable {
 		eventList.add(generateArrival());
 	}
 	
-	private float generateServiceTime(Distribution d){
-		return rnd.nextRandom(d);
+	private float generateServiceTime(){
+		return serviceTimeDistribution.nextValue();
 	}
 	
 	private float generateOccurrenceTime() {
-		return now + rnd.nextRandom(arrivalTimeDistribution);
+		return now + arrivalTimeDistribution.nextValue();
 	}
 	
 	private Event generateArrival(){
-		return new Arrival(generateOccurrenceTime(),generateServiceTime(serviceTimeDistribution),generatePriority(priorityDistribution));
+		return new Arrival(generateOccurrenceTime(),generateServiceTime(),generatePriority(priorityDistribution));
 	}
 
 	private int generatePriority(Object priorityDistribution) {

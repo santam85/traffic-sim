@@ -3,5 +3,7 @@ package simulator;
 public enum DistributionType {
 	Exponential,
 	Uniform,
-	Deterministic
+	Deterministic,
+	SPP,
+	Pareto
 }

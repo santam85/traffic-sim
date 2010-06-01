@@ -1,6 +1,6 @@
 package simulator;
 
-public enum RandomnessProvider {
+public enum Provider {
 Java,
 Ran0
 }
