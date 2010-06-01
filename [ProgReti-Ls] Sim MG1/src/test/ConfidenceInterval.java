@@ -9,9 +9,9 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import simulator.Distribution;
-import simulator.ExponentialDistribution;
 import simulator.Provider;
 import simulator.RandomProvider;
+import simulator.UniformDistribution;
 import simulator.Utils;
 
 public class ConfidenceInterval {
@@ -29,7 +29,7 @@ public class ConfidenceInterval {
 
 		            
 		RandomProvider rnd = new RandomProvider(Provider.Java,1);
-		Distribution d = new ExponentialDistribution(0,rnd);
+		Distribution d = new UniformDistribution(rnd);
 		
 		for(int i = 0;i<nr.length;i++){
 			double[] run = new double[nr[i]];
@@ -40,6 +40,7 @@ public class ConfidenceInterval {
 			
 			means[i] = Utils.mean(run);
 			vars[i] = Utils.cvar(run,means[i]);
+			System.out.println(means[i] + " " + vars[i]);
 		}
 		
 		double[] delta1 = new double[nr.length];
