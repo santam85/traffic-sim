@@ -15,17 +15,18 @@ public class TestTrafficWithDifferentVariability {
 	 */
 	public static void main(String[] args) {
 
-		int N = 20;
+		int N = 100;
 		double T = 100;
-		float lambda = 3;
+		float lambda = 2;
 		float k = 10;
 		float q01 = 0.1f;
 		float q10 = 0.9f;
-		float lambda0 = (lambda*(q01+q10))/(q10+q01*k);
+		float lambda0 = lambda/(q01+q10*k);
 		float lambda1 = k*lambda0;
-		float shape = 1.2f; // impostato a piacere
+		float shape = 2f; // impostato a piacere
 		float mode = ((1/lambda) * (shape - 1))/shape;
 		
+		String[] distNames = new String[]{"Exponential","SPP","Pareto"};
 		Distribution[] ds = new Distribution[]{
 				new ExponentialDistribution(lambda), 
 				new SPPDistribution(lambda0,lambda1,q01,q10), 
@@ -40,7 +41,7 @@ public class TestTrafficWithDifferentVariability {
 			for (int j = 0; j < N; j ++) {
 				
 				int counter = 0;
-				for (int now = 0; now < T; ) {
+				for (double now = 0; now < T; ) {
 					now += ds[i].nextValue();
 					if (now < T)
 						counter ++;
@@ -52,7 +53,7 @@ public class TestTrafficWithDifferentVariability {
 			cmeans[i] = Utils.mean(runs[i]);
 			cvars[i] = Utils.cvar(runs[i],cmeans[i]);
 			idcs[i] = cvars[i]/(N*cmeans[i]);
-			System.out.println("Results: MEAN: " + cmeans[i] + " VAR: " + cvars[i] + " IDC: " + idcs[i]);
+			System.out.println(distNames[i] + " [ MEAN: " + cmeans[i] + " VAR: " + cvars[i] + " IDC: " + idcs[i] + " ]");
 		}
 		
 	}
