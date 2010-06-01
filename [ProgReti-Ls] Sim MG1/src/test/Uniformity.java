@@ -1,10 +1,15 @@
-package simulator;
+package test;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.DefaultXYDataset;
+
+import simulator.Distribution;
+import simulator.ExponentialDistribution;
+import simulator.Provider;
+import simulator.RandomProvider;
 
 public class Uniformity {
 

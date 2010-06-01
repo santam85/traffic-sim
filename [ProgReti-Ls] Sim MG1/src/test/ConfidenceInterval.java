@@ -1,4 +1,4 @@
-package simulator;
+package test;
 
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.distribution.TDistributionImpl;
@@ -7,6 +7,12 @@ import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
+
+import simulator.Distribution;
+import simulator.ExponentialDistribution;
+import simulator.Provider;
+import simulator.RandomProvider;
+import simulator.Utils;
 
 public class ConfidenceInterval {
 
@@ -32,8 +38,8 @@ public class ConfidenceInterval {
 				run[j]=d.nextValue();
 			}
 			
-			means[i] = mean(run);
-			vars[i] = cvar(run,means[i]);
+			means[i] = Utils.mean(run);
+			vars[i] = Utils.cvar(run,means[i]);
 		}
 		
 		double[] delta1 = new double[nr.length];
@@ -90,22 +96,6 @@ public class ConfidenceInterval {
 			e.printStackTrace();
 		}
 		return ts*Math.sqrt(cvar/runs);
-	}
-	
-	public static double mean(double[] vals){
-		double mean = 0;
-		for (int i = 0; i < vals.length;i++){
-			mean+=vals[i];	
-		}
-		return mean/vals.length;
-	}
-	
-	public static double cvar(double[] vals, double mean){
-		double var = 0;
-		for (int i = 0; i < vals.length;i++){
-			var+=Math.pow(vals[i]-mean,2);	
-		}
-		return var/(vals.length-1);
 	}
 
 }
