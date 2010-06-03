@@ -39,8 +39,9 @@ public class SPPDistribution extends Distribution {
 		}
 		else {
 			isState0 = false;
-			this.untilNewState = (float) -Math.log(rp.nextRandom()*1.0)/q10;
-			return handleState1();
+			float tmp = untilNewState;
+			this.untilNewState = (float) -Math.log(rp.nextRandom()*1.0)/q01;
+			return tmp + handleState1();
 		}
 	}
 	
@@ -52,8 +53,9 @@ public class SPPDistribution extends Distribution {
 		}
 		else {
 			isState0 = true;
-			this.untilNewState = (float) -Math.log(rp.nextRandom()*1.0)/q01;
-			return handleState0();
+			float tmp = untilNewState;
+			this.untilNewState = (float) -Math.log(rp.nextRandom()*1.0)/q10;
+			return tmp + handleState0();
 		}
 	}
 

@@ -1,7 +1,5 @@
 package test;
 
-import java.util.LinkedList;
-
 import simulator.Distribution;
 import simulator.ExponentialDistribution;
 import simulator.SPPDistribution;
@@ -23,7 +21,7 @@ public class TestTrafficWithDifferentVariability {
 		float q10 = 0.9f;
 		float lambda0 = lambda/(q01+q10*k);
 		float lambda1 = k*lambda0;
-		float shape = 2f; // impostato a piacere
+		float shape = 3f; // impostato a piacere
 		float mode = ((1/lambda) * (shape - 1))/shape;
 		
 		String[] distNames = new String[]{"Exponential","SPP","Pareto"};
@@ -52,7 +50,7 @@ public class TestTrafficWithDifferentVariability {
 			
 			cmeans[i] = Utils.mean(runs[i]);
 			cvars[i] = Utils.cvar(runs[i],cmeans[i]);
-			idcs[i] = cvars[i]/(N*cmeans[i]);
+			idcs[i] = cvars[i]/(cmeans[i]);
 			System.out.println(distNames[i] + " [ MEAN: " + cmeans[i] + " VAR: " + cvars[i] + " IDC: " + idcs[i] + " ]");
 		}
 		
