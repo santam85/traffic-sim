@@ -23,18 +23,14 @@ public class Simulator implements Runnable {
 	
 	private LinkedList<Event> history;
 	
-	public Simulator(Distribution[] arrivalTimeDistribution, Distribution serviceTimeDistribution) {
-		this(arrivalTimeDistribution,serviceTimeDistribution,1);
-	}
-	
-	public Simulator(Distribution[] arrivalTimeDistribution, Distribution serviceTimeDistribution, int priorityClasses){
+	public Simulator(Distribution[] arrivalTimeDistribution, Distribution serviceTimeDistribution){
 		history = new LinkedList<Event>();
 		eventList = new Vector<ConcurrentSkipListSet<Arrival>>(priorityClasses);
 		futureEventList = new ConcurrentSkipListSet<Event>();
 		
 		this.arrivalTimeDistribution = arrivalTimeDistribution;
 		this.serviceTimeDistribution = serviceTimeDistribution;
-		this.priorityClasses = priorityClasses;
+		this.priorityClasses = arrivalTimeDistribution.length;
 	}
 	
 	public float getEta() {

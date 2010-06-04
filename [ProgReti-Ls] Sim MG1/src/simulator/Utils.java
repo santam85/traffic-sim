@@ -47,7 +47,7 @@ public class Utils {
 		return ts*Math.sqrt(cvar/runs);
 	}
 	
-	public static void generateTrafficWithDifferentVariability(double lambda, Distribution dist, int N) {
+	public static void generateTraffic(double lambda, Distribution dist, int N) {
 		double T = lambda*30;
 		double[] runs = new double[N];
 		double cmean, cvar, idc;
@@ -105,6 +105,32 @@ public class Utils {
 		double[] run = new double[N];
 		for(int j=0;j<N;j++){
 			Simulator s = new Simulator(new Distribution[]{new ExponentialDistribution(lambda)},dist);
+			s.run();
+			run[j]=s.getEta();
+		}
+		
+		res[0] = Utils.mean(run);
+		res[1] = Utils.cvar(run, res[0]);
+		res[2] = Utils.confidenceInterval(N, confLevel, res[1]);
+		return res;
+	}
+	
+	public static double[] simulateMG1Prio(Distribution dist, float[] rho, float mu, int N) {
+		double[] res = new double[3];
+		float[] lambda = new float[rho.length];
+		Distribution[] arrivalDists = new Distribution[]{};
+		
+		for(int i=0; i<rho.length;i++){
+			lambda[i] = rho[i]*mu;
+			arrivalDists[i] = new ExponentialDistribution(lambda[i]);
+		}
+		double confLevel = 0.975;
+		
+		
+		
+		double[] run = new double[N];
+		for(int j=0;j<N;j++){
+			Simulator s = new Simulator(arrivalDists,dist);
 			s.run();
 			run[j]=s.getEta();
 		}

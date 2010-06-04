@@ -329,7 +329,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 			handleAdditionalParametersPanel();
 		}
 		else if (e.getSource() == this.generateReport) {
-			handleTrafficWithDifferentVariabilitySimulation();
+			handleTrafficGeneration();
 		}
 		else if (e.getSource() == this.simulate_mg1) {
 			if (this.rhoRbt.isSelected())
@@ -365,7 +365,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 		this.repaint();
 	}
 	
-	private void handleTrafficWithDifferentVariabilitySimulation() {
+	private void handleTrafficGeneration() {
 		DistributionType type = (DistributionType)distCbx.getSelectedItem();
 		Distribution dist = null;
 		if (!checkTrafficParameters()) {
@@ -416,7 +416,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 			}
 		}
 		
-		Utils.generateTrafficWithDifferentVariability((float)getLambda(),dist,getTrafficSimulationRuns());
+		Utils.generateTraffic((float)getLambda(),dist,getTrafficSimulationRuns());
 	}
 	
 	private void handleMG1SimulationWithVariableDistribution() {
