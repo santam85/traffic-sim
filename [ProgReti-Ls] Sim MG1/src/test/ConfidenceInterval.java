@@ -1,10 +1,13 @@
 package test;
 
+import java.awt.*;
+
 import org.apache.commons.math.MathException;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.*;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import simulator.Distribution;
@@ -80,9 +83,32 @@ public class ConfidenceInterval {
 		
 		ChartFrame f1 = new ChartFrame("Title", chart1);
 		ChartFrame f2 = new ChartFrame("Title", chart2);
-		f1.pack();
+		f1.setBounds(0, 0, 1000, 600);
+		f2.setBounds(0, 0, 1000, 600);
+		
+		// Graphic layout chart1
+		CategoryPlot cp=(CategoryPlot)chart1.getPlot();
+		cp.setBackgroundPaint(Color.white);
+		cp.setRangeGridlinePaint(Color.gray);
+		LineAndShapeRenderer renderer = (LineAndShapeRenderer) cp.getRenderer();
+		renderer.setSeriesShapesVisible(0,true);
+		renderer.setDrawOutlines(true); 
+		renderer.setUseFillPaint(true);
+		renderer.setSeriesStroke(0, new BasicStroke(4));
+		renderer.setSeriesPaint(0, new Color(170,255,0));
+
+		// Graphic layout chart1
+		cp=(CategoryPlot)chart2.getPlot();
+		cp.setBackgroundPaint(Color.white);
+		cp.setRangeGridlinePaint(Color.gray);
+		renderer = (LineAndShapeRenderer) cp.getRenderer();
+		renderer.setSeriesShapesVisible(0,true);
+		renderer.setDrawOutlines(true); 
+		renderer.setUseFillPaint(true);
+		renderer.setSeriesStroke(0, new BasicStroke(4));
+		renderer.setSeriesPaint(0, new Color(170,255,0));
+		
 		f1.setVisible(true);
-		f2.pack();
 		f2.setVisible(true);
 		
 	}
