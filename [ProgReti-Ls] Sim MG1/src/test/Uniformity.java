@@ -6,10 +6,10 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.DefaultXYDataset;
 
 import simulator.Distribution;
-import simulator.ExponentialDistribution;
 import simulator.Provider;
 import simulator.RandomProvider;
 import simulator.UniformDistribution;
@@ -45,13 +45,20 @@ public class Uniformity {
 		DefaultXYDataset dataset = new DefaultXYDataset();
 		dataset.addSeries("Scatter", data);
 		
+		
 		JFreeChart chart = ChartFactory.createScatterPlot("", "", "", dataset, PlotOrientation.VERTICAL, false, false, false);
 		
-		chart.getPlot().setBackgroundPaint(Color.white);
+		XYPlot p=chart.getXYPlot();
+		p.setBackgroundPaint(Color.white);
+		p.setDomainCrosshairVisible(true);
+		p.setRangeGridlinePaint(Color.gray);
+		p.setDomainGridlinePaint(Color.gray);
+		p.setDomainCrosshairPaint(Color.green);
+		
 		
 
 		ChartFrame f = new ChartFrame("Random number generator", chart);
-		f.pack();
+		f.setBounds(0, 0, 1000, 600);
 		f.setVisible(true);
 	}
 

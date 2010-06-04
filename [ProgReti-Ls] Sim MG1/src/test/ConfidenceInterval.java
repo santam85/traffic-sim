@@ -95,7 +95,7 @@ public class ConfidenceInterval {
 		renderer.setDrawOutlines(true); 
 		renderer.setUseFillPaint(true);
 		renderer.setSeriesStroke(0, new BasicStroke(4));
-		renderer.setSeriesPaint(0, new Color(170,255,0));
+		//renderer.setSeriesPaint(0, new Color(170,255,0));
 
 		// Graphic layout chart1
 		cp=(CategoryPlot)chart2.getPlot();
@@ -106,7 +106,7 @@ public class ConfidenceInterval {
 		renderer.setDrawOutlines(true); 
 		renderer.setUseFillPaint(true);
 		renderer.setSeriesStroke(0, new BasicStroke(4));
-		renderer.setSeriesPaint(0, new Color(170,255,0));
+		//renderer.setSeriesPaint(0, new Color(170,255,0));
 		
 		f1.setVisible(true);
 		f2.setVisible(true);
