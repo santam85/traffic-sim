@@ -25,7 +25,7 @@ public class Simulation {
 	 */
 	public static void main(String[] args) {
 		int N = 100;
-		float mu = 10;
+		float mu = 2;
 		double confLevel = 0.975;
 		
 		float[] rhos = new float[]{0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f};
