@@ -1,7 +1,6 @@
 package test;
 
 import org.apache.commons.math.MathException;
-import org.apache.commons.math.distribution.TDistributionImpl;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
@@ -50,12 +49,12 @@ public class ConfidenceInterval {
 		DefaultCategoryDataset dataset2 = new DefaultCategoryDataset();
 		
 		for(int i = 0; i<nr.length;i++){
-			delta1[i] = confidenceInterval(nr[i],0.975,vars[i]);
+			delta1[i] = Utils.confidenceInterval(nr[i],0.975,vars[i]);
 			dataset1.addValue(delta1[i], "Fixed confidence level", nr[i]+" values");
 		}
 		
 		for(int i = 0; i<nd.length;i++){
-			delta2[i] = confidenceInterval(nr[1],nd[i],vars[i]);
+			delta2[i] = Utils.confidenceInterval(nr[1],nd[i],vars[i]);
 			dataset2.addValue(delta2[i], "Fixed values number", nd[i]*100+"%");
 		}
 
@@ -86,17 +85,6 @@ public class ConfidenceInterval {
 		f2.pack();
 		f2.setVisible(true);
 		
-	}
-	
-	public static double confidenceInterval(int runs, double levelOfConfidence, double cvar){
-		TDistributionImpl td = new TDistributionImpl(runs-1);
-		double ts = 0;
-		try {
-			ts = td.inverseCumulativeProbability(levelOfConfidence);
-		} catch (MathException e) {
-			e.printStackTrace();
-		}
-		return ts*Math.sqrt(cvar/runs);
 	}
 
 }

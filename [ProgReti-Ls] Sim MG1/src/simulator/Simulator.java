@@ -6,15 +6,18 @@ import java.util.concurrent.ConcurrentSkipListSet;
 public class Simulator implements Runnable {
 
 	private ConcurrentSkipListSet<Event> eventList;
-	private int arrivals, departures, k;
+	private int arrivals, queuedArrivals, departures, k;
 	private float now, freeTime;
-	private float waitTime;
+	private float waitTime,waitTimeQueue;
 	
 	private Distribution arrivalTimeDistribution, serviceTimeDistribution;
 	private Object priorityDistribution;
 	
-	public float mwt;
-	public LinkedList<Event> history;
+	
+	private float eta;
+	private float eps;
+	
+	private LinkedList<Event> history;
 	
 	
 	public Simulator(Distribution arrivalTimeDistribution, Distribution serviceTimeDistribution){
@@ -23,6 +26,18 @@ public class Simulator implements Runnable {
 		
 		this.arrivalTimeDistribution = arrivalTimeDistribution;
 		this.serviceTimeDistribution = serviceTimeDistribution;
+	}
+	
+	public float geEta() {
+		return eta;
+	}
+	
+	public float getEps() {
+		return eps;
+	}
+	
+	public LinkedList<Event> getHistory() {
+		return history;
 	}
 	
 	@Override
@@ -45,6 +60,9 @@ public class Simulator implements Runnable {
 					freeTime = now + a.serviceTime;
 				} else {
 					waitTime = waitTime + (freeTime - now);
+					waitTimeQueue += freeTime - now;
+					queuedArrivals++;
+					
 					freeTime = freeTime + a.serviceTime;
 				}
 				eventList.add(new Departure(freeTime,id));
@@ -56,8 +74,9 @@ public class Simulator implements Runnable {
 				departures++;
 			}
 		}
-		mwt = waitTime/arrivals;
-		System.out.println(mwt);
+		
+		eta = waitTime/arrivals;
+		eps = waitTimeQueue/queuedArrivals;
 	}
 
 	private void init() {

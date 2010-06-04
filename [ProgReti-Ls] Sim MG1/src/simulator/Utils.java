@@ -47,8 +47,6 @@ public class Utils {
 		return ts*Math.sqrt(cvar/runs);
 	}
 	
-	
-	
 	public static void generateTrafficWithDifferentVariability(double lambda, Distribution dist, int N) {
 		double T = lambda*30;
 		double[] runs = new double[N];
