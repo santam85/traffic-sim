@@ -1,5 +1,7 @@
 package test;
 
+import java.awt.Color;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
@@ -19,6 +21,7 @@ public class Uniformity {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
 		RandomProvider rnd = new RandomProvider(Provider.Java,1);
 		Distribution d = new UniformDistribution(rnd);
 		
@@ -43,6 +46,8 @@ public class Uniformity {
 		dataset.addSeries("Scatter", data);
 		
 		JFreeChart chart = ChartFactory.createScatterPlot("", "", "", dataset, PlotOrientation.VERTICAL, false, false, false);
+		
+		chart.getPlot().setBackgroundPaint(Color.white);
 		
 
 		ChartFrame f = new ChartFrame("Random number generator", chart);
