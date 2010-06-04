@@ -17,7 +17,9 @@ package gui;
  */
 public class SPPPanel extends javax.swing.JPanel {
 
-    /** Creates new form SPPPanel */
+	private static final long serialVersionUID = -8198240290802719560L;
+
+	/** Creates new form SPPPanel */
     public SPPPanel() {
         initComponents();
     }

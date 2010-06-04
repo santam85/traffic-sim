@@ -11,13 +11,14 @@ public class SPPDistribution extends Distribution {
 	}
 	
 	public SPPDistribution(float mu0, float mu1, float p0, float p1, RandomProvider rp) {
+		super("SPP");
 		this.mu0 = mu0;
 		this.mu1 = mu1;
 		this.p0 = p0;
 		this.p1 = p1;
 		this.rp = rp;
 		this.isState0 = true;
-		this.untilNewState = (float) -Math.log(rp.nextRandom()*1.0)/p0;
+		this.untilNewState = (float) -Math.log(rp.nextRandom()*1.0)/p1;
 	}
 	
 	

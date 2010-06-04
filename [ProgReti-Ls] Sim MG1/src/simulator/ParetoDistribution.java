@@ -5,6 +5,7 @@ public class ParetoDistribution extends Distribution {
 	private float shape, mode;
 	
 	public ParetoDistribution(float shape, float mode) {
+		super("Pareto");
 		this.shape = shape;
 		this.mode = mode;
 	}

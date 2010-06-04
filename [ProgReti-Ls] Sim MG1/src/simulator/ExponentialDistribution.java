@@ -9,7 +9,7 @@ public class ExponentialDistribution extends Distribution {
 	}
 	
 	public ExponentialDistribution(float mu, RandomProvider rp) {
-		super(rp);
+		super("Exponential",rp);
 		this.mu = mu;
 	}
 	

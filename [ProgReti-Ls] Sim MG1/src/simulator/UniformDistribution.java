@@ -3,11 +3,11 @@ package simulator;
 public class UniformDistribution extends Distribution {
 	
 	public UniformDistribution() {
-		super(new RandomProvider());
+		this(new RandomProvider());
 	}
 	
 	public UniformDistribution(RandomProvider rp) {
-		super(rp);
+		super("Uniform",rp);
 	}
 	
 	@Override

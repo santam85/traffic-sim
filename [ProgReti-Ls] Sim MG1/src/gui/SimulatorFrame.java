@@ -16,10 +16,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 import simulator.DeterministicDistribution;
 import simulator.Distribution;
@@ -61,6 +57,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
+        testConfidence = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         placeholderPanel = new javax.swing.JPanel();
@@ -71,18 +68,27 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
         runs = new javax.swing.JTextField();
         generateReport = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
+        simulateMG1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        testConfidence.setText("Test confidence interval");
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 338, Short.MAX_VALUE)
+            .add(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(testConfidence)
+                .addContainerGap(126, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 283, Short.MAX_VALUE)
+            .add(jPanel1Layout.createSequentialGroup()
+                .add(87, 87, 87)
+                .add(testConfidence)
+                .addContainerGap(167, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("RandomNumber", jPanel1);
@@ -154,15 +160,23 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 
         jTabbedPane1.addTab("VariableTraffic", jPanel2);
 
+        simulateMG1.setText("Simulate");
+
         org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 338, Short.MAX_VALUE)
+            .add(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(simulateMG1)
+                .addContainerGap(223, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 283, Short.MAX_VALUE)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(237, Short.MAX_VALUE)
+                .add(simulateMG1)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("M/G/1", jPanel3);
@@ -200,6 +214,8 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
     private javax.swing.JTextField lambda;
     private javax.swing.JPanel placeholderPanel;
     private javax.swing.JTextField runs;
+    private javax.swing.JButton simulateMG1;
+    private javax.swing.JButton testConfidence;
     // End of variables declaration//GEN-END:variables
 
     private javax.swing.JPanel additionalParametersPanel;
@@ -260,7 +276,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 				double p1 = p.getP1();
 				int k = p.getK();
 				double lambda0 = Utils.computeSPPLambda0(lambda,p0,p1,k);
-				double lambda1 = lambda0 * 30;
+				double lambda1 = lambda0 * k;
 				dist = new SPPDistribution((float)lambda0,(float)lambda1,(float)p0,(float)p1);
 				break;
 			}
@@ -323,6 +339,6 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 	}
 	
 	private void showDialogMessage(String msg) {
-		JOptionPane.showMessageDialog(this,msg,"Paramters error",JOptionPane.ERROR_MESSAGE);
+		javax.swing.JOptionPane.showMessageDialog(this,msg,"Paramters error",javax.swing.JOptionPane.ERROR_MESSAGE);
 	}
 }
