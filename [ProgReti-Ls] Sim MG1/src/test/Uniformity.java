@@ -10,6 +10,7 @@ import simulator.Distribution;
 import simulator.ExponentialDistribution;
 import simulator.Provider;
 import simulator.RandomProvider;
+import simulator.UniformDistribution;
 
 public class Uniformity {
 
@@ -19,7 +20,7 @@ public class Uniformity {
 	 */
 	public static void main(String[] args) {
 		RandomProvider rnd = new RandomProvider(Provider.Java,1);
-		Distribution d = new ExponentialDistribution(0,rnd);
+		Distribution d = new UniformDistribution(rnd);
 		
 		int N = 1000;
 		int K = 1;
@@ -33,6 +34,7 @@ public class Uniformity {
 				d.nextValue();
 			}
 			ik[i] = d.nextValue();
+			System.out.println(ii[i]+" "+ik[i]);
 		}
 	
 		double[][] data = new double[][]{ii,ik};
