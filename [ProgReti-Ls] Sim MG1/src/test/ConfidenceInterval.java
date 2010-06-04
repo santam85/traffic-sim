@@ -29,7 +29,6 @@ public class ConfidenceInterval {
 		double[] means = new double[nr.length];
 		double[] vars = new double[nr.length];
 
-		            
 		RandomProvider rnd = new RandomProvider(Provider.Java,1);
 		Distribution d = new UniformDistribution(rnd);
 		
