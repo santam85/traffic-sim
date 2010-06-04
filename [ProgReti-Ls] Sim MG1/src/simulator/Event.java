@@ -21,6 +21,10 @@ public abstract class Event implements Comparable<Event>{
 	public int getPriorityClass() {
 		return priorityClass;
 	}
+	
+	public int getId() {
+		return id;
+	}
 
 	@Override
 	public int compareTo(Event o) {
