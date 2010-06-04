@@ -7,29 +7,33 @@ import java.util.concurrent.ConcurrentSkipListSet;
 public class Simulator implements Runnable {
 
 	private Vector<ConcurrentSkipListSet<Event>> eventList;
-	private int arrivals, queuedArrivals, departures, k;
-	private float now, freeTime;
+	private int[] arrivals, queuedArrivals, departures;
+	private int cumulativeArrivals, cumulativeDepartures;
+	private float now, freeTime, k ;
 	private float waitTime,waitTimeQueue;
 	
-	private Distribution arrivalTimeDistribution, serviceTimeDistribution;
+	private Distribution[] arrivalTimeDistribution;
+	private Distribution serviceTimeDistribution;
 	private Object priorityDistribution;
 	
 	
 	private float eta;
 	private float eps;
+	private int priorityClasses;
 	
 	private LinkedList<Event> history;
 	
-	public Simulator(Distribution arrivalTimeDistribution, Distribution serviceTimeDistribution){
+	public Simulator(Distribution[] arrivalTimeDistribution, Distribution serviceTimeDistribution) {
 		this(arrivalTimeDistribution,serviceTimeDistribution,1);
 	}
 	
-	public Simulator(Distribution arrivalTimeDistribution, Distribution serviceTimeDistribution, int priorityClasses){
+	public Simulator(Distribution[] arrivalTimeDistribution, Distribution serviceTimeDistribution, int priorityClasses){
 		history = new LinkedList<Event>();
 		eventList = new Vector<ConcurrentSkipListSet<Event>>(priorityClasses);
 		
 		this.arrivalTimeDistribution = arrivalTimeDistribution;
 		this.serviceTimeDistribution = serviceTimeDistribution;
+		this.priorityClasses = priorityClasses;
 	}
 	
 	public float getEta() {
@@ -49,7 +53,7 @@ public class Simulator implements Runnable {
 		init();
 
 		while (eventList.size() > 0){
-			Event e = eventList.pollFirst();
+			Event e = serviceEvent();
 			history.add(e);
 			
 			now = e.occurrenceTime;
@@ -58,10 +62,11 @@ public class Simulator implements Runnable {
 			
 			if (e.getClass() == Arrival.class){
 				Arrival a = (Arrival)e;
-				k++; arrivals++;
+				k++; cumulativeArrivals++; arrivals[e.getPriorityClass()]++;
 				int id = a.id;
 				if (k==1){
 					freeTime = now + a.serviceTime;
+					generateArrival(a.getPriorityClass());
 				} else {
 					waitTime = waitTime + (freeTime - now);
 					waitTimeQueue += freeTime - now;
@@ -85,28 +90,35 @@ public class Simulator implements Runnable {
 
 	private void init() {
 		k=0; freeTime = 0; now = 0;
-		arrivals = 0; departures = 0;
-		eventList.add(generateArrival());
+		for (int i = 0; i < priorityClasses; i ++) {
+			arrivals[i] = 0; departures[i] = 0;
+			ConcurrentSkipListSet<Event> s;
+			eventList.add(s = new ConcurrentSkipListSet<Event>());
+			s.add(generateArrival(i));
+		}
 	}
 	
 	private float generateServiceTime(){
 		return serviceTimeDistribution.nextValue();
 	}
 	
-	private float generateOccurrenceTime() {
-		return now + arrivalTimeDistribution.nextValue();
+	private float generateOccurrenceTime(int priorityClass) {
+		return now + arrivalTimeDistribution[priorityClass].nextValue();
 	}
 	
-	private Event generateArrival(){
-		return new Arrival(generateOccurrenceTime(),generateServiceTime(),generatePriority(priorityDistribution));
-	}
-
-	private int generatePriority(Object priorityDistribution) {
-		// TODO Auto-generated method stub
-		return 0;
+	private Event generateArrival(int priorityClass){
+		return new Arrival(generateOccurrenceTime(priorityClass),generateServiceTime(),priorityClass);
 	}
 
 	private boolean checkStopCondition() {
 		return arrivals < 50;
+	}
+	
+	private Event serviceEvent() {
+		Event e = null;
+		for (int i = 0; i < this.priorityClasses && e == null; i ++) {
+			e = eventList.get(i).pollFirst();
+		}
+		return e;
 	}
 }

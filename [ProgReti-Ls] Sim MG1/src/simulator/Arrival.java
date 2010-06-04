@@ -5,7 +5,7 @@ public class Arrival extends Event {
 	public int priorityClass;
 	
 	public Arrival(float occurrenceTime,float serviceTime, int priorityClass) {
-		super(occurrenceTime);
+		super(occurrenceTime,priorityClass);
 		this.id = idc++;
 		this.serviceTime = serviceTime;
 		this.priorityClass = priorityClass;

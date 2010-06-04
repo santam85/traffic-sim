@@ -104,7 +104,7 @@ public class Utils {
 		
 		double[] run = new double[N];
 		for(int j=0;j<N;j++){
-			Simulator s = new Simulator(new ExponentialDistribution(lambda),dist);
+			Simulator s = new Simulator(new Distribution[]{new ExponentialDistribution(lambda)},dist);
 			s.run();
 			run[j]=s.getEta();
 		}

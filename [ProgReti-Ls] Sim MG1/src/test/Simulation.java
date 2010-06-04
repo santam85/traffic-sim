@@ -12,6 +12,7 @@ import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.StatisticalBarRenderer;
 import org.jfree.data.statistics.DefaultStatisticalCategoryDataset;
 
+import simulator.Distribution;
 import simulator.ExponentialDistribution;
 import simulator.Provider;
 import simulator.RandomProvider;
@@ -39,7 +40,7 @@ public class Simulation {
 		for(int i=0; i<rhos.length;i++){
 			float lambda = rhos[i]*mu;
 			for(int j=0;j<N;j++){
-				Simulator s = new Simulator(new ExponentialDistribution(lambda,r),new ExponentialDistribution(mu,r));
+				Simulator s = new Simulator(new Distribution[]{new ExponentialDistribution(lambda)},new ExponentialDistribution(mu,r));
 				s.run();
 				runetas[j]=s.getEta();
 			}
