@@ -85,6 +85,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
         jLabel7 = new javax.swing.JLabel();
         distRbt = new javax.swing.JRadioButton();
         rhoRbt = new javax.swing.JRadioButton();
+        jPanel4 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -104,7 +105,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
             .add(jPanel1Layout.createSequentialGroup()
                 .add(87, 87, 87)
                 .add(testConfidence)
-                .addContainerGap(167, Short.MAX_VALUE))
+                .addContainerGap(186, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("RandomNumber", jPanel1);
@@ -171,7 +172,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
                 .add(placeholderPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(generateReport)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("VariableTraffic", jPanel2);
@@ -247,12 +248,25 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
                 .add(distRbt)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(rhoRbt)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 15, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 34, Short.MAX_VALUE)
                 .add(simulate_mg1)
                 .addContainerGap())
         );
 
         jTabbedPane1.addTab("M/G/1", jPanel3);
+
+        org.jdesktop.layout.GroupLayout jPanel4Layout = new org.jdesktop.layout.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 367, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 302, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("M/G/1//PRIO", jPanel4);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -267,7 +281,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
+                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -294,6 +308,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField lambda;
     private javax.swing.JTextField mu;
