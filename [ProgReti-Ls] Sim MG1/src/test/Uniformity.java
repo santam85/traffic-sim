@@ -53,7 +53,9 @@ public class Uniformity {
 		p.setDomainCrosshairVisible(true);
 		p.setRangeGridlinePaint(Color.gray);
 		p.setDomainGridlinePaint(Color.gray);
-		p.setDomainCrosshairPaint(Color.green);
+		//p.setDomainCrosshairPaint(Color.green);
+		
+		
 
 		ChartFrame f = new ChartFrame("Random number generator", chart);
 		f.setBounds(0, 0, 1000, 600);
