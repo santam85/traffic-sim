@@ -2,7 +2,7 @@ package simulator;
 
 public class SPPDistribution extends Distribution {
 	
-	private float mu0, mu1, q01, q10;
+	private float mu0, mu1, p0, p1;
 	private boolean isState0;
 	private float untilNewState;
 	
@@ -10,14 +10,14 @@ public class SPPDistribution extends Distribution {
 		this(mu0,mu1,q01,q10,new RandomProvider());
 	}
 	
-	public SPPDistribution(float mu0, float mu1, float q01, float q10, RandomProvider rp) {
+	public SPPDistribution(float mu0, float mu1, float p0, float p1, RandomProvider rp) {
 		this.mu0 = mu0;
 		this.mu1 = mu1;
-		this.q01 = q01;
-		this.q10 = q10;
+		this.p0 = p0;
+		this.p1 = p1;
 		this.rp = rp;
 		this.isState0 = true;
-		this.untilNewState = (float) -Math.log(rp.nextRandom()*1.0)/q01;
+		this.untilNewState = (float) -Math.log(rp.nextRandom()*1.0)/p0;
 	}
 	
 	
@@ -40,7 +40,7 @@ public class SPPDistribution extends Distribution {
 		else {
 			isState0 = false;
 			float tmp = untilNewState;
-			this.untilNewState = (float) -Math.log(rp.nextRandom()*1.0)/q01;
+			this.untilNewState = (float) -Math.log(rp.nextRandom()*1.0)/p0;
 			return tmp + handleState1();
 		}
 	}
@@ -54,7 +54,7 @@ public class SPPDistribution extends Distribution {
 		else {
 			isState0 = true;
 			float tmp = untilNewState;
-			this.untilNewState = (float) -Math.log(rp.nextRandom()*1.0)/q10;
+			this.untilNewState = (float) -Math.log(rp.nextRandom()*1.0)/p1;
 			return tmp + handleState0();
 		}
 	}

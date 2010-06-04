@@ -1,9 +1,9 @@
 package simulator;
 
 public enum DistributionType {
-	Exponential,
-	Uniform,
 	Deterministic,
+	Uniform,
+	Exponential,
 	SPP,
 	Pareto
 }

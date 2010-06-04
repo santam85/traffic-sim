@@ -10,7 +10,7 @@ public class DeterministicDistribution extends Distribution {
 	
 	@Override
 	public float nextValue() {
-		return mu;
+		return 1/mu;
 	}
 
 }

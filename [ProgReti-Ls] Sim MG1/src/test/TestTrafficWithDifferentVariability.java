@@ -1,6 +1,7 @@
 package test;
 
 import simulator.Distribution;
+import simulator.DeterministicDistribution;
 import simulator.ExponentialDistribution;
 import simulator.SPPDistribution;
 import simulator.ParetoDistribution;
@@ -14,8 +15,8 @@ public class TestTrafficWithDifferentVariability {
 	public static void main(String[] args) {
 
 		int N = 100;
-		double T = 100;
 		float lambda = 2;
+		double T = 30/lambda;
 		float k = 10;
 		float q01 = 0.1f;
 		float q10 = 0.9f;
@@ -24,8 +25,9 @@ public class TestTrafficWithDifferentVariability {
 		float shape = 3f; // impostato a piacere
 		float mode = ((1/lambda) * (shape - 1))/shape;
 		
-		String[] distNames = new String[]{"Exponential","SPP","Pareto"};
+		String[] distNames = new String[]{"Deterministic","Exponential","SPP","Pareto"};
 		Distribution[] ds = new Distribution[]{
+				new DeterministicDistribution(lambda),
 				new ExponentialDistribution(lambda), 
 				new SPPDistribution(lambda0,lambda1,q01,q10), 
 				new ParetoDistribution(shape,mode)};
@@ -39,9 +41,9 @@ public class TestTrafficWithDifferentVariability {
 			for (int j = 0; j < N; j ++) {
 				
 				int counter = 0;
-				for (double now = 0; now < T; ) {
+				for (double now = 0; now <= T; ) {
 					now += ds[i].nextValue();
-					if (now < T)
+					if (now <= T)
 						counter ++;
 				}
 				
