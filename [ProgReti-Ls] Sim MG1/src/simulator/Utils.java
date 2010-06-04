@@ -106,7 +106,7 @@ public class Utils {
 		for(int j=0;j<N;j++){
 			Simulator s = new Simulator(new ExponentialDistribution(lambda),dist);
 			s.run();
-			run[j]=s.geEta();
+			run[j]=s.getEta();
 		}
 		
 		res[0] = Utils.mean(run);

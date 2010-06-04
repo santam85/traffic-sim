@@ -25,7 +25,7 @@ public class Simulation {
 	 */
 	public static void main(String[] args) {
 		int N = 100;
-		float mu = 2;
+		float mu = 10;
 		double confLevel = 0.975;
 		
 		float[] rhos = new float[]{0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f};
@@ -41,7 +41,7 @@ public class Simulation {
 			for(int j=0;j<N;j++){
 				Simulator s = new Simulator(new ExponentialDistribution(lambda,r),new ExponentialDistribution(mu,r));
 				s.run();
-				runetas[j]=s.geEta();
+				runetas[j]=s.getEta();
 			}
 			meanetas[i] = Utils.mean(runetas);
 			varetas[i] = Utils.cvar(runetas, meanetas[i]);

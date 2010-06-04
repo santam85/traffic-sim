@@ -1,11 +1,12 @@
 package simulator;
 
 import java.util.LinkedList;
+import java.util.Vector;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 public class Simulator implements Runnable {
 
-	private ConcurrentSkipListSet<Event> eventList;
+	private Vector<ConcurrentSkipListSet<Event>> eventList;
 	private int arrivals, queuedArrivals, departures, k;
 	private float now, freeTime;
 	private float waitTime,waitTimeQueue;
@@ -19,16 +20,19 @@ public class Simulator implements Runnable {
 	
 	private LinkedList<Event> history;
 	
-	
 	public Simulator(Distribution arrivalTimeDistribution, Distribution serviceTimeDistribution){
+		this(arrivalTimeDistribution,serviceTimeDistribution,1);
+	}
+	
+	public Simulator(Distribution arrivalTimeDistribution, Distribution serviceTimeDistribution, int priorityClasses){
 		history = new LinkedList<Event>();
-		eventList = new ConcurrentSkipListSet<Event>();
+		eventList = new Vector<ConcurrentSkipListSet<Event>>(priorityClasses);
 		
 		this.arrivalTimeDistribution = arrivalTimeDistribution;
 		this.serviceTimeDistribution = serviceTimeDistribution;
 	}
 	
-	public float geEta() {
+	public float getEta() {
 		return eta;
 	}
 	
