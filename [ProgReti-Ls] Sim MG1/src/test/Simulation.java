@@ -51,7 +51,7 @@ public class Simulation {
 		DefaultStatisticalCategoryDataset dataset = new DefaultStatisticalCategoryDataset();
 
 		for(int i=0; i<rhos.length;i++){
-			dataset.add(meanetas[i], varetas[i], "Mean eta", "rho="+rhos[i]);
+			dataset.add(meanetas[i], confint[i], "Mean eta", "rho="+rhos[i]);
 		}
 		
 		CategoryAxis xAxis = new CategoryAxis("Type");

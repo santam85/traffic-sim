@@ -42,8 +42,13 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
         
         distCbx.setModel(new DefaultComboBoxModel(simulator.DistributionType.values()));
         distCbx.addActionListener(this);
+        distCbx_mg1.setModel(new DefaultComboBoxModel(new String[]{"Deterministic","Exponential","Pareto 2.5","Pareto 1.2"}));
         generateReport.addActionListener(this);
         placeholderPanel.setLayout(new BorderLayout());
+        simulate_mg1.addActionListener(this);
+        distRbt.addActionListener(this);
+        rhoRbt.addActionListener(this);
+        toggleMG1Parameters(false,true);
     }
 
     /** This method is called from within the constructor to
@@ -55,6 +60,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         testConfidence = new javax.swing.JButton();
@@ -68,7 +74,17 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
         runs = new javax.swing.JTextField();
         generateReport = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        simulateMG1 = new javax.swing.JButton();
+        simulate_mg1 = new javax.swing.JButton();
+        distCbx_mg1 = new javax.swing.JComboBox();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        rho = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        mu = new javax.swing.JTextField();
+        runs_mg1 = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        distRbt = new javax.swing.JRadioButton();
+        rhoRbt = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -81,7 +97,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
             .add(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .add(testConfidence)
-                .addContainerGap(126, Short.MAX_VALUE))
+                .addContainerGap(155, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -134,7 +150,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
                                 .add(runs, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 54, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                 .add(lambda, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 54, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                 .add(distCbx, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 171, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -160,7 +176,29 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 
         jTabbedPane1.addTab("VariableTraffic", jPanel2);
 
-        simulateMG1.setText("Simulate");
+        simulate_mg1.setText("Simulate");
+        simulate_mg1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                simulate_mg1ActionPerformed(evt);
+            }
+        });
+
+        distCbx_mg1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel4.setText("Distribution type");
+
+        jLabel5.setText("Rho:");
+
+        jLabel6.setText("Mu:");
+
+        jLabel7.setText("# runs:");
+
+        buttonGroup1.add(distRbt);
+        distRbt.setSelected(true);
+        distRbt.setText("variable distribution");
+
+        buttonGroup1.add(rhoRbt);
+        rhoRbt.setText("variable rho");
 
         org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -168,14 +206,49 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(simulateMG1)
-                .addContainerGap(223, Short.MAX_VALUE))
+                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(simulate_mg1)
+                    .add(jPanel3Layout.createSequentialGroup()
+                        .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jLabel5)
+                            .add(jLabel4)
+                            .add(jLabel6)
+                            .add(jLabel7))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(runs_mg1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 54, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(mu, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 54, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(rho, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 54, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(distCbx_mg1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 171, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                    .add(distRbt)
+                    .add(rhoRbt))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(237, Short.MAX_VALUE)
-                .add(simulateMG1)
+                .addContainerGap()
+                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jLabel4)
+                    .add(distCbx_mg1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jLabel5)
+                    .add(rho, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jLabel6)
+                    .add(mu, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jLabel7)
+                    .add(runs_mg1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(distRbt)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(rhoRbt)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 15, Short.MAX_VALUE)
+                .add(simulate_mg1)
                 .addContainerGap())
         );
 
@@ -187,7 +260,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE)
+                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -201,20 +274,35 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void simulate_mg1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simulate_mg1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_simulate_mg1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox distCbx;
+    private javax.swing.JComboBox distCbx_mg1;
+    private javax.swing.JRadioButton distRbt;
     private javax.swing.JButton generateReport;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField lambda;
+    private javax.swing.JTextField mu;
     private javax.swing.JPanel placeholderPanel;
+    private javax.swing.JTextField rho;
+    private javax.swing.JRadioButton rhoRbt;
     private javax.swing.JTextField runs;
-    private javax.swing.JButton simulateMG1;
+    private javax.swing.JTextField runs_mg1;
+    private javax.swing.JButton simulate_mg1;
     private javax.swing.JButton testConfidence;
     // End of variables declaration//GEN-END:variables
 
@@ -223,14 +311,24 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == distCbx) {
-			handlePanel();
+			handleAdditionalParametersPanel();
 		}
 		else if (e.getSource() == this.generateReport) {
-			handleSimulation();
+			handleTrafficWithDifferentVariabilitySimulation();
 		}
+		else if (e.getSource() == this.simulate_mg1) {
+			if (this.rhoRbt.isSelected())
+				handleMG1SimulationWithVariableRho();
+			else if (this.distRbt.isSelected())
+				handleMG1SimulationWithVariableDistribution();
+		}
+		else if (e.getSource() == this.distRbt || e.getSource() == this.rhoRbt) {
+			handleRadioButtonSelection();
+		}
+			
 	}
 
-	private void handlePanel() {
+	private void handleAdditionalParametersPanel() {
 		DistributionType type = (DistributionType)distCbx.getSelectedItem();
 		switch (type) {
 			case SPP: {
@@ -252,10 +350,10 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 		this.repaint();
 	}
 	
-	private void handleSimulation() {
+	private void handleTrafficWithDifferentVariabilitySimulation() {
 		DistributionType type = (DistributionType)distCbx.getSelectedItem();
 		Distribution dist = null;
-		if (!checkParameters()) {
+		if (!checkTrafficParameters()) {
 			showDialogMessage("Parameters missing or wrong");
 			return ; // pianto unA grana
 		}
@@ -303,10 +401,50 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 			}
 		}
 		
-		Utils.generateTrafficWithDifferentVariability((float)getLambda(),dist,getRuns());
+		Utils.generateTrafficWithDifferentVariability((float)getLambda(),dist,getTrafficSimulationRuns());
 	}
 	
-	private boolean checkParameters() {
+	private void handleMG1SimulationWithVariableDistribution() {
+		if (!checkMG1SimulationParameters()) {
+			showDialogMessage("Parameters missing or wrong");
+			return ; // pianto unA grana
+		}
+		
+		double[][] res = Utils.compareMG1Simulations(getRho(),getMu(),getMG1SimulationRuns());
+		GraphUtils.displayStatisticalBarChart("Eta",new float[]{0,1,2,3},"dist=",res[0],"Mean eta",res[2]);
+	}
+	
+	private void handleMG1SimulationWithVariableRho() {
+		String s = this.distCbx_mg1.getSelectedItem() + "";
+		Distribution dist = null;
+		if (s.equals("Deterministic")) {
+			dist = new DeterministicDistribution(this.getMu());
+		}
+		else if (s.equals("Exponential")) {
+			dist = new ExponentialDistribution(this.getMu());
+		}
+		else if (s.equals("Pareto 2.5")) {
+			dist = new ParetoDistribution(2.5f,Utils.computeParetoBeta(this.getMu(),2.5f));
+		}
+		else if (s.equals("Pareto 1.2")) {
+			dist = new ParetoDistribution(1.2f,Utils.computeParetoBeta(this.getMu(),1.2f));
+		}
+		
+		float[] rhos = new float[]{0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f};
+		double[][] res = Utils.simulateMG1WithVariableRho(dist,rhos,this.getMu(),this.getMG1SimulationRuns());
+		GraphUtils.displayStatisticalBarChart("Eta",rhos,"rho=",res[0],"Mean eta",res[2]);
+	}
+	
+	private void handleRadioButtonSelection() {
+		if (distRbt.isSelected()) {
+			toggleMG1Parameters(false,true);
+		}
+		else if (rhoRbt.isSelected()) {
+			toggleMG1Parameters(true,false);
+		}
+	}
+	
+	private boolean checkTrafficParameters() {
 		if (lambda.getText().equals("") || runs.getText().equals(""))
 			return false;
 		try {
@@ -315,6 +453,22 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 			return true;
 		}
 		catch (NumberFormatException e) { }
+		return false;
+	}
+	
+	private boolean checkMG1SimulationParameters() {
+		if (!rhoRbt.isSelected())
+		if (rho.getText().equals("") || mu.getText().equals("") || runs_mg1.getText().equals(""))
+			return false;
+		
+		try {
+			Double.parseDouble(rho.getText());
+			Double.parseDouble(mu.getText());
+			Integer.parseInt(runs_mg1.getText());
+			return true;
+		}
+		catch (NumberFormatException e) { }
+		
 		return false;
 	}
 	
@@ -328,7 +482,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 		return -1;
 	}
 	
-	public int getRuns() {
+	public int getTrafficSimulationRuns() {
 		if (runs.getText().equals(""))
 			return -1;
 		try {
@@ -338,7 +492,42 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 		return -1;
 	}
 	
+	public float getRho() {
+		if (rho.getText().equals(""))
+			return -1;
+		try {
+			return Float.parseFloat(rho.getText());
+		}
+		catch (NumberFormatException e) { }
+		return -1;
+	}
+	
+	public float getMu() {
+		if (mu.getText().equals(""))
+			return -1;
+		try {
+			return Float.parseFloat(mu.getText());
+		}
+		catch (NumberFormatException e) { }
+		return -1;
+	}
+	
+	public int getMG1SimulationRuns() {
+		if (runs_mg1.getText().equals(""))
+			return -1;
+		try {
+			return Integer.parseInt(runs_mg1.getText());
+		}
+		catch (NumberFormatException e) { }
+		return -1;
+	}
+	
 	private void showDialogMessage(String msg) {
 		javax.swing.JOptionPane.showMessageDialog(this,msg,"Paramters error",javax.swing.JOptionPane.ERROR_MESSAGE);
+	}
+	
+	private void toggleMG1Parameters(boolean cmb, boolean rho) {
+		this.distCbx_mg1.setEnabled(cmb);
+		this.rho.setEnabled(rho);
 	}
 }

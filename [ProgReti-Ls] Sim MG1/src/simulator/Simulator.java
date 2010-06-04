@@ -50,7 +50,7 @@ public class Simulator implements Runnable {
 			
 			now = e.occurrenceTime;
 			
-			System.out.println(e);
+			// System.out.println(e);
 			
 			if (e.getClass() == Arrival.class){
 				Arrival a = (Arrival)e;
