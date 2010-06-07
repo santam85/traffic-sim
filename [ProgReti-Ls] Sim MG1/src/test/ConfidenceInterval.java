@@ -1,14 +1,17 @@
 package test;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Rectangle;
 
 import org.apache.commons.math.MathException;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.*;
-import org.jfree.chart.renderer.category.LineAndShapeRenderer;
-import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.xy.DefaultXYDataset;
 
 import simulator.Distribution;
 import simulator.Provider;
@@ -23,7 +26,7 @@ public class ConfidenceInterval {
 	 * @throws MathException 
 	 */
 	public static void main(String[] args){
-		int[] nr = new int[]{5,10,25,50,100,1000,10000};
+		int[] nr = new int[]{25,50,100,250,500,1000};
 		double[] nd = new double[]{0.5,0.75,0.9,0.95,0.975};
 		
 		double[] means = new double[nr.length];
@@ -45,23 +48,27 @@ public class ConfidenceInterval {
 			System.out.println(means[i] + " " + vars[i]);
 		}
 		
-		double[] delta1 = new double[nr.length];
-		double[] delta2 = new double[nr.length];
+		double[][] delta1 = new double[2][nr.length];
+		double[][] delta2 = new double[2][nd.length];
 		
-		DefaultCategoryDataset dataset1 = new DefaultCategoryDataset();
-		DefaultCategoryDataset dataset2 = new DefaultCategoryDataset();
+		DefaultXYDataset dataset1 = new DefaultXYDataset();
+		DefaultXYDataset dataset2 = new DefaultXYDataset();
 		
 		for(int i = 0; i<nr.length;i++){
-			delta1[i] = Utils.confidenceInterval(nr[i],0.975,vars[i]);
-			dataset1.addValue(delta1[i], "Fixed confidence level", nr[i]+" values");
+			delta1[1][i] = Utils.confidenceInterval(nr[i],0.975,vars[i]);
+			delta1[0][i] = nr[i];
 		}
 		
+		dataset1.addSeries("Fixed confidence level",delta1);
+		
 		for(int i = 0; i<nd.length;i++){
-			delta2[i] = Utils.confidenceInterval(nr[1],nd[i],vars[i]);
-			dataset2.addValue(delta2[i], "Fixed values number", nd[i]*100+"%");
+			delta2[1][i] = Utils.confidenceInterval(nr[1],nd[i],vars[i]);
+			delta2[0][i] = nd[i];
 		}
 
-		JFreeChart chart1 = ChartFactory.createLineChart("Confidence interval", // chart title 
+		dataset2.addSeries("Fixed values number", delta2);
+		
+		JFreeChart chart1 = ChartFactory.createXYLineChart("Confidence interval", // chart title 
 				"Values", // domain axis label 
 				"Confidence interval size", // range axis label 
 				dataset1, // data
@@ -71,7 +78,7 @@ public class ConfidenceInterval {
 				false // urls
 		);
 		
-		JFreeChart chart2 = ChartFactory.createLineChart("Confidence interval", // chart title 
+		JFreeChart chart2 = ChartFactory.createXYLineChart("Confidence interval", // chart title 
 				"Confidence level", // domain axis label 
 				"Confidence interval size", // range axis label 
 				dataset2, // data
@@ -87,26 +94,26 @@ public class ConfidenceInterval {
 		f2.setBounds(0, 0, 1000, 600);
 		
 		// Graphic layout chart1
-		CategoryPlot cp=(CategoryPlot)chart1.getPlot();
+		XYPlot cp=(XYPlot)chart1.getPlot();
 		cp.setBackgroundPaint(Color.white);
 		cp.setRangeGridlinePaint(Color.gray);
-		LineAndShapeRenderer renderer = (LineAndShapeRenderer) cp.getRenderer();
+		XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) cp.getRenderer();
 		renderer.setSeriesShapesVisible(0,true);
 		renderer.setDrawOutlines(true); 
 		renderer.setUseFillPaint(true);
-		renderer.setSeriesStroke(0, new BasicStroke(4));
-		//renderer.setSeriesPaint(0, new Color(170,255,0));
+		renderer.setSeriesStroke(0, new BasicStroke(2));
+		renderer.setSeriesShape(0, new Rectangle(-2,-2,4,4));
 
 		// Graphic layout chart1
-		cp=(CategoryPlot)chart2.getPlot();
+		cp=(XYPlot)chart2.getPlot();
 		cp.setBackgroundPaint(Color.white);
 		cp.setRangeGridlinePaint(Color.gray);
-		renderer = (LineAndShapeRenderer) cp.getRenderer();
+		renderer = (XYLineAndShapeRenderer) cp.getRenderer();
 		renderer.setSeriesShapesVisible(0,true);
 		renderer.setDrawOutlines(true); 
 		renderer.setUseFillPaint(true);
-		renderer.setSeriesStroke(0, new BasicStroke(4));
-		//renderer.setSeriesPaint(0, new Color(170,255,0));
+		renderer.setSeriesStroke(0, new BasicStroke(2));
+		renderer.setSeriesShape(0, new Rectangle(-2,-2,4,4));
 		
 		f1.setVisible(true);
 		f2.setVisible(true);

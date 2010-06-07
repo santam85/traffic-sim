@@ -1,6 +1,9 @@
 package test;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.Rectangle;
 
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
@@ -8,8 +11,7 @@ import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.renderer.category.CategoryItemRenderer;
-import org.jfree.chart.renderer.category.StatisticalBarRenderer;
+import org.jfree.chart.renderer.category.StatisticalLineAndShapeRenderer;
 import org.jfree.data.statistics.DefaultStatisticalCategoryDataset;
 
 import simulator.Distribution;
@@ -49,6 +51,7 @@ public class Simulation {
 			confint[i] = Utils.confidenceInterval(N, confLevel, varetas[i]);
 		}
 		
+		
 		DefaultStatisticalCategoryDataset dataset = new DefaultStatisticalCategoryDataset();
 
 		for(int i=0; i<rhos.length;i++){
@@ -61,7 +64,7 @@ public class Simulation {
         xAxis.setCategoryMargin(0.05d); // percentage of space between categories
         ValueAxis yAxis = new NumberAxis("Value");
 
-        CategoryItemRenderer renderer = new StatisticalBarRenderer();
+        StatisticalLineAndShapeRenderer renderer = new StatisticalLineAndShapeRenderer();
         CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
 
         JFreeChart chart = new JFreeChart("Eta",
@@ -72,6 +75,15 @@ public class Simulation {
 		ChartFrame f = new ChartFrame("Chart", chart);
 		f.pack();
 		f.setVisible(true);
+		
+		CategoryPlot cp=(CategoryPlot)chart.getPlot();
+		cp.setBackgroundPaint(Color.white);
+		cp.setRangeGridlinePaint(Color.gray);
+		renderer.setErrorIndicatorPaint(Color.black);
+		renderer.setUseFillPaint(true);
+		renderer.setSeriesStroke(0, new BasicStroke(2));
+		renderer.setSeriesShape(0, new Rectangle(-1,-1,2,2));
+		
 		
 		/* GRAFICO K
 		 * 
