@@ -68,8 +68,8 @@ public class Utils {
 		double[][] res = new double[3][N];
 		Distribution[] dists = new Distribution[]{new DeterministicDistribution(mu),
 				new ExponentialDistribution(mu),
-				new ParetoDistribution(2.5f,computeParetoBeta(mu,2.5f)),
-				new ParetoDistribution(1.2f,computeParetoBeta(mu,1.2f))
+				new ParetoDistribution(2.5,computeParetoBeta(mu,2.5)),
+				new ParetoDistribution(1.2,computeParetoBeta(mu,1.2))
 		};
 		
 		for(int i=0; i<dists.length;i++){
@@ -144,13 +144,14 @@ public class Utils {
 	}
 	
 	public static double[][][] simulateMG1PrioWithVariableRhos(double mu, String type) {
-		double[][][] res = new double[100][type.equals("2")?2:3][4];
+		double[][][] res = new double[99][type.equals("2")?2:3][4];
 		double[] rhos = null;
-		double rho = 0.8f;
-		int N = 100;
+		double rho = 0.8;
+		int N = 10;
 		ExponentialDistribution dist = new ExponentialDistribution(mu);
 		
-		for (double x = 0.01f, i = 0; x < 1; x += 0.01f, i ++) {	
+		for (int i = 0; i < 99; i ++) {	
+			double x= (i+1)*1.0/100;
 			if (type.equals("2")) {
 				rhos = new double[2];
 				rhos[0] = x*rho;
@@ -158,30 +159,30 @@ public class Utils {
 			}
 			else if (type.equals("3a")) {
 				rhos = new double[3];
-				rhos[0] = x/2*rho;
-				rhos[1] = x/2*rho;
+				rhos[0] = 0.5*x*rho;
+				rhos[1] = 0.5*x*rho;
 				rhos[2] = (1 - x)*rho;
 			}
 			else if (type.equals("3b")) {
 				rhos = new double[3];
-				rhos[0] = x/10*rho;
-				rhos[1] = 9*x/10*rho;
+				rhos[0] = 0.1*x*rho;
+				rhos[1] = 0.9*x*rho;
 				rhos[2] = (1 - x)*rho;
 			}
 			else if (type.equals("3c")) {
 				rhos = new double[3];
 				rhos[0] = x*rho;
-				rhos[1] = (1 - x)/2*rho;
-				rhos[2] = (1 - x)/2*rho;
+				rhos[1] = (1 - x)*0.5*rho;
+				rhos[2] = (1 - x)*0.5*rho;
 			}
 			
 			double[][] partial_res = Utils.simulateMG1Prio(dist,rhos,mu,N);
 			
 			for (int j = 0; j < rhos.length; j ++) {
-				res[(int)i][j][0] = x;
-				res[(int)i][j][1] = partial_res[j][0];
-				res[(int)i][j][2] = partial_res[j][1];
-				res[(int)i][j][3] = partial_res[j][2];
+				res[i][j][0] = x;
+				res[i][j][1] = partial_res[j][0];
+				res[i][j][2] = partial_res[j][1];
+				res[i][j][3] = partial_res[j][2];
 			}
 		}
 		
