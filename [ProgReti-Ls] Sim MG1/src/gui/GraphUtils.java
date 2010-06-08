@@ -13,8 +13,7 @@ import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.category.CategoryItemRenderer;
-import org.jfree.chart.renderer.category.StatisticalBarRenderer;
+import org.jfree.chart.renderer.category.StatisticalLineAndShapeRenderer;
 import org.jfree.chart.renderer.xy.DeviationRenderer;
 import org.jfree.data.statistics.DefaultStatisticalCategoryDataset;
 import org.jfree.data.xy.YIntervalSeries;
@@ -36,7 +35,7 @@ public class GraphUtils {
         xAxis.setCategoryMargin(0.05d); // percentage of space between categories
         ValueAxis yAxis = new NumberAxis("Value");
 
-        CategoryItemRenderer renderer = new StatisticalBarRenderer();
+        StatisticalLineAndShapeRenderer renderer = new StatisticalLineAndShapeRenderer();
         CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
 
         JFreeChart chart = new JFreeChart(title,
