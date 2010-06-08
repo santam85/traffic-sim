@@ -411,7 +411,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 		}
 		switch (type) {
 			case Deterministic: {
-				dist = new DeterministicDistribution((float)getLambda());
+				dist = new DeterministicDistribution((double)getLambda());
 				break;
 			}
 			case SPP: {
@@ -427,7 +427,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 				int k = p.getK();
 				double lambda0 = Utils.computeSPPLambda0(lambda,p0,p1,k);
 				double lambda1 = lambda0 * k;
-				dist = new SPPDistribution((float)lambda0,(float)lambda1,(float)p0,(float)p1);
+				dist = new SPPDistribution((double)lambda0,(double)lambda1,(double)p0,(double)p1);
 				break;
 			}
 			case Pareto: {
@@ -437,9 +437,9 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 					return ; // pianto una grana
 				}
 				
-				float lambda = (float)getLambda();
-				float alfa = (float)p.getAlfa();
-				float beta = ((1/lambda) * (alfa - 1))/alfa;
+				double lambda = (double)getLambda();
+				double alfa = (double)p.getAlfa();
+				double beta = ((1/lambda) * (alfa - 1))/alfa;
 				dist = new ParetoDistribution(alfa,beta);
 				break;
 			}
@@ -448,12 +448,12 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 				break ;
 			}
 			case Exponential: {
-				dist = new ExponentialDistribution((float)getLambda());
+				dist = new ExponentialDistribution((double)getLambda());
 				break ;
 			}
 		}
 		
-		Utils.generateTraffic((float)getLambda(),dist,getTrafficSimulationRuns());
+		Utils.generateTraffic((double)getLambda(),dist,getTrafficSimulationRuns());
 	}
 	
 	private void handleMG1SimulationWithVariableDistribution() {
@@ -463,7 +463,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 		}
 		
 		double[][] res = Utils.compareMG1Simulations(getRho(),getMu(),getMG1SimulationRuns());
-		GraphUtils.displayStatisticalBarChart("Eta",new float[]{0,1,2,3},"dist=",res[0],"Mean eta",res[2]);
+		GraphUtils.displayStatisticalBarChart("Eta",new double[]{0,1,2,3},"dist=",res[0],"Mean eta",res[2]);
 	}
 	
 	private void handleMG1SimulationWithVariableRho() {
@@ -482,13 +482,13 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 			dist = new ParetoDistribution(1.2f,Utils.computeParetoBeta(this.getMu(),1.2f));
 		}
 		
-		float[] rhos = new float[]{0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f};
+		double[] rhos = new double[]{0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f};
 		double[][] res = Utils.simulateMG1WithVariableRho(dist,rhos,this.getMu(),this.getMG1SimulationRuns());
 		GraphUtils.displayStatisticalBarChart("Eta",rhos,"rho=",res[0],"Mean eta",res[2]);
 	}
 	
 	private void handlePrioMG1Simulation() {
-		float mu;
+		double mu;
 		if ((mu = getMuPrio()) == -1 || mu < 0) {
 			showDialogMessage("Parameters missing or wrong");
 			return ; // pianto unA grana
@@ -554,7 +554,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 		return -1;
 	}
 	
-	public float getRho() {
+	public double getRho() {
 		if (rho.getText().equals(""))
 			return -1;
 		try {
@@ -564,7 +564,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 		return -1;
 	}
 	
-	public float getMuPrio() {
+	public double getMuPrio() {
 		if (mu_prio.getText().equals(""))
 			return -1;
 		try {
@@ -574,7 +574,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 		return -1;
 	}
 	
-	public float getMu() {
+	public double getMu() {
 		if (mu.getText().equals(""))
 			return -1;
 		try {

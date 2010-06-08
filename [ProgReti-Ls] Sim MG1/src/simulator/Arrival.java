@@ -1,10 +1,10 @@
 package simulator;
 
 public class Arrival extends Event {
-	public float serviceTime;
+	public double serviceTime;
 	public int priorityClass;
 	
-	public Arrival(float occurrenceTime,float serviceTime, int priorityClass) {
+	public Arrival(double occurrenceTime,double serviceTime, int priorityClass) {
 		super(occurrenceTime,priorityClass);
 		this.id = idc++;
 		this.serviceTime = serviceTime;

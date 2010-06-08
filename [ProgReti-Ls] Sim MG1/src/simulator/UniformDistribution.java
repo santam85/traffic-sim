@@ -11,8 +11,8 @@ public class UniformDistribution extends Distribution {
 	}
 	
 	@Override
-	public float nextValue() {
-		return (float) (rp.nextRandom()*1.0);
+	public double nextValue() {
+		return (double) (rp.nextRandom()*1.0);
 	}
 
 }

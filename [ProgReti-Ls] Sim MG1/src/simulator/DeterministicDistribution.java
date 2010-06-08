@@ -2,15 +2,15 @@ package simulator;
 
 public class DeterministicDistribution extends Distribution {
 
-	private float mu;
+	private double mu;
 	
-	public DeterministicDistribution(float mu) {
+	public DeterministicDistribution(double mu) {
 		super("Deterministic");
 		this.mu = mu;
 	}
 	
 	@Override
-	public float nextValue() {
+	public double nextValue() {
 		return 1/mu;
 	}
 

@@ -3,7 +3,7 @@ package simulator;
 public class Departure extends Event {
 	public int id;
 
-	public Departure(float freeTime, int id, int priorityClass) {
+	public Departure(double freeTime, int id, int priorityClass) {
 		super(freeTime, priorityClass);
 		this.id = id;
 	}

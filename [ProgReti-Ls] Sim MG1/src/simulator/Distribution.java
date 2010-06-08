@@ -14,7 +14,7 @@ public abstract class Distribution {
 		this.rp = rp;
 	}
 	
-	public abstract float nextValue();
+	public abstract double nextValue();
 	
 	public String getDistributionName() {
 		return distributionName;

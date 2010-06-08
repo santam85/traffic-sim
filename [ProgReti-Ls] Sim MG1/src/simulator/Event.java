@@ -5,16 +5,16 @@ public abstract class Event implements Comparable<Event>{
 	protected static int idc = 0;
 	
 	protected int id;
-	protected float occurrenceTime;
+	protected double occurrenceTime;
 	protected int priorityClass;
 	
 	
-	public Event(float occurrencetime,int priorityClass) {
+	public Event(double occurrencetime,int priorityClass) {
 		this.occurrenceTime = occurrencetime;
 		this.priorityClass = priorityClass;
 	}
 	
-	public float getOccurrenceTime() {
+	public double getOccurrenceTime() {
 		return occurrenceTime;
 	}
 	

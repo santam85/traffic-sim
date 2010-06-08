@@ -11,15 +11,15 @@ public class Simulator implements Runnable {
 	
 	private int[] arrivalsByClass, departuresByClass;
 	private int arrivals, departures, k;
-	private float now, freeTime ;
-	private float[] waitTime;
+	private double now, freeTime ;
+	private double[] waitTime;
 	
 	private Distribution[] arrivalTimeDistribution;
 	private Distribution serviceTimeDistribution;
 	
 	
-	private float[] etaByClass;
-	private float eta, eps;
+	private double[] etaByClass;
+	private double eta, eps;
 	private int priorityClasses;
 	
 	private LinkedList<Event> history;
@@ -35,17 +35,17 @@ public class Simulator implements Runnable {
 		this.serviceTimeDistribution = serviceTimeDistribution;
 	}
 	
-	public float getEta() {
+	public double getEta() {
 		return eta;
 	}
 	
-	public float getEtaByClass(int priorityClass) {
+	public double getEtaByClass(int priorityClass) {
 		if (priorityClass > this.priorityClasses)
 			return -1;
 		return etaByClass[priorityClass];
 	}
 	
-	public float getEps() {
+	public double getEps() {
 		return eps;
 	}
 	
@@ -108,10 +108,10 @@ public class Simulator implements Runnable {
 
 	private void init() {
 		k=0; freeTime = 0; now = 0;
-		this.etaByClass = new float[priorityClasses];
+		this.etaByClass = new double[priorityClasses];
 		this.arrivalsByClass = new int[priorityClasses];
 		this.departuresByClass = new int[priorityClasses];
-		this.waitTime = new float[priorityClasses];
+		this.waitTime = new double[priorityClasses];
 		for (int i = 0; i < priorityClasses; i ++) {
 			eventList.add(i,new ConcurrentSkipListSet<Arrival>());
 			arrivalsByClass[i] = 0; departuresByClass[i] = 0;
@@ -119,11 +119,11 @@ public class Simulator implements Runnable {
 		}
 	}
 	
-	private float generateServiceTime(){
+	private double generateServiceTime(){
 		return serviceTimeDistribution.nextValue();
 	}
 	
-	private float generateOccurrenceTime(int priorityClass) {
+	private double generateOccurrenceTime(int priorityClass) {
 		return now + arrivalTimeDistribution[priorityClass].nextValue();
 	}
 	

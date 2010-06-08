@@ -2,17 +2,17 @@ package simulator;
 
 public class ParetoDistribution extends Distribution {
 
-	private float shape, mode;
+	private double shape, mode;
 	
-	public ParetoDistribution(float shape, float mode) {
+	public ParetoDistribution(double shape, double mode) {
 		super("Pareto");
 		this.shape = shape;
 		this.mode = mode;
 	}
 	
 	@Override
-	public float nextValue() {
-		return (float)Math.pow((1 - rp.nextRandom()),-1/shape)*mode;
+	public double nextValue() {
+		return (double)Math.pow((1 - rp.nextRandom()),-1/shape)*mode;
 		// r=mode*pow(1-u,-1/shape)
 	}
 

@@ -23,7 +23,7 @@ import org.jfree.ui.RectangleInsets;
 
 public class GraphUtils {
 	
-	public static void displayStatisticalBarChart(String title, float[] x, String xLabel, double[] y, String legendLabel, double[] confidence) {
+	public static void displayStatisticalBarChart(String title, double[] x, String xLabel, double[] y, String legendLabel, double[] confidence) {
 		DefaultStatisticalCategoryDataset dataset = new DefaultStatisticalCategoryDataset();
 
 		for(int i=0; i<x.length;i++){

@@ -28,19 +28,19 @@ public class Simulation {
 	 */
 	public static void main(String[] args) {
 		int N = 100;
-		float mu = 10;
+		double mu = 10;
 		double confLevel = 0.975;
 		
-		float[] rhos = new float[]{0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f};
-		float[] meanetas = new float[rhos.length];
-		float[] varetas = new float[rhos.length];
+		double[] rhos = new double[]{0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f};
+		double[] meanetas = new double[rhos.length];
+		double[] varetas = new double[rhos.length];
 		double[] confint = new double[rhos.length];
-		float[] runetas = new float[N];
+		double[] runetas = new double[N];
 		
 		RandomProvider r = new RandomProvider(Provider.Ran0,3);
 		
 		for(int i=0; i<rhos.length;i++){
-			float lambda = rhos[i]*mu;
+			double lambda = rhos[i]*mu;
 			for(int j=0;j<N;j++){
 				Simulator s = new Simulator(new Distribution[]{new ExponentialDistribution(lambda)},new ExponentialDistribution(mu,r));
 				s.run();

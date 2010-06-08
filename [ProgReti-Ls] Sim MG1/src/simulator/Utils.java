@@ -5,22 +5,6 @@ import org.apache.commons.math.distribution.TDistributionImpl;
 
 public class Utils {
 
-	public static float mean(float[] vals){
-		float mean = 0;
-		for (int i = 0; i < vals.length;i++){
-			mean+=vals[i];
-		}
-		return mean/vals.length;
-	}
-	
-	public static float cvar(float[] vals, float mean){
-		float var = 0;
-		for (int i = 0; i < vals.length;i++){
-			var+=Math.pow(vals[i]-mean,2);	
-		}
-		return var/(vals.length-1);
-	}
-
 	public static double mean(double[] vals){
 		double mean = 0;
 		for (int i = 0; i < vals.length;i++){
@@ -71,15 +55,15 @@ public class Utils {
 
 	}
 	
-	public static float computeSPPLambda0(double lambda, double p0, double p1, int k) {
-		return (float)(lambda/(p0+p1*k));
+	public static double computeSPPLambda0(double lambda, double p0, double p1, int k) {
+		return (double)(lambda/(p0+p1*k));
 	}
 	
-	public static float computeParetoBeta(float lambda, float alfa) {
-		return (float) (((1/lambda) * (alfa - 1))/alfa);
+	public static double computeParetoBeta(double lambda, double alfa) {
+		return (double) (((1/lambda) * (alfa - 1))/alfa);
 	}
 	
-	public static double[][] compareMG1Simulations(float rho, float mu, int N) {
+	public static double[][] compareMG1Simulations(double rho, double mu, int N) {
 
 		double[][] res = new double[3][N];
 		Distribution[] dists = new Distribution[]{new DeterministicDistribution(mu),
@@ -98,9 +82,9 @@ public class Utils {
 		return res;
 	}
 	
-	public static double[] simulateMG1(Distribution dist, float rho, float mu, int N) {
+	public static double[] simulateMG1(Distribution dist, double rho, double mu, int N) {
 		double[] res = new double[3];
-		float lambda = rho*mu;
+		double lambda = rho*mu;
 		double confLevel = 0.975;
 		
 		double[] run = new double[N];
@@ -116,7 +100,7 @@ public class Utils {
 		return res;
 	}
 	
-	public static double[][] simulateMG1WithVariableRho(Distribution dist, float[] rhos, float mu, int N) {
+	public static double[][] simulateMG1WithVariableRho(Distribution dist, double[] rhos, double mu, int N) {
 		double[][] res = new double[3][rhos.length];
 		
 		for(int i=0; i<rhos.length;i++){
@@ -129,9 +113,9 @@ public class Utils {
 		return res;
 	}
 	
-	public static double[][] simulateMG1Prio(Distribution dist, float[] rho, float mu, int N) {
+	public static double[][] simulateMG1Prio(Distribution dist, double[] rho, double mu, int N) {
 		double[][] res = new double[rho.length][3];
-		float[] lambda = new float[rho.length];
+		double[] lambda = new double[rho.length];
 		Distribution[] arrivalDists = new Distribution[rho.length];
 		
 		for(int i=0; i<rho.length;i++){
@@ -159,33 +143,33 @@ public class Utils {
 		return res;
 	}
 	
-	public static double[][][] simulateMG1PrioWithVariableRhos(float mu, String type) {
+	public static double[][][] simulateMG1PrioWithVariableRhos(double mu, String type) {
 		double[][][] res = new double[100][type.equals("2")?2:3][4];
-		float[] rhos = null;
-		float rho = 0.8f;
+		double[] rhos = null;
+		double rho = 0.8f;
 		int N = 100;
 		ExponentialDistribution dist = new ExponentialDistribution(mu);
 		
-		for (float x = 0.01f, i = 0; x < 1; x += 0.01f, i ++) {	
+		for (double x = 0.01f, i = 0; x < 1; x += 0.01f, i ++) {	
 			if (type.equals("2")) {
-				rhos = new float[2];
+				rhos = new double[2];
 				rhos[0] = x*rho;
 				rhos[1] = (1 - x)*rho;
 			}
 			else if (type.equals("3a")) {
-				rhos = new float[3];
+				rhos = new double[3];
 				rhos[0] = x/2*rho;
 				rhos[1] = x/2*rho;
 				rhos[2] = (1 - x)*rho;
 			}
 			else if (type.equals("3b")) {
-				rhos = new float[3];
+				rhos = new double[3];
 				rhos[0] = x/10*rho;
 				rhos[1] = 9*x/10*rho;
 				rhos[2] = (1 - x)*rho;
 			}
 			else if (type.equals("3c")) {
-				rhos = new float[3];
+				rhos = new double[3];
 				rhos[0] = x*rho;
 				rhos[1] = (1 - x)/2*rho;
 				rhos[2] = (1 - x)/2*rho;

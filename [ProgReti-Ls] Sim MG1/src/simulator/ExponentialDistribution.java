@@ -2,20 +2,20 @@ package simulator;
 
 public class ExponentialDistribution extends Distribution {
 
-	private float mu;
+	private double mu;
 	
-	public ExponentialDistribution(float mu) {
+	public ExponentialDistribution(double mu) {
 		this(mu,new RandomProvider());
 	}
 	
-	public ExponentialDistribution(float mu, RandomProvider rp) {
+	public ExponentialDistribution(double mu, RandomProvider rp) {
 		super("Exponential",rp);
 		this.mu = mu;
 	}
 	
 	@Override
-	public float nextValue() {
-		return (float) -Math.log(rp.nextRandom()*1.0)/mu;
+	public double nextValue() {
+		return (double) -Math.log(rp.nextRandom()*1.0)/mu;
 	}
 
 }
