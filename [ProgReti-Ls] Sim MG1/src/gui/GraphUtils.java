@@ -1,16 +1,25 @@
 package gui;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Font;
 
+import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.StatisticalBarRenderer;
+import org.jfree.chart.renderer.xy.DeviationRenderer;
 import org.jfree.data.statistics.DefaultStatisticalCategoryDataset;
+import org.jfree.data.xy.YIntervalSeries;
+import org.jfree.data.xy.YIntervalSeriesCollection;
+import org.jfree.ui.RectangleInsets;
 
 public class GraphUtils {
 	
@@ -38,5 +47,49 @@ public class GraphUtils {
 		ChartFrame f = new ChartFrame("Chart", chart);
 		f.pack();
 		f.setVisible(true);
+	}
+	
+	public static void displayDevRendererGraph(String title, String legend, String xLabel, String yLabel, double[][] values) {
+		YIntervalSeries series1 = new YIntervalSeries(legend);
+		
+		YIntervalSeriesCollection dataset = new YIntervalSeriesCollection();
+	    dataset.addSeries(series1);
+	     
+	    JFreeChart chart = ChartFactory.createXYLineChart(
+	                title,      // chart title
+	                xLabel,                      // x axis label
+	                yLabel,                      // y axis label
+	                dataset,                  // data
+	                PlotOrientation.VERTICAL,
+	                true,                     // include legend
+	                true,                     // tooltips
+	                false                     // urls
+	            );
+	    chart.setBackgroundPaint(Color.white);
+         
+        // get a reference to the plot for further customisation...
+        XYPlot plot = (XYPlot) chart.getPlot();
+        plot.setBackgroundPaint(Color.lightGray);
+        plot.setAxisOffset(new RectangleInsets(5.0, 5.0, 5.0, 5.0));
+        plot.setDomainGridlinePaint(Color.white);
+        plot.setRangeGridlinePaint(Color.white);
+        
+        DeviationRenderer renderer = new DeviationRenderer(true, false);
+        renderer.setSeriesStroke(0, new BasicStroke(3.0f, BasicStroke.CAP_ROUND,
+                 BasicStroke.JOIN_ROUND));
+        renderer.setSeriesStroke(0, new BasicStroke(3.0f));
+        renderer.setSeriesStroke(1, new BasicStroke(3.0f));
+        renderer.setSeriesFillPaint(0, new Color(200, 200, 255));
+        renderer.setSeriesFillPaint(1, new Color(255, 200, 200));
+        plot.setRenderer(renderer);
+
+        // change the auto tick unit selection to integer units only...
+        NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
+        yAxis.setAutoRangeIncludesZero(false);
+        yAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+         
+        ChartFrame f = new ChartFrame(title, chart);
+        f.pack();
+        f.setVisible(true);
 	}
 }

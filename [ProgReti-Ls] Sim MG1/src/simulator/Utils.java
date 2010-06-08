@@ -118,7 +118,7 @@ public class Utils {
 	public static double[] simulateMG1Prio(Distribution dist, float[] rho, float mu, int N) {
 		double[] res = new double[3];
 		float[] lambda = new float[rho.length];
-		Distribution[] arrivalDists = new Distribution[]{};
+		Distribution[] arrivalDists = new Distribution[rho.length];
 		
 		for(int i=0; i<rho.length;i++){
 			lambda[i] = rho[i]*mu;
@@ -138,6 +138,49 @@ public class Utils {
 		res[0] = Utils.mean(run);
 		res[1] = Utils.cvar(run, res[0]);
 		res[2] = Utils.confidenceInterval(N, confLevel, res[1]);
+		return res;
+	}
+	
+	public static double[][] simulateMG1PrioWithVariableRhos(float mu, String type) {
+		
+		double[][] res = new double[100][4];
+		float[] rhos = null;
+		float rho = 0.8f;
+		int N = 100;
+		ExponentialDistribution dist = new ExponentialDistribution(mu);
+		
+		for (float x = 0.01f, i = 0; x < 1; x += 0.01, i ++) {	
+			if (type.equals("2")) {
+				rhos = new float[2];
+				rhos[0] = x*rho;
+				rhos[1] = (1 - x)*rho;
+			}
+			else if (type.equals("3a")) {
+				rhos = new float[3];
+				rhos[0] = x/2*rho;
+				rhos[1] = x/2*rho;
+				rhos[2] = (1 - x)*rho;
+			}
+			else if (type.equals("3b")) {
+				rhos = new float[3];
+				rhos[0] = x/10*rho;
+				rhos[1] = 9*x/10*rho;
+				rhos[2] = (1 - x)*rho;
+			}
+			else if (type.equals("3c")) {
+				rhos = new float[3];
+				rhos[0] = x*rho;
+				rhos[1] = (1 - x)/2*rho;
+				rhos[2] = (1 - x)/2*rho;
+			}
+			
+			double[] partial_res = Utils.simulateMG1Prio(dist,rhos,mu,N);
+			res[(int)i][0] = x;
+			res[(int)i][1] = partial_res[0];
+			res[(int)i][2] = partial_res[1];
+			res[(int)i][3] = partial_res[2];
+		}
+		
 		return res;
 	}
 	

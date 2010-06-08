@@ -43,12 +43,15 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
         distCbx.setModel(new DefaultComboBoxModel(simulator.DistributionType.values()));
         distCbx.addActionListener(this);
         distCbx_mg1.setModel(new DefaultComboBoxModel(new String[]{"Deterministic","Exponential","Pareto 2.5","Pareto 1.2"}));
+        classes_prio.setModel(new DefaultComboBoxModel(new String[]{"2","3a","3b","3c"}));
         generateReport.addActionListener(this);
         placeholderPanel.setLayout(new BorderLayout());
         simulate_mg1.addActionListener(this);
         distRbt.addActionListener(this);
         rhoRbt.addActionListener(this);
         toggleMG1Parameters(false,true);
+        this.simulate_prio.addActionListener(this);
+        
     }
 
     /** This method is called from within the constructor to
@@ -58,7 +61,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+   private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         jTabbedPane1 = new javax.swing.JTabbedPane();
@@ -86,6 +89,11 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
         distRbt = new javax.swing.JRadioButton();
         rhoRbt = new javax.swing.JRadioButton();
         jPanel4 = new javax.swing.JPanel();
+        classes_prio = new javax.swing.JComboBox();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        mu_prio = new javax.swing.JTextField();
+        simulate_prio = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -105,7 +113,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
             .add(jPanel1Layout.createSequentialGroup()
                 .add(87, 87, 87)
                 .add(testConfidence)
-                .addContainerGap(186, Short.MAX_VALUE))
+                .addContainerGap(200, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("RandomNumber", jPanel1);
@@ -172,17 +180,12 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
                 .add(placeholderPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(generateReport)
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("VariableTraffic", jPanel2);
 
         simulate_mg1.setText("Simulate");
-        simulate_mg1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                simulate_mg1ActionPerformed(evt);
-            }
-        });
 
         distCbx_mg1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -248,22 +251,53 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
                 .add(distRbt)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(rhoRbt)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 34, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 48, Short.MAX_VALUE)
                 .add(simulate_mg1)
                 .addContainerGap())
         );
 
         jTabbedPane1.addTab("M/G/1", jPanel3);
 
+        classes_prio.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel8.setText("Number of classes");
+
+        jLabel9.setText("Mu:");
+
+        simulate_prio.setText("Simulate");
+
         org.jdesktop.layout.GroupLayout jPanel4Layout = new org.jdesktop.layout.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 367, Short.MAX_VALUE)
+            .add(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jPanel4Layout.createSequentialGroup()
+                        .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jLabel9)
+                            .add(jLabel8))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(mu_prio, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 54, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(classes_prio, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 171, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                    .add(simulate_prio))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 302, Short.MAX_VALUE)
+            .add(jPanel4Layout.createSequentialGroup()
+                .add(37, 37, 37)
+                .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jLabel8)
+                    .add(classes_prio, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jLabel9)
+                    .add(mu_prio, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 168, Short.MAX_VALUE)
+                .add(simulate_prio)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("M/G/1//PRIO", jPanel4);
@@ -281,21 +315,19 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
+                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 362, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void simulate_mg1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simulate_mg1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_simulate_mg1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox distCbx;
     private javax.swing.JComboBox distCbx_mg1;
+    private javax.swing.JComboBox classes_prio;
     private javax.swing.JRadioButton distRbt;
     private javax.swing.JButton generateReport;
     private javax.swing.JLabel jLabel1;
@@ -305,6 +337,8 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -314,10 +348,12 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
     private javax.swing.JTextField mu;
     private javax.swing.JPanel placeholderPanel;
     private javax.swing.JTextField rho;
+    private javax.swing.JTextField mu_prio;
     private javax.swing.JRadioButton rhoRbt;
     private javax.swing.JTextField runs;
     private javax.swing.JTextField runs_mg1;
     private javax.swing.JButton simulate_mg1;
+    private javax.swing.JButton simulate_prio;
     private javax.swing.JButton testConfidence;
     // End of variables declaration//GEN-END:variables
 
@@ -340,6 +376,9 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 		else if (e.getSource() == this.distRbt || e.getSource() == this.rhoRbt) {
 			handleRadioButtonSelection();
 		}
+		else if (e.getSource() == this.simulate_prio) {
+			handlePrioMG1Simulation();
+		}
 			
 	}
 
@@ -361,7 +400,6 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 			default: 
 				placeholderPanel.removeAll();
 		}
-		this.pack();
 		this.repaint();
 	}
 	
@@ -450,6 +488,16 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 		GraphUtils.displayStatisticalBarChart("Eta",rhos,"rho=",res[0],"Mean eta",res[2]);
 	}
 	
+	private void handlePrioMG1Simulation() {
+		float mu;
+		if ((mu = getMuPrio()) == -1 || mu < 0) {
+			showDialogMessage("Parameters missing or wrong");
+			return ; // pianto unA grana
+		}
+		double[][] res = Utils.simulateMG1PrioWithVariableRhos(mu,classes_prio.getSelectedItem().toString());
+		GraphUtils.displayDevRendererGraph("Eta","eta mean","x","eta",res);
+	}
+	
 	private void handleRadioButtonSelection() {
 		if (distRbt.isSelected()) {
 			toggleMG1Parameters(false,true);
@@ -512,6 +560,16 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 			return -1;
 		try {
 			return Float.parseFloat(rho.getText());
+		}
+		catch (NumberFormatException e) { }
+		return -1;
+	}
+	
+	public float getMuPrio() {
+		if (mu_prio.getText().equals(""))
+			return -1;
+		try {
+			return Float.parseFloat(mu_prio.getText());
 		}
 		catch (NumberFormatException e) { }
 		return -1;

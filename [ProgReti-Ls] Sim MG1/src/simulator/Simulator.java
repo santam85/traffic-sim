@@ -9,8 +9,8 @@ public class Simulator implements Runnable {
 	private Vector<ConcurrentSkipListSet<Arrival>> eventList;
 	private ConcurrentSkipListSet<Event> futureEventList;
 	private int[] arrivalsByClass, departuresByClass;
-	private int arrivals, departures;
-	private float now, freeTime, k ;
+	private int arrivals, departures, k;
+	private float now, freeTime ;
 	private float[] waitTime;
 	
 	private Distribution[] arrivalTimeDistribution;
@@ -25,12 +25,13 @@ public class Simulator implements Runnable {
 	
 	public Simulator(Distribution[] arrivalTimeDistribution, Distribution serviceTimeDistribution){
 		history = new LinkedList<Event>();
+		this.priorityClasses = arrivalTimeDistribution.length;
+		
 		eventList = new Vector<ConcurrentSkipListSet<Arrival>>(priorityClasses);
 		futureEventList = new ConcurrentSkipListSet<Event>();
 		
 		this.arrivalTimeDistribution = arrivalTimeDistribution;
 		this.serviceTimeDistribution = serviceTimeDistribution;
-		this.priorityClasses = arrivalTimeDistribution.length;
 	}
 	
 	public float getEta() {
@@ -75,11 +76,16 @@ public class Simulator implements Runnable {
 					// waitTimeQueue += freeTime - now;
 				}	
 			}else if(e.getClass() == Departure.class){
-				k--; departures++;
+				k--; departures++; departuresByClass[e.getPriorityClass()]++;
 				if (k > 0) {
 					Arrival a = serviceEvent();
-					waitTime[a.getPriorityClass()] += (now - a.getOccurrenceTime());
-					futureEventList.add(new Departure(now + a.serviceTime,a.getId(),a.getPriorityClass()));
+					if (a != null) { // ?!?
+						waitTime[a.getPriorityClass()] += (now - a.getOccurrenceTime());
+						futureEventList.add(new Departure(now + a.serviceTime,a.getId(),a.getPriorityClass()));
+					}
+					else {
+						System.out.println("[cè qualcosa che non va]\n" + k + " " + arrivals + " " + departures);
+					}
 				}
 			}
 		}
