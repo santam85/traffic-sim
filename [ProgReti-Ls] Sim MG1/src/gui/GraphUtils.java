@@ -31,9 +31,9 @@ public class GraphUtils {
 		}
 		
 		CategoryAxis xAxis = new CategoryAxis("Type");
-        xAxis.setLowerMargin(0.01); // percentage of space before first bar
-        xAxis.setUpperMargin(0.01); // percentage of space after last bar
-        xAxis.setCategoryMargin(0.05); // percentage of space between categories
+        xAxis.setLowerMargin(0.01d); // percentage of space before first bar
+        xAxis.setUpperMargin(0.01d); // percentage of space after last bar
+        xAxis.setCategoryMargin(0.05d); // percentage of space between categories
         ValueAxis yAxis = new NumberAxis("Value");
 
         CategoryItemRenderer renderer = new StatisticalBarRenderer();
@@ -58,6 +58,7 @@ public class GraphUtils {
 			for (int i = 0; i < values.length; i++) {
 				series1.add(values[i][x][0],values[i][x][1],values[i][x][1] - values[i][x][3]/2, values[i][x][1] + values[i][x][3]/2);
 			}
+		
 			dataset.addSeries(series1);
 		}
 		
@@ -73,7 +74,26 @@ public class GraphUtils {
 	            );
 	    chart.setBackgroundPaint(Color.white);
          
+        // get a reference to the plot for further customisation...
+        XYPlot plot = (XYPlot) chart.getPlot();
+        plot.setBackgroundPaint(Color.lightGray);
+        plot.setAxisOffset(new RectangleInsets(5.0, 5.0, 5.0, 5.0));
+        plot.setDomainGridlinePaint(Color.white);
+        plot.setRangeGridlinePaint(Color.white);
         
+        DeviationRenderer renderer = new DeviationRenderer(true, false);
+        renderer.setSeriesStroke(0, new BasicStroke(3.0f, BasicStroke.CAP_ROUND,
+                 BasicStroke.JOIN_ROUND));
+        renderer.setSeriesStroke(0, new BasicStroke(3.0f));
+        renderer.setSeriesStroke(1, new BasicStroke(3.0f));
+        renderer.setSeriesFillPaint(0, new Color(200, 200, 255));
+        renderer.setSeriesFillPaint(1, new Color(255, 200, 200));
+        plot.setRenderer(renderer);
+
+        // change the auto tick unit selection to integer units only...
+        NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
+        yAxis.setAutoRangeIncludesZero(false);
+        yAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
          
         ChartFrame f = new ChartFrame(title, chart);
         f.pack();
