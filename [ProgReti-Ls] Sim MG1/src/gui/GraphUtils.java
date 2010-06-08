@@ -49,12 +49,19 @@ public class GraphUtils {
 		f.setVisible(true);
 	}
 	
-	public static void displayDevRendererGraph(String title, String legend, String xLabel, String yLabel, double[][] values) {
-		YIntervalSeries series1 = new YIntervalSeries(legend);
-		
+	public static void displayDevRendererGraph(String title, String legend, String xLabel, String yLabel, double[][][] values) {
 		YIntervalSeriesCollection dataset = new YIntervalSeriesCollection();
-	    dataset.addSeries(series1);
-	     
+		
+		for (int x = 0; x < values[0].length; x ++) {
+			YIntervalSeries series1 = new YIntervalSeries(legend);
+		
+			for (int i = 0; i < values.length; i++) {
+				series1.add(values[i][x][0],values[i][x][1],values[i][x][1] - values[i][x][3]/2, values[i][x][1] + values[i][x][3]/2);
+			}
+		
+			dataset.addSeries(series1);
+		}
+		
 	    JFreeChart chart = ChartFactory.createXYLineChart(
 	                title,      // chart title
 	                xLabel,                      // x axis label

@@ -8,6 +8,7 @@ public class Simulator implements Runnable {
 
 	private Vector<ConcurrentSkipListSet<Arrival>> eventList;
 	private ConcurrentSkipListSet<Event> futureEventList;
+	
 	private int[] arrivalsByClass, departuresByClass;
 	private int arrivals, departures, k;
 	private float now, freeTime ;
@@ -38,6 +39,12 @@ public class Simulator implements Runnable {
 		return eta;
 	}
 	
+	public float getEtaByClass(int priorityClass) {
+		if (priorityClass > this.priorityClasses)
+			return -1;
+		return etaByClass[priorityClass];
+	}
+	
 	public float getEps() {
 		return eps;
 	}
@@ -49,14 +56,15 @@ public class Simulator implements Runnable {
 	@Override
 	public void run() {
 		init();
-
+		
+		//System.out.println("---------------------------------------------");
 		while (futureEventList.size() > 0){
 			Event e = futureEventList.pollFirst();
 			history.add(e);
 			
 			now = e.occurrenceTime;
 			
-			// System.out.println(e);
+			//System.out.println(e);
 			
 			if (e.getClass() == Arrival.class){
 				Arrival a = (Arrival)e;
@@ -72,8 +80,6 @@ public class Simulator implements Runnable {
 				
 				if (checkStopCondition()){
 					futureEventList.add(generateArrival(e.getPriorityClass()));
-					// waitTime = waitTime + (freeTime - now);
-					// waitTimeQueue += freeTime - now;
 				}	
 			}else if(e.getClass() == Departure.class){
 				k--; departures++; departuresByClass[e.getPriorityClass()]++;
@@ -96,6 +102,8 @@ public class Simulator implements Runnable {
 			
 		}
 		eta = eta/arrivals;
+		//System.out.println("Eta mean" + eta);
+		//System.out.println("---------------------------------------------");
 	}
 
 	private void init() {

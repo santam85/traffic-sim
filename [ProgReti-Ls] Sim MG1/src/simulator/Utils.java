@@ -4,6 +4,7 @@ import org.apache.commons.math.MathException;
 import org.apache.commons.math.distribution.TDistributionImpl;
 
 public class Utils {
+
 	public static float mean(float[] vals){
 		float mean = 0;
 		for (int i = 0; i < vals.length;i++){
@@ -106,7 +107,7 @@ public class Utils {
 		for(int j=0;j<N;j++){
 			Simulator s = new Simulator(new Distribution[]{new ExponentialDistribution(lambda)},dist);
 			s.run();
-			run[j]=s.getEta();
+			run[j]=s.getEtaByClass(0);
 		}
 		
 		res[0] = Utils.mean(run);
@@ -115,8 +116,21 @@ public class Utils {
 		return res;
 	}
 	
-	public static double[] simulateMG1Prio(Distribution dist, float[] rho, float mu, int N) {
-		double[] res = new double[3];
+	public static double[][] simulateMG1WithVariableRho(Distribution dist, float[] rhos, float mu, int N) {
+		double[][] res = new double[3][rhos.length];
+		
+		for(int i=0; i<rhos.length;i++){
+			double[] vals = simulateMG1(dist,rhos[i],mu,N);
+			res[0][i] = vals[0];
+			res[1][i] = vals[1];
+			res[2][i] = vals[2];
+		}
+		
+		return res;
+	}
+	
+	public static double[][] simulateMG1Prio(Distribution dist, float[] rho, float mu, int N) {
+		double[][] res = new double[rho.length][3];
 		float[] lambda = new float[rho.length];
 		Distribution[] arrivalDists = new Distribution[rho.length];
 		
@@ -128,28 +142,31 @@ public class Utils {
 		
 		
 		
-		double[] run = new double[N];
+		double[][] run = new double[rho.length][N];
 		for(int j=0;j<N;j++){
 			Simulator s = new Simulator(arrivalDists,dist);
 			s.run();
-			run[j]=s.getEta();
+			for (int x = 0; x < rho.length; x ++) {
+				run[x][j]=s.getEtaByClass(x);
+			}
 		}
 		
-		res[0] = Utils.mean(run);
-		res[1] = Utils.cvar(run, res[0]);
-		res[2] = Utils.confidenceInterval(N, confLevel, res[1]);
+		for (int x = 0; x < rho.length; x ++) {
+			res[x][0] = Utils.mean(run[x]);
+			res[x][1] = Utils.cvar(run[x], res[x][0]);
+			res[x][2] = Utils.confidenceInterval(N, confLevel, res[x][1]);
+		}
 		return res;
 	}
 	
-	public static double[][] simulateMG1PrioWithVariableRhos(float mu, String type) {
-		
-		double[][] res = new double[100][4];
+	public static double[][][] simulateMG1PrioWithVariableRhos(float mu, String type) {
+		double[][][] res = new double[100][type.equals("2")?2:3][4];
 		float[] rhos = null;
 		float rho = 0.8f;
 		int N = 100;
 		ExponentialDistribution dist = new ExponentialDistribution(mu);
 		
-		for (float x = 0.01f, i = 0; x < 1; x += 0.01, i ++) {	
+		for (float x = 0.01f, i = 0; x < 1; x += 0.01f, i ++) {	
 			if (type.equals("2")) {
 				rhos = new float[2];
 				rhos[0] = x*rho;
@@ -174,24 +191,14 @@ public class Utils {
 				rhos[2] = (1 - x)/2*rho;
 			}
 			
-			double[] partial_res = Utils.simulateMG1Prio(dist,rhos,mu,N);
-			res[(int)i][0] = x;
-			res[(int)i][1] = partial_res[0];
-			res[(int)i][2] = partial_res[1];
-			res[(int)i][3] = partial_res[2];
-		}
-		
-		return res;
-	}
-	
-	public static double[][] simulateMG1WithVariableRho(Distribution dist, float[] rhos, float mu, int N) {
-		double[][] res = new double[3][rhos.length];
-		
-		for(int i=0; i<rhos.length;i++){
-			double[] vals = simulateMG1(dist,rhos[i],mu,N);
-			res[0][i] = vals[0];
-			res[1][i] = vals[1];
-			res[2][i] = vals[2];
+			double[][] partial_res = Utils.simulateMG1Prio(dist,rhos,mu,N);
+			
+			for (int j = 0; j < rhos.length; j ++) {
+				res[(int)i][j][0] = x;
+				res[(int)i][j][1] = partial_res[j][0];
+				res[(int)i][j][2] = partial_res[j][1];
+				res[(int)i][j][3] = partial_res[j][2];
+			}
 		}
 		
 		return res;
