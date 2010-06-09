@@ -45,6 +45,7 @@ public class ConsoleFrame extends javax.swing.JFrame implements ActionListener {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Simulator Console");
+        setPreferredSize(new java.awt.Dimension(550, 301));
 
         consoleArea.setBackground(new java.awt.Color(204, 204, 204));
         consoleArea.setColumns(40);

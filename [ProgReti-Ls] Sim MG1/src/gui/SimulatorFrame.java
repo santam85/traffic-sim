@@ -51,7 +51,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
         SimulationProgress.getInstance().addIndexingProgressListener((ISimulationProgressListener)simPbr);
         
         console = ConsoleFrame.getInstance();
-        console.setLocationRelativeTo(this);
+        console.setLocation(new java.awt.Point(this.getLocation().x + this.getWidth() + 10,this.getLocation().y));
         consoleTBtn.addActionListener(this);
         
     }
