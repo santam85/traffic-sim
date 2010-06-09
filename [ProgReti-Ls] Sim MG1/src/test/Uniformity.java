@@ -27,7 +27,7 @@ public class Uniformity {
 	 */
 	public static void main(String[] args) {
 		
-		RandomProvider rnd = new RandomProvider(Provider.Java,1);
+		RandomProvider rnd = new RandomProvider(Provider.Java);
 		Distribution d = new UniformDistribution(rnd);
 		
 		int N = 1000;
