@@ -11,6 +11,7 @@ import simulator.Distribution;
 import simulator.DistributionType;
 import simulator.ExponentialDistribution;
 import simulator.ParetoDistribution;
+import simulator.Provider;
 import simulator.SPPDistribution;
 import simulator.UniformDistribution;
 import simulator.Utils;
@@ -83,10 +84,16 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
         jLabel9 = new javax.swing.JLabel();
         mu_prio = new javax.swing.JTextField();
         simulate_prio = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        rndCbx = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         testConfidence.setText("Test confidence interval");
+
+        jLabel10.setText("Random provider");
+
+        rndCbx.setModel(new javax.swing.DefaultComboBoxModel(Provider.values()));
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -94,15 +101,24 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(testConfidence)
-                .addContainerGap(155, Short.MAX_VALUE))
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(testConfidence)
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(jLabel10)
+                        .add(18, 18, 18)
+                        .add(rndCbx, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 171, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel1Layout.createSequentialGroup()
-                .add(87, 87, 87)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                .add(58, 58, 58)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jLabel10)
+                    .add(rndCbx, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 221, Short.MAX_VALUE)
                 .add(testConfidence)
-                .addContainerGap(200, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("RandomNumber", jPanel1);
@@ -328,6 +344,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -344,6 +361,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
     private javax.swing.JButton simulate_mg1;
     private javax.swing.JButton simulate_prio;
     private javax.swing.JButton testConfidence;
+    private javax.swing.JComboBox rndCbx;
     // End of variables declaration//GEN-END:variables
 
     private javax.swing.JPanel additionalParametersPanel;
@@ -396,8 +414,9 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 	}
 	
 	private void handleTestConfidence() {
-		GraphUtils.displayStatisticalLineChart("Confidence interval", "Confidence interval", "confidence level", "confidence interval size", Utils.testConfidenceIntervalWithVariableConfidence());
-		GraphUtils.displayStatisticalLineChart("Confidence interval", "Confidence interval", "values", "confidence interval size", Utils.testConfidenceIntervalWithVariableRuns());
+		Provider provider = (Provider)this.rndCbx.getSelectedItem();
+		GraphUtils.displayStatisticalLineChart("Confidence interval with variable confidence level","Confidence interval [random provider " + provider.toString() + " ]", "confidence level", "confidence interval size", Utils.testConfidenceIntervalWithVariableConfidence(provider));
+		GraphUtils.displayStatisticalLineChart("Confidence interval with variable runs","Confidence interval [random provider " + provider.toString() + " ]", "values", "confidence interval size", Utils.testConfidenceIntervalWithVariableRuns(provider));
 	}
 	
 	private void handleTrafficGeneration() {

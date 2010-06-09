@@ -32,16 +32,16 @@ public class Utils {
 		return ts*Math.sqrt(cvar/runs);
 	}
 	
-	public static double[][] testConfidenceIntervalWithVariableConfidence() {
+	public static double[][] testConfidenceIntervalWithVariableConfidence(Provider provider) {
 		int N = 6;
-		int numberPerRun = 50;
+		int numberPerRun = 1000;
 		double[] nd = new double[]{0.5,0.75,0.9,0.95,0.975};
 		
 		double[] means = new double[N];
 		double[] vars = new double[N];
 
 		            
-		RandomProvider rnd = new RandomProvider(Provider.Java,1);
+		RandomProvider rnd = new RandomProvider(provider,1);
 		Distribution d = new UniformDistribution(rnd);
 		
 		for(int i = 0;i<N;i++){
@@ -63,14 +63,14 @@ public class Utils {
 		return delta;
 	}
 	
-	public static double[][] testConfidenceIntervalWithVariableRuns() {
+	public static double[][] testConfidenceIntervalWithVariableRuns(Provider provider) {
 		int[] nr = new int[]{25,50,100,250,500,1000};
 		
 		double[] means = new double[nr.length];
 		double[] vars = new double[nr.length];
 
 		            
-		RandomProvider rnd = new RandomProvider(Provider.Java,1);
+		RandomProvider rnd = new RandomProvider(provider,1);
 		Distribution d = new UniformDistribution(rnd);
 		
 		for(int i = 0;i<nr.length;i++){
