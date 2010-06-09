@@ -511,7 +511,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 			return ; // pianto unA grana
 		}
 		double[][][] res = Utils.simulateMG1PrioWithVariableRhos(mu,classes_prio.getSelectedItem().toString());
-		GraphUtils.displayDevRendererGraph("Eta","eta mean","x","eta",res);
+		GraphUtils.displayDevRendererGraph("Eta ("+classes_prio.getSelectedItem().toString()+")","eta mean","x","eta",res);
 	}
 	
 	private void handleRadioButtonSelection() {
