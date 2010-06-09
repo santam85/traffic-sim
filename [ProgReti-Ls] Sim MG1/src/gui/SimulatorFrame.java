@@ -3,8 +3,11 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.SwingUtilities;
 
 import simulator.DeterministicDistribution;
 import simulator.Distribution;
@@ -367,6 +370,8 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 
     private javax.swing.JPanel additionalParametersPanel;
     
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == distCbx) {
@@ -415,9 +420,19 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 	}
 	
 	private void handleTestConfidence() {
-		Provider provider = (Provider)this.rndCbx.getSelectedItem();
-		GraphUtils.displayStatisticalLineChart("Confidence interval with variable confidence level","Confidence interval [random provider " + provider.toString() + " ]", "confidence level", "confidence interval size", SimulationRunners.testConfidenceIntervalWithVariableConfidence(provider));
-		GraphUtils.displayStatisticalLineChart("Confidence interval with variable runs","Confidence interval [random provider " + provider.toString() + " ]", "values", "confidence interval size", SimulationRunners.testConfidenceIntervalWithVariableRuns(provider));
+		final Provider provider = (Provider)this.rndCbx.getSelectedItem();
+		executor.submit(new Runnable() {
+			public void run() {
+				final double[][] res1 = SimulationRunners.testConfidenceIntervalWithVariableConfidence(provider);
+				final double[][] res2 = SimulationRunners.testConfidenceIntervalWithVariableRuns(provider);
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						GraphUtils.displayStatisticalLineChart("Confidence interval with variable confidence level","Confidence interval [random provider " + provider.toString() + " ]", "confidence level", "confidence interval size",res1 );
+						GraphUtils.displayStatisticalLineChart("Confidence interval with variable runs","Confidence interval [random provider " + provider.toString() + " ]", "values", "confidence interval size", res2);
+					}
+				});
+			}
+		});
 	}
 	
 	private void handleTrafficGeneration() {
@@ -471,7 +486,12 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 			}
 		}
 		
-		SimulationRunners.generateTraffic((double)getLambda(),dist,getTrafficSimulationRuns());
+		final Distribution d = dist;
+		executor.submit(new Runnable() {
+			public void run() {
+				SimulationRunners.generateTraffic((double)getLambda(),d,getTrafficSimulationRuns());
+			}
+		});
 	}
 	
 	private void handleMG1SimulationWithVariableDistribution() {
@@ -480,8 +500,16 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 			return ; // pianto unA grana
 		}
 		
-		double[][] res = SimulationRunners.compareMG1Simulations(getRho(),getMu(),getMG1SimulationRuns());
-		GraphUtils.displayStatisticalBarChart("Eta",new double[]{0,1,2,3},"dist=",res[0],"Mean eta",res[2]);
+		executor.submit(new Runnable() {
+			public void run() {
+				final double[][] res = SimulationRunners.compareMG1Simulations(getRho(),getMu(),getMG1SimulationRuns());
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						GraphUtils.displayStatisticalBarChart("Eta",new double[]{0,1,2,3},"dist=",res[0],"Mean eta",res[2]);
+					}
+				});
+			}
+		});
 	}
 	
 	private void handleMG1SimulationWithVariableRho() {
@@ -500,19 +528,39 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 			dist = new ParetoDistribution(1.2f,Utils.computeParetoBeta(this.getMu(),1.2f));
 		}
 		
-		double[] rhos = new double[]{0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f};
-		double[][] res = SimulationRunners.simulateMG1WithVariableRho(dist,rhos,this.getMu(),this.getMG1SimulationRuns());
-		GraphUtils.displayStatisticalBarChart("Eta",rhos,"rho=",res[0],"Mean eta",res[2]);
+		final Distribution d = dist;
+		executor.submit(new Runnable() {
+			public void run() {
+				final double[] rhos = new double[]{0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f};
+				final double[][] res = SimulationRunners.simulateMG1WithVariableRho(d,rhos,getMu(),getMG1SimulationRuns());
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						GraphUtils.displayStatisticalBarChart("Eta",rhos,"rho=",res[0],"Mean eta",res[2]);
+					}
+				});
+			}
+		});
+		
 	}
 	
 	private void handlePrioMG1Simulation() {
-		double mu;
+		final double mu;
 		if ((mu = getMuPrio()) == -1 || mu < 0) {
 			showDialogMessage("Parameters missing or wrong");
 			return ; // pianto unA grana
 		}
-		double[][][] res = SimulationRunners.simulateMG1PrioWithVariableRhos(mu,classes_prio.getSelectedItem().toString());
-		GraphUtils.displayDevRendererGraph("Eta ("+classes_prio.getSelectedItem().toString()+")","eta mean","x","eta",res);
+		
+		executor.submit(new Runnable() {
+			public void run() {
+				final double[][][] res = SimulationRunners.simulateMG1PrioWithVariableRhos(mu,classes_prio.getSelectedItem().toString());
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						GraphUtils.displayDevRendererGraph("Eta ("+classes_prio.getSelectedItem().toString()+")","eta mean","x","eta",res);
+					}
+				});
+				
+			}
+		});
 	}
 	
 	private void handleRadioButtonSelection() {

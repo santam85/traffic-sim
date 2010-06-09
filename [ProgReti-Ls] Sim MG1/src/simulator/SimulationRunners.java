@@ -168,10 +168,10 @@ public class SimulationRunners {
 	}
 
 	public static double[][][] simulateMG1PrioWithVariableRhos(double mu, String type) {
-		double[][][] res = new double[99][type.equals("2")?2:3][4];
+		double[][][] res = new double[99][type.equals("2")?2 + 1:3 + 1][4];
 		double[] rhos = null;
 		double rho = 0.8;
-		int N = 10;
+		int N = 100;
 		ExponentialDistribution dist = new ExponentialDistribution(mu);
 		
 		for (int i = 0; i < 99; i ++) {	
@@ -208,6 +208,10 @@ public class SimulationRunners {
 				res[i][j][2] = partial_res[j][1];
 				res[i][j][3] = partial_res[j][2];
 			}
+			res[i][res[0].length - 1][0] = x;
+			res[i][res[0].length - 1][1] = 1.0/mu*(rho/(1.0 - rho));
+			res[i][res[0].length - 1][2] = 0;
+			res[i][res[0].length - 1][3] = 0;
 		}
 		
 		return res;
