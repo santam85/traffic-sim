@@ -3,6 +3,7 @@ package gui;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Paint;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
@@ -71,24 +72,24 @@ public class GraphUtils {
 	                true,                     // tooltips
 	                false                     // urls
 	            );
-	    chart.setBackgroundPaint(Color.white);
-         
+	         
         // get a reference to the plot for further customisation...
-        XYPlot plot = (XYPlot) chart.getPlot();
-        plot.setBackgroundPaint(Color.lightGray);
+
+	    XYPlot plot = (XYPlot) chart.getPlot();
+        plot.setBackgroundPaint(Color.WHITE);
         plot.setAxisOffset(new RectangleInsets(5.0, 5.0, 5.0, 5.0));
-        plot.setDomainGridlinePaint(Color.white);
-        plot.setRangeGridlinePaint(Color.white);
+        plot.setDomainGridlinePaint(Color.LIGHT_GRAY);
+        plot.setRangeGridlinePaint(Color.LIGHT_GRAY);
         
         DeviationRenderer renderer = new DeviationRenderer(true, false);
-        renderer.setSeriesStroke(0, new BasicStroke(3.0f, BasicStroke.CAP_ROUND,
-                 BasicStroke.JOIN_ROUND));
-        renderer.setSeriesStroke(0, new BasicStroke(3.0f));
-        renderer.setSeriesStroke(1, new BasicStroke(3.0f));
-        renderer.setSeriesFillPaint(0, new Color(200, 200, 255));
-        renderer.setSeriesFillPaint(1, new Color(255, 200, 200));
+        
+        renderer.setSeriesFillPaint(0, new Color(255, 200, 200));
+        renderer.setSeriesFillPaint(1, new Color(200, 200, 255));
+        renderer.setSeriesFillPaint(2, new Color(200, 255, 200));
+        
         plot.setRenderer(renderer);
-
+        
+        
         // change the auto tick unit selection to integer units only...
         NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
         yAxis.setAutoRangeIncludesZero(false);
