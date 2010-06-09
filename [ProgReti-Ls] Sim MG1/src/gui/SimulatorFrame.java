@@ -521,7 +521,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 					final double[][] res1 = SimulationRunners.testConfidenceIntervalWithVariableConfidence(provider,getConfidenceIntervalSimulationRuns());
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
-							GraphUtils.displayStatisticalLineChart("Confidence interval with variable confidence level","Confidence interval [random provider " + provider.toString() + " ]", "confidence level", "confidence interval size",res1 );
+							GraphUtils.displayLineChart("Confidence interval with variable confidence level","Confidence interval [random provider " + provider.toString() + " ]", "confidence level", "confidence interval size",res1 );
 						}
 					});
 				}
@@ -533,7 +533,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 					final double[][] res2 = SimulationRunners.testConfidenceIntervalWithVariableRuns(provider,getConfidenceIntervalConfidenceLevel());
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
-							GraphUtils.displayStatisticalLineChart("Confidence interval with variable runs","Confidence interval [random provider " + provider.toString() + " ]", "values", "confidence interval size", res2);
+							GraphUtils.displayLineChart("Confidence interval with variable runs","Confidence interval [random provider " + provider.toString() + " ]", "values", "confidence interval size", res2);
 						}
 					});
 				}
