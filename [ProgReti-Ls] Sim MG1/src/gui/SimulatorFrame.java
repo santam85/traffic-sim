@@ -13,9 +13,11 @@ import simulator.DeterministicDistribution;
 import simulator.Distribution;
 import simulator.DistributionType;
 import simulator.ExponentialDistribution;
+import simulator.ISimulationProgressListener;
 import simulator.ParetoDistribution;
 import simulator.Provider;
 import simulator.SPPDistribution;
+import simulator.SimulationProgress;
 import simulator.SimulationRunners;
 import simulator.UniformDistribution;
 import simulator.Utils;
@@ -26,9 +28,6 @@ import simulator.Utils;
  */
 public class SimulatorFrame extends javax.swing.JFrame implements ActionListener {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = -8210143930250467129L;
 	
     public SimulatorFrame() {
@@ -38,14 +37,22 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
         distCbx.addActionListener(this);
         distCbx_mg1.setModel(new DefaultComboBoxModel(new String[]{"Deterministic","Exponential","Pareto 2.5","Pareto 1.2"}));
         classes_prio.setModel(new DefaultComboBoxModel(new String[]{"2","3a","3b","3c"}));
+        this.rndCbx.setModel(new DefaultComboBoxModel(Provider.values()));
         generateReport.addActionListener(this);
         placeholderPanel.setLayout(new BorderLayout());
         simulate_mg1.addActionListener(this);
         distRbt.addActionListener(this);
         rhoRbt.addActionListener(this);
+        this.runsRbtn.addActionListener(this);
+        this.confRbtn.addActionListener(this);
         toggleMG1Parameters(false,true);
         this.simulate_prio.addActionListener(this);
         this.testConfidence.addActionListener(this);
+        SimulationProgress.getInstance().addIndexingProgressListener((ISimulationProgressListener)simPbr);
+        
+        console = ConsoleFrame.getInstance();
+        console.setLocationRelativeTo(this);
+        consoleTBtn.addActionListener(this);
         
     }
 
@@ -57,318 +64,388 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
    private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        testConfidence = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        placeholderPanel = new javax.swing.JPanel();
-        distCbx = new javax.swing.JComboBox();
-        jLabel2 = new javax.swing.JLabel();
-        lambda = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        runs = new javax.swing.JTextField();
-        generateReport = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
-        simulate_mg1 = new javax.swing.JButton();
-        distCbx_mg1 = new javax.swing.JComboBox();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        rho = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        mu = new javax.swing.JTextField();
-        runs_mg1 = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        distRbt = new javax.swing.JRadioButton();
-        rhoRbt = new javax.swing.JRadioButton();
-        jPanel4 = new javax.swing.JPanel();
-        classes_prio = new javax.swing.JComboBox();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        mu_prio = new javax.swing.JTextField();
-        simulate_prio = new javax.swing.JButton();
-        jLabel10 = new javax.swing.JLabel();
-        rndCbx = new javax.swing.JComboBox();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+       buttonGroup1 = new javax.swing.ButtonGroup();
+       buttonGroup2 = new javax.swing.ButtonGroup();
+       jTabbedPane1 = new javax.swing.JTabbedPane();
+       jPanel1 = new javax.swing.JPanel();
+       testConfidence = new javax.swing.JButton();
+       jLabel10 = new javax.swing.JLabel();
+       rndCbx = new javax.swing.JComboBox();
+       runsRbtn = new javax.swing.JRadioButton();
+       confRbtn = new javax.swing.JRadioButton();
+       confidenceTxt = new javax.swing.JTextField();
+       confidenceLbl = new javax.swing.JLabel();
+       jPanel2 = new javax.swing.JPanel();
+       jLabel1 = new javax.swing.JLabel();
+       placeholderPanel = new javax.swing.JPanel();
+       distCbx = new javax.swing.JComboBox();
+       jLabel2 = new javax.swing.JLabel();
+       lambda = new javax.swing.JTextField();
+       jLabel3 = new javax.swing.JLabel();
+       runs = new javax.swing.JTextField();
+       generateReport = new javax.swing.JButton();
+       jPanel3 = new javax.swing.JPanel();
+       simulate_mg1 = new javax.swing.JButton();
+       distCbx_mg1 = new javax.swing.JComboBox();
+       jLabel4 = new javax.swing.JLabel();
+       jLabel5 = new javax.swing.JLabel();
+       rho = new javax.swing.JTextField();
+       jLabel6 = new javax.swing.JLabel();
+       mu = new javax.swing.JTextField();
+       runs_mg1 = new javax.swing.JTextField();
+       jLabel7 = new javax.swing.JLabel();
+       distRbt = new javax.swing.JRadioButton();
+       rhoRbt = new javax.swing.JRadioButton();
+       jPanel4 = new javax.swing.JPanel();
+       classes_prio = new javax.swing.JComboBox();
+       jLabel8 = new javax.swing.JLabel();
+       jLabel9 = new javax.swing.JLabel();
+       mu_prio = new javax.swing.JTextField();
+       simulate_prio = new javax.swing.JButton();
+       runs_prio = new javax.swing.JTextField();
+       jLabel12 = new javax.swing.JLabel();
+       simPbr = new SimulationProgressBar();
+       jLabel11 = new javax.swing.JLabel();
+       consoleTBtn = new javax.swing.JToggleButton();
 
-        testConfidence.setText("Test confidence interval");
+       setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel10.setText("Random provider");
+       testConfidence.setText("Test confidence interval");
 
-        rndCbx.setModel(new javax.swing.DefaultComboBoxModel(Provider.values()));
+       jLabel10.setText("Random provider");
 
-        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(testConfidence)
-                    .add(jPanel1Layout.createSequentialGroup()
-                        .add(jLabel10)
-                        .add(18, 18, 18)
-                        .add(rndCbx, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 171, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(51, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                .add(58, 58, 58)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel10)
-                    .add(rndCbx, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 221, Short.MAX_VALUE)
-                .add(testConfidence)
-                .addContainerGap())
-        );
+       rndCbx.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jTabbedPane1.addTab("RandomNumber", jPanel1);
+       buttonGroup2.add(runsRbtn);
+       runsRbtn.setSelected(true);
+       runsRbtn.setText("variable runs");
 
-        jLabel1.setText("Distribution type");
+       buttonGroup2.add(confRbtn);
+       confRbtn.setText("variable confidence level");
 
-        org.jdesktop.layout.GroupLayout placeholderPanelLayout = new org.jdesktop.layout.GroupLayout(placeholderPanel);
-        placeholderPanel.setLayout(placeholderPanelLayout);
-        placeholderPanelLayout.setHorizontalGroup(
-            placeholderPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 288, Short.MAX_VALUE)
-        );
-        placeholderPanelLayout.setVerticalGroup(
-            placeholderPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 97, Short.MAX_VALUE)
-        );
+       confidenceLbl.setText("confidence level:");
 
-        distCbx.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+       org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
+       jPanel1.setLayout(jPanel1Layout);
+       jPanel1Layout.setHorizontalGroup(
+           jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+           .add(jPanel1Layout.createSequentialGroup()
+               .addContainerGap()
+               .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                   .add(testConfidence)
+                   .add(runsRbtn)
+                   .add(confRbtn)
+                   .add(jPanel1Layout.createSequentialGroup()
+                       .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                           .add(jLabel10)
+                           .add(confidenceLbl))
+                       .add(18, 18, 18)
+                       .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                           .add(confidenceTxt, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 54, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                           .add(rndCbx, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 171, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
+               .addContainerGap(64, Short.MAX_VALUE))
+       );
+       jPanel1Layout.setVerticalGroup(
+           jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+           .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+               .add(79, 79, 79)
+               .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                   .add(jLabel10)
+                   .add(rndCbx, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+               .add(18, 18, 18)
+               .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                   .add(confidenceLbl)
+                   .add(confidenceTxt, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+               .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+               .add(runsRbtn)
+               .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+               .add(confRbtn)
+               .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 112, Short.MAX_VALUE)
+               .add(testConfidence)
+               .addContainerGap())
+       );
 
-        jLabel2.setText("Lambda:");
+       jTabbedPane1.addTab("RandomNumber", jPanel1);
 
-        jLabel3.setText("# runs:");
+       jLabel1.setText("Distribution type");
 
-        generateReport.setText("Generate report");
+       org.jdesktop.layout.GroupLayout placeholderPanelLayout = new org.jdesktop.layout.GroupLayout(placeholderPanel);
+       placeholderPanel.setLayout(placeholderPanelLayout);
+       placeholderPanelLayout.setHorizontalGroup(
+           placeholderPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+           .add(0, 288, Short.MAX_VALUE)
+       );
+       placeholderPanelLayout.setVerticalGroup(
+           placeholderPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+           .add(0, 97, Short.MAX_VALUE)
+       );
 
-        org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(generateReport)
-                    .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                        .add(org.jdesktop.layout.GroupLayout.LEADING, placeholderPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel2Layout.createSequentialGroup()
-                            .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                .add(jLabel2)
-                                .add(jLabel1)
-                                .add(jLabel3))
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                            .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                .add(runs, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 54, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(lambda, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 54, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(distCbx, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 171, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(59, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel1)
-                    .add(distCbx, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel2)
-                    .add(lambda, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel3)
-                    .add(runs, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(placeholderPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(generateReport)
-                .addContainerGap(52, Short.MAX_VALUE))
-        );
+       distCbx.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jTabbedPane1.addTab("VariableTraffic", jPanel2);
+       jLabel2.setText("Lambda:");
 
-        simulate_mg1.setText("Simulate");
+       jLabel3.setText("# runs:");
 
-        distCbx_mg1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+       generateReport.setText("Generate report");
 
-        jLabel4.setText("Distribution type");
+       org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
+       jPanel2.setLayout(jPanel2Layout);
+       jPanel2Layout.setHorizontalGroup(
+           jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+           .add(jPanel2Layout.createSequentialGroup()
+               .addContainerGap()
+               .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                   .add(generateReport)
+                   .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                       .add(org.jdesktop.layout.GroupLayout.LEADING, placeholderPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                       .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel2Layout.createSequentialGroup()
+                           .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                               .add(jLabel2)
+                               .add(jLabel1)
+                               .add(jLabel3))
+                           .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                           .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                               .add(runs, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 54, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                               .add(lambda, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 54, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                               .add(distCbx, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 171, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
+               .addContainerGap(72, Short.MAX_VALUE))
+       );
+       jPanel2Layout.setVerticalGroup(
+           jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+           .add(jPanel2Layout.createSequentialGroup()
+               .addContainerGap()
+               .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                   .add(jLabel1)
+                   .add(distCbx, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+               .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+               .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                   .add(jLabel2)
+                   .add(lambda, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+               .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+               .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                   .add(jLabel3)
+                   .add(runs, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+               .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+               .add(placeholderPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+               .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+               .add(generateReport)
+               .addContainerGap(78, Short.MAX_VALUE))
+       );
 
-        jLabel5.setText("Rho:");
+       jTabbedPane1.addTab("VariableTraffic", jPanel2);
 
-        jLabel6.setText("Mu:");
+       simulate_mg1.setText("Simulate");
 
-        jLabel7.setText("# runs:");
+       distCbx_mg1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        buttonGroup1.add(distRbt);
-        distRbt.setSelected(true);
-        distRbt.setText("variable distribution");
+       jLabel4.setText("Distribution type");
 
-        buttonGroup1.add(rhoRbt);
-        rhoRbt.setText("variable rho");
+       jLabel5.setText("Rho:");
 
-        org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(simulate_mg1)
-                    .add(jPanel3Layout.createSequentialGroup()
-                        .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jLabel5)
-                            .add(jLabel4)
-                            .add(jLabel6)
-                            .add(jLabel7))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(runs_mg1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 54, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(mu, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 54, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(rho, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 54, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(distCbx_mg1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 171, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                    .add(distRbt)
-                    .add(rhoRbt))
-                .addContainerGap(59, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel4)
-                    .add(distCbx_mg1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel5)
-                    .add(rho, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel6)
-                    .add(mu, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel7)
-                    .add(runs_mg1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(distRbt)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(rhoRbt)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 48, Short.MAX_VALUE)
-                .add(simulate_mg1)
-                .addContainerGap())
-        );
+       jLabel6.setText("Mu:");
 
-        jTabbedPane1.addTab("M/G/1", jPanel3);
+       jLabel7.setText("# runs:");
 
-        classes_prio.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+       buttonGroup1.add(distRbt);
+       distRbt.setText("variable distribution");
 
-        jLabel8.setText("Number of classes");
+       buttonGroup1.add(rhoRbt);
+       rhoRbt.setText("variable rho");
 
-        jLabel9.setText("Mu:");
+       org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
+       jPanel3.setLayout(jPanel3Layout);
+       jPanel3Layout.setHorizontalGroup(
+           jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+           .add(jPanel3Layout.createSequentialGroup()
+               .addContainerGap()
+               .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                   .add(simulate_mg1)
+                   .add(jPanel3Layout.createSequentialGroup()
+                       .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                           .add(jLabel5)
+                           .add(jLabel4)
+                           .add(jLabel6)
+                           .add(jLabel7))
+                       .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                       .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                           .add(runs_mg1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 54, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                           .add(mu, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 54, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                           .add(rho, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 54, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                           .add(distCbx_mg1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 171, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                   .add(distRbt)
+                   .add(rhoRbt))
+               .addContainerGap(72, Short.MAX_VALUE))
+       );
+       jPanel3Layout.setVerticalGroup(
+           jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+           .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel3Layout.createSequentialGroup()
+               .addContainerGap()
+               .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                   .add(jLabel4)
+                   .add(distCbx_mg1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+               .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+               .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                   .add(jLabel5)
+                   .add(rho, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+               .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+               .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                   .add(jLabel6)
+                   .add(mu, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+               .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+               .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                   .add(jLabel7)
+                   .add(runs_mg1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+               .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+               .add(distRbt)
+               .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+               .add(rhoRbt)
+               .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 74, Short.MAX_VALUE)
+               .add(simulate_mg1)
+               .addContainerGap())
+       );
 
-        simulate_prio.setText("Simulate");
+       jTabbedPane1.addTab("M/G/1", jPanel3);
 
-        org.jdesktop.layout.GroupLayout jPanel4Layout = new org.jdesktop.layout.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jPanel4Layout.createSequentialGroup()
-                        .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jLabel9)
-                            .add(jLabel8))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(mu_prio, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 54, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(classes_prio, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 171, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                    .add(simulate_prio))
-                .addContainerGap(49, Short.MAX_VALUE))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel4Layout.createSequentialGroup()
-                .add(37, 37, 37)
-                .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel8)
-                    .add(classes_prio, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel9)
-                    .add(mu_prio, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 168, Short.MAX_VALUE)
-                .add(simulate_prio)
-                .addContainerGap())
-        );
+       classes_prio.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jTabbedPane1.addTab("M/G/1//PRIO", jPanel4);
+       jLabel8.setText("Number of classes");
 
-        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 362, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+       jLabel9.setText("Mu:");
 
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
+       simulate_prio.setText("Simulate");
+
+       jLabel12.setText("# runs:");
+
+       org.jdesktop.layout.GroupLayout jPanel4Layout = new org.jdesktop.layout.GroupLayout(jPanel4);
+       jPanel4.setLayout(jPanel4Layout);
+       jPanel4Layout.setHorizontalGroup(
+           jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+           .add(jPanel4Layout.createSequentialGroup()
+               .addContainerGap()
+               .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                   .add(simulate_prio)
+                   .add(jPanel4Layout.createSequentialGroup()
+                       .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                           .add(jLabel9)
+                           .add(jLabel8)
+                           .add(jLabel12))
+                       .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                       .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                           .add(runs_prio, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 54, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                           .add(mu_prio, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 54, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                           .add(classes_prio, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 171, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
+               .addContainerGap(62, Short.MAX_VALUE))
+       );
+       jPanel4Layout.setVerticalGroup(
+           jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+           .add(jPanel4Layout.createSequentialGroup()
+               .add(97, 97, 97)
+               .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                   .add(jLabel8)
+                   .add(classes_prio, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+               .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+               .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                   .add(jLabel9)
+                   .add(mu_prio, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+               .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+               .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                   .add(jLabel12)
+                   .add(runs_prio, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+               .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 106, Short.MAX_VALUE)
+               .add(simulate_prio)
+               .addContainerGap())
+       );
+
+       jTabbedPane1.addTab("M/G/1//PRIO", jPanel4);
+
+       jLabel11.setText("Simulation progess");
+
+       consoleTBtn.setText("C");
+
+       org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
+       getContentPane().setLayout(layout);
+       layout.setHorizontalGroup(
+           layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+           .add(layout.createSequentialGroup()
+               .addContainerGap()
+               .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
+               .addContainerGap())
+           .add(layout.createSequentialGroup()
+               .add(29, 29, 29)
+               .add(jLabel11)
+               .add(18, 18, 18)
+               .add(simPbr, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+               .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 49, Short.MAX_VALUE)
+               .add(consoleTBtn, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 36, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+               .add(28, 28, 28))
+       );
+       layout.setVerticalGroup(
+           layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+           .add(layout.createSequentialGroup()
+               .addContainerGap()
+               .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 388, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+               .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+               .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                   .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                       .add(jLabel11)
+                       .add(simPbr, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                   .add(consoleTBtn))
+               .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+       );
+
+       pack();
+       }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JComboBox distCbx;
-    private javax.swing.JComboBox distCbx_mg1;
-    private javax.swing.JComboBox classes_prio;
-    private javax.swing.JRadioButton distRbt;
-    private javax.swing.JButton generateReport;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField lambda;
-    private javax.swing.JTextField mu;
-    private javax.swing.JPanel placeholderPanel;
-    private javax.swing.JTextField rho;
-    private javax.swing.JTextField mu_prio;
-    private javax.swing.JRadioButton rhoRbt;
-    private javax.swing.JTextField runs;
-    private javax.swing.JTextField runs_mg1;
-    private javax.swing.JButton simulate_mg1;
-    private javax.swing.JButton simulate_prio;
-    private javax.swing.JButton testConfidence;
-    private javax.swing.JComboBox rndCbx;
+   private javax.swing.ButtonGroup buttonGroup1;
+   private javax.swing.ButtonGroup buttonGroup2;
+   private javax.swing.JComboBox classes_prio;
+   private javax.swing.JRadioButton confRbtn;
+   private javax.swing.JLabel confidenceLbl;
+   private javax.swing.JComboBox distCbx;
+   private javax.swing.JComboBox distCbx_mg1;
+   private javax.swing.JRadioButton distRbt;
+   private javax.swing.JButton generateReport;
+   private javax.swing.JLabel jLabel1;
+   private javax.swing.JLabel jLabel10;
+   private javax.swing.JLabel jLabel11;
+   private javax.swing.JLabel jLabel12;
+   private javax.swing.JLabel jLabel2;
+   private javax.swing.JLabel jLabel3;
+   private javax.swing.JLabel jLabel4;
+   private javax.swing.JLabel jLabel5;
+   private javax.swing.JLabel jLabel6;
+   private javax.swing.JLabel jLabel7;
+   private javax.swing.JLabel jLabel8;
+   private javax.swing.JLabel jLabel9;
+   private javax.swing.JPanel jPanel1;
+   private javax.swing.JPanel jPanel2;
+   private javax.swing.JPanel jPanel3;
+   private javax.swing.JPanel jPanel4;
+   private javax.swing.JTabbedPane jTabbedPane1;
+   private javax.swing.JTextField lambda;
+   private javax.swing.JTextField mu;
+   private javax.swing.JTextField mu_prio;
+   private javax.swing.JPanel placeholderPanel;
+   private javax.swing.JTextField rho;
+   private javax.swing.JRadioButton rhoRbt;
+   private javax.swing.JComboBox rndCbx;
+   private javax.swing.JTextField runs;
+   private javax.swing.JRadioButton runsRbtn;
+   private javax.swing.JTextField confidenceTxt;
+   private javax.swing.JTextField runs_mg1;
+   private javax.swing.JTextField runs_prio;
+   private javax.swing.JProgressBar simPbr;
+   private javax.swing.JButton simulate_mg1;
+   private javax.swing.JButton simulate_prio;
+   private javax.swing.JButton testConfidence;
+   private javax.swing.JToggleButton consoleTBtn;
     // End of variables declaration//GEN-END:variables
 
     private javax.swing.JPanel additionalParametersPanel;
+    private ConsoleFrame console;
     
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     
@@ -390,10 +467,21 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 				handleMG1SimulationWithVariableDistribution();
 		}
 		else if (e.getSource() == this.distRbt || e.getSource() == this.rhoRbt) {
-			handleRadioButtonSelection();
+			handleMG1RadioButtonSelection();
+		}
+		else if (e.getSource() == this.runsRbtn || e.getSource() == this.confRbtn) {
+			handleConfidenceRadioButtonSelection();
 		}
 		else if (e.getSource() == this.simulate_prio) {
 			handlePrioMG1Simulation();
+		}
+		else if (e.getSource() == this.consoleTBtn) {
+			if (consoleTBtn.isSelected()) {
+				console.setVisible(true);
+			}
+			else {
+				console.setVisible(false);
+			}
 		}
 			
 	}
@@ -421,18 +509,36 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 	
 	private void handleTestConfidence() {
 		final Provider provider = (Provider)this.rndCbx.getSelectedItem();
-		executor.submit(new Runnable() {
-			public void run() {
-				final double[][] res1 = SimulationRunners.testConfidenceIntervalWithVariableConfidence(provider);
-				final double[][] res2 = SimulationRunners.testConfidenceIntervalWithVariableRuns(provider);
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						GraphUtils.displayStatisticalLineChart("Confidence interval with variable confidence level","Confidence interval [random provider " + provider.toString() + " ]", "confidence level", "confidence interval size",res1 );
-						GraphUtils.displayStatisticalLineChart("Confidence interval with variable runs","Confidence interval [random provider " + provider.toString() + " ]", "values", "confidence interval size", res2);
-					}
-				});
-			}
-		});
+		
+		if (!checkConfidenceIntervalParameters()) {
+			showDialogMessage("Parameters missing or wrong");
+			return ;
+		}
+		
+		if (confRbtn.isSelected()) {
+			executor.submit(new Runnable() {
+				public void run() {
+					final double[][] res1 = SimulationRunners.testConfidenceIntervalWithVariableConfidence(provider,getConfidenceIntervalSimulationRuns());
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							GraphUtils.displayStatisticalLineChart("Confidence interval with variable confidence level","Confidence interval [random provider " + provider.toString() + " ]", "confidence level", "confidence interval size",res1 );
+						}
+					});
+				}
+			});
+		}
+		else if (runsRbtn.isSelected()) {
+			executor.submit(new Runnable() {
+				public void run() {
+					final double[][] res2 = SimulationRunners.testConfidenceIntervalWithVariableRuns(provider,getConfidenceIntervalConfidenceLevel());
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							GraphUtils.displayStatisticalLineChart("Confidence interval with variable runs","Confidence interval [random provider " + provider.toString() + " ]", "values", "confidence interval size", res2);
+						}
+					});
+				}
+			});
+		}
 	}
 	
 	private void handleTrafficGeneration() {
@@ -563,13 +669,41 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 		});
 	}
 	
-	private void handleRadioButtonSelection() {
+	private void handleMG1RadioButtonSelection() {
 		if (distRbt.isSelected()) {
 			toggleMG1Parameters(false,true);
 		}
 		else if (rhoRbt.isSelected()) {
 			toggleMG1Parameters(true,false);
 		}
+	}
+	
+	private void handleConfidenceRadioButtonSelection() {
+		if (runsRbtn.isSelected()) {
+			this.confidenceLbl.setText("Confidence level:");
+		}
+		else if (confRbtn.isSelected()) {
+			this.confidenceLbl.setText("#runs");
+		}
+		confidenceTxt.setText("");
+	}
+	
+	private boolean checkConfidenceIntervalParameters() {
+		if (runsRbtn.isSelected()) {
+			double conf = 0;
+			if ((conf = getConfidenceIntervalConfidenceLevel()) == -1)
+				return false;
+			if (conf <= 0.5 || conf >= 1)
+				return false;
+		}
+		else if (confRbtn.isSelected()) {
+			int N = 0;
+			if ((N = getConfidenceIntervalSimulationRuns()) == -1)
+				return false;
+			if (N <= 0)
+				return false;
+		}
+		return true;
 	}
 	
 	private boolean checkTrafficParameters() {
@@ -655,6 +789,26 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 			return -1;
 		try {
 			return Integer.parseInt(runs_mg1.getText());
+		}
+		catch (NumberFormatException e) { }
+		return -1;
+	}
+	
+	public int getConfidenceIntervalSimulationRuns() {
+		if (confidenceTxt.getText().equals(""))
+			return -1;
+		try {
+			return Integer.parseInt(confidenceTxt.getText());
+		}
+		catch (NumberFormatException e) { }
+		return -1;
+	}
+	
+	public double getConfidenceIntervalConfidenceLevel() {
+		if (confidenceTxt.getText().equals(""))
+			return -1;
+		try {
+			return Double.parseDouble(confidenceTxt.getText());
 		}
 		catch (NumberFormatException e) { }
 		return -1;

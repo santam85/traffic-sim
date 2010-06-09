@@ -1,9 +1,18 @@
 package simulator;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 public class SimulationRunners {
 
-	public static double[][] testConfidenceIntervalWithVariableConfidence(Provider provider) {
-		int N = 6;
+	private static final Logger log = Logger.getLogger("simulation");
+	static {
+		log.setLevel(Level.INFO);
+	}
+	
+	private static final SimulationProgress progress = SimulationProgress.getInstance();
+	
+	public static double[][] testConfidenceIntervalWithVariableConfidence(Provider provider, int N) {
 		int numberPerRun = 1000;
 		double[] nd = new double[]{0.5,0.75,0.9,0.95,0.975};
 		
@@ -14,6 +23,8 @@ public class SimulationRunners {
 		RandomProvider rnd = new RandomProvider(provider,1);
 		Distribution d = new UniformDistribution(rnd);
 		
+		progress.reset();
+		progress.updateTotalAmmount(N + 1);
 		for(int i = 0;i<N;i++){
 			double[] run = new double[numberPerRun];
 			
@@ -23,6 +34,8 @@ public class SimulationRunners {
 			
 			means[i] = Utils.mean(run);
 			vars[i] = Utils.cvar(run,means[i]);
+			progress.updateCurrentAmmount(1);
+			log.info("Prova di stampa");
 		}
 		
 		double[][] delta = new double[2][nd.length];
@@ -30,10 +43,11 @@ public class SimulationRunners {
 			delta[1][i] = Utils.confidenceInterval(numberPerRun,nd[i],vars[i]);
 			delta[0][i] = nd[i];
 		}
+		progress.updateCurrentAmmount(1);
 		return delta;
 	}
 
-	public static double[][] testConfidenceIntervalWithVariableRuns(Provider provider) {
+	public static double[][] testConfidenceIntervalWithVariableRuns(Provider provider, double confidenceLevel) {
 		int[] nr = new int[]{25,50,100,250,500,1000};
 		
 		double[] means = new double[nr.length];
@@ -43,6 +57,8 @@ public class SimulationRunners {
 		RandomProvider rnd = new RandomProvider(provider,1);
 		Distribution d = new UniformDistribution(rnd);
 		
+		progress.reset();
+		progress.updateTotalAmmount(nr.length + 1);
 		for(int i = 0;i<nr.length;i++){
 			double[] run = new double[nr[i]];
 			
@@ -52,14 +68,16 @@ public class SimulationRunners {
 			
 			means[i] = Utils.mean(run);
 			vars[i] = Utils.cvar(run,means[i]);
+			progress.updateCurrentAmmount(1);
 		}
 		
 		double[][] delta = new double[2][nr.length];
 		
 		for(int i = 0; i<nr.length;i++){
-			delta[1][i] = Utils.confidenceInterval(nr[i],0.975,vars[i]);
+			delta[1][i] = Utils.confidenceInterval(nr[i],confidenceLevel,vars[i]);
 			delta[0][i] = nr[i];
 		}
+		progress.updateCurrentAmmount(1);
 		return delta;
 	
 	}
@@ -69,6 +87,8 @@ public class SimulationRunners {
 		double[] runs = new double[N];
 		double cmean, cvar, idc;
 		
+		progress.reset();
+		progress.updateTotalAmmount(N + 1);
 		for (int j = 0; j < N; j ++) {
 			int counter = 0;
 			for (double now = 0; now <= T; ) {
@@ -78,13 +98,34 @@ public class SimulationRunners {
 			}
 			
 			runs[j] = counter;
+			progress.updateCurrentAmmount(1);
 		}
 		
 		cmean = Utils.mean(runs);
 		cvar = Utils.cvar(runs,cmean);
 		idc = cvar/(cmean);
 		System.out.println(dist.getDistributionName() + " [ MEAN: " + cmean + " VAR: " + cvar + " IDC: " + idc + " ]");
+		
+		progress.updateCurrentAmmount(1);
+	}
 	
+	private static double[] simulateMG1(Distribution dist, double rho, double mu, int N) {
+		double[] res = new double[3];
+		double lambda = rho*mu;
+		double confLevel = 0.975;
+		
+		double[] run = new double[N];
+		for(int j=0;j<N;j++){
+			Simulator s = new Simulator(new Distribution[]{new ExponentialDistribution(lambda)},dist);
+			s.run();
+			run[j]=s.getEtaByClass(0);
+			progress.updateCurrentAmmount(1);
+		}
+		
+		res[0] = Utils.mean(run);
+		res[1] = Utils.cvar(run, res[0]);
+		res[2] = Utils.confidenceInterval(N, confLevel, res[1]);
+		return res;
 	}
 
 	public static double[][] compareMG1Simulations(double rho, double mu, int N) {
@@ -96,48 +137,36 @@ public class SimulationRunners {
 				new ParetoDistribution(1.2,Utils.computeParetoBeta(mu,1.2))
 		};
 		
+		progress.reset();
+		progress.updateTotalAmmount(dists.length * N);
 		for(int i=0; i<dists.length;i++){
 			double[] values = SimulationRunners.simulateMG1(dists[i],rho,mu,N);
 			res[0][i] = values[0];
 			res[1][i] = values[1];
 			res[2][i] = values[2];
 			System.out.println(dists[i].getDistributionName() + " [ MEAN: " + res[0][i] + " VAR: " + res[1][i] + " CONF: " + res[2][i] + " ]");
+			progress.updateCurrentAmmount(1);
 		}
-		return res;
-	}
-
-	public static double[] simulateMG1(Distribution dist, double rho, double mu, int N) {
-		double[] res = new double[3];
-		double lambda = rho*mu;
-		double confLevel = 0.975;
-		
-		double[] run = new double[N];
-		for(int j=0;j<N;j++){
-			Simulator s = new Simulator(new Distribution[]{new ExponentialDistribution(lambda)},dist);
-			s.run();
-			run[j]=s.getEtaByClass(0);
-		}
-		
-		res[0] = Utils.mean(run);
-		res[1] = Utils.cvar(run, res[0]);
-		res[2] = Utils.confidenceInterval(N, confLevel, res[1]);
 		return res;
 	}
 
 	public static double[][] simulateMG1WithVariableRho(Distribution dist, double[] rhos, double mu, int N) {
 		double[][] res = new double[3][rhos.length];
 		
+		progress.reset();
+		progress.updateTotalAmmount(rhos.length * N);
 		for(int i=0; i<rhos.length;i++){
 			double[] vals = simulateMG1(dist,rhos[i],mu,N);
 			res[0][i] = vals[0];
 			res[1][i] = vals[1];
 			res[2][i] = vals[2];
+			progress.updateCurrentAmmount(1);
 		}
 		
 		return res;
 	}
 
-	public static double[][] simulateMG1Prio(Distribution dist, double[] rho, double mu, int N) {
+	private static double[][] simulateMG1Prio(Distribution dist, double[] rho, double mu, int N) {
 		double[][] res = new double[rho.length][3];
 		double[] lambda = new double[rho.length];
 		Distribution[] arrivalDists = new Distribution[rho.length];
@@ -157,6 +186,8 @@ public class SimulationRunners {
 			for (int x = 0; x < rho.length; x ++) {
 				run[x][j]=s.getEtaByClass(x);
 			}
+			
+			progress.updateCurrentAmmount(1);
 		}
 		
 		for (int x = 0; x < rho.length; x ++) {
@@ -173,6 +204,9 @@ public class SimulationRunners {
 		double rho = 0.8;
 		int N = 100;
 		ExponentialDistribution dist = new ExponentialDistribution(mu);
+		
+		progress.reset();
+		progress.updateTotalAmmount(N * 99);
 		
 		for (int i = 0; i < 99; i ++) {	
 			double x= (i+1)*1.0/100;
@@ -200,6 +234,7 @@ public class SimulationRunners {
 				rhos[2] = (1 - x)*0.5*rho;
 			}
 			
+			
 			double[][] partial_res = simulateMG1Prio(dist,rhos,mu,N);
 			
 			for (int j = 0; j < rhos.length; j ++) {
@@ -212,6 +247,8 @@ public class SimulationRunners {
 			res[i][res[0].length - 1][1] = 1.0/mu*(rho/(1.0 - rho));
 			res[i][res[0].length - 1][2] = 0;
 			res[i][res[0].length - 1][3] = 0;
+			
+			progress.updateCurrentAmmount(1);
 		}
 		
 		return res;
