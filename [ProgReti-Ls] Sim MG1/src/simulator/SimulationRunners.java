@@ -16,6 +16,13 @@ public class SimulationRunners {
 		int numberPerRun = 1000;
 		double[] nd = new double[]{0.5,0.75,0.9,0.95,0.975};
 		
+		log.info("--------------------------------------------");
+		log.info("Test confidence interval with variable level of confidence");
+		String s = "";
+		for (int i = 0; i < nd.length; i ++)
+			s += nd[i] + ((i == nd.length - 1)?"":",");
+		log.info("Tested level of confidence: " + s);
+		
 		double[] means = new double[N];
 		double[] vars = new double[N];
 	
@@ -35,20 +42,28 @@ public class SimulationRunners {
 			means[i] = Utils.mean(run);
 			vars[i] = Utils.cvar(run,means[i]);
 			progress.updateCurrentAmmount(1);
-			log.info("Prova di stampa");
+
 		}
 		
 		double[][] delta = new double[2][nd.length];
 		for(int i = 0; i<nd.length;i++){
 			delta[1][i] = Utils.confidenceInterval(numberPerRun,nd[i],vars[i]);
 			delta[0][i] = nd[i];
+			log.info("[Level of confidence: " + nd[i] + " ] " + " [ MEAN: " + means[i] + " VAR: " + vars[i] + " CONF: " + delta[1][i] + " ]");
 		}
 		progress.updateCurrentAmmount(1);
 		return delta;
 	}
 
 	public static double[][] testConfidenceIntervalWithVariableRuns(Provider provider, double confidenceLevel) {
+		log.info("--------------------------------------------");
+		log.info("Test confidence interval with variable runs");
+		
 		int[] nr = new int[]{25,50,100,250,500,1000};
+		String s = "";
+		for (int i = 0; i < nr.length; i ++)
+			s += nr[i] + ((i == nr.length - 1)?"":",");
+		log.info("Number of runs: " + s);
 		
 		double[] means = new double[nr.length];
 		double[] vars = new double[nr.length];
@@ -76,16 +91,20 @@ public class SimulationRunners {
 		for(int i = 0; i<nr.length;i++){
 			delta[1][i] = Utils.confidenceInterval(nr[i],confidenceLevel,vars[i]);
 			delta[0][i] = nr[i];
+			log.info("[ run " + nr[i] + "]  [ MEAN: " + means[i] + " VAR: " + vars[i] + " CONF: " + delta[1][i] + " ]");
 		}
 		progress.updateCurrentAmmount(1);
+		log.info("--------------------------------------------");
 		return delta;
-	
 	}
 
 	public static void generateTraffic(double lambda, Distribution dist, int N) {
 		double T = lambda*30;
 		double[] runs = new double[N];
 		double cmean, cvar, idc;
+		
+		log.info("--------------------------------------------");
+		log.info("Generate traffic with " + dist.getDistributionName() + " distribution and " + N + " runs");
 		
 		progress.reset();
 		progress.updateTotalAmmount(N + 1);
@@ -104,9 +123,10 @@ public class SimulationRunners {
 		cmean = Utils.mean(runs);
 		cvar = Utils.cvar(runs,cmean);
 		idc = cvar/(cmean);
-		System.out.println(dist.getDistributionName() + " [ MEAN: " + cmean + " VAR: " + cvar + " IDC: " + idc + " ]");
+		log.info(dist.getDistributionName() + " [ MEAN: " + cmean + " VAR: " + cvar + " IDC: " + idc + " ]");
 		
 		progress.updateCurrentAmmount(1);
+		log.info("--------------------------------------------");
 	}
 	
 	private static double[] simulateMG1(Distribution dist, double rho, double mu, int N) {
@@ -137,6 +157,10 @@ public class SimulationRunners {
 				new ParetoDistribution(1.2,Utils.computeParetoBeta(mu,1.2))
 		};
 		
+		log.info("--------------------------------------------");
+		log.info("Compare M/G/1 simulation");
+		log.info("Simulation parameters [ RHO: " + rho + " MU: " + mu + "#runs: " + N + " ]");
+		
 		progress.reset();
 		progress.updateTotalAmmount(dists.length * N);
 		for(int i=0; i<dists.length;i++){
@@ -144,14 +168,23 @@ public class SimulationRunners {
 			res[0][i] = values[0];
 			res[1][i] = values[1];
 			res[2][i] = values[2];
-			System.out.println(dists[i].getDistributionName() + " [ MEAN: " + res[0][i] + " VAR: " + res[1][i] + " CONF: " + res[2][i] + " ]");
+			log.info("[" + dists[i].getDistributionName() + " ] [ MEAN: " + res[0][i] + " VAR: " + res[1][i] + " CONF: " + res[2][i] + " ]");
 			progress.updateCurrentAmmount(1);
 		}
+		log.info("--------------------------------------------");
+		
 		return res;
 	}
 
 	public static double[][] simulateMG1WithVariableRho(Distribution dist, double[] rhos, double mu, int N) {
 		double[][] res = new double[3][rhos.length];
+		
+		log.info("--------------------------------------------");
+		log.info("Simulate M/G/1 with variable rho");
+		String s = "";
+		for (int i = 0; i < rhos.length; i ++)
+			s += rhos[i] + ((i == rhos.length - 1)?"":",");
+		log.info("Tested rho: " + s);
 		
 		progress.reset();
 		progress.updateTotalAmmount(rhos.length * N);
@@ -160,8 +193,11 @@ public class SimulationRunners {
 			res[0][i] = vals[0];
 			res[1][i] = vals[1];
 			res[2][i] = vals[2];
+			log.info("[rho " + rhos[i] + "[ MEAN: " + res[0][i] + " VAR: " + res[1][i] + " CONF: " + res[2][i] + " ]");
 			progress.updateCurrentAmmount(1);
 		}
+		
+		log.info("--------------------------------------------");
 		
 		return res;
 	}
@@ -204,6 +240,8 @@ public class SimulationRunners {
 		double rho = 0.8;
 		int N = 100;
 		ExponentialDistribution dist = new ExponentialDistribution(mu);
+		
+		log.info("--------------------------------------------");
 		
 		progress.reset();
 		progress.updateTotalAmmount(N * 99);
@@ -250,6 +288,8 @@ public class SimulationRunners {
 			
 			progress.updateCurrentAmmount(1);
 		}
+		
+		log.info("--------------------------------------------");
 		
 		return res;
 	}

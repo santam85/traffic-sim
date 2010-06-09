@@ -47,7 +47,7 @@ public class ConsoleFrame extends javax.swing.JFrame implements ActionListener {
         setTitle("Simulator Console");
 
         consoleArea.setBackground(new java.awt.Color(204, 204, 204));
-        consoleArea.setColumns(20);
+        consoleArea.setColumns(40);
         consoleArea.setEditable(false);
         consoleArea.setRows(5);
         jScrollPane1.setViewportView(consoleArea);
