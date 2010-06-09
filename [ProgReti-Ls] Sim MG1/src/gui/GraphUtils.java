@@ -52,7 +52,7 @@ public class GraphUtils {
 		YIntervalSeriesCollection dataset = new YIntervalSeriesCollection();
 		
 		for (int x = 0; x < values[0].length; x ++) {
-			YIntervalSeries series1 = new YIntervalSeries(legend);
+			YIntervalSeries series1 = new YIntervalSeries(legend+x);
 		
 			for (int i = 0; i < values.length; i++) {
 				series1.add(values[i][x][0],values[i][x][1],values[i][x][1] - values[i][x][3]/2, values[i][x][1] + values[i][x][3]/2);
