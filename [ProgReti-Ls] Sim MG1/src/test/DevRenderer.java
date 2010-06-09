@@ -73,6 +73,6 @@ public class DevRenderer {
             
             ChartFrame f = new ChartFrame("title", chart);
             f.pack();
-            f.show();
+            f.setVisible(true);
 	}
 }
