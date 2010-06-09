@@ -1,9 +1,7 @@
 package gui;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Paint;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
