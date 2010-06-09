@@ -1,0 +1,5 @@
+COSE DA FARE
+Aggiungere scatter plot al primo tab
+Aggiungere console di log, tipo textarea
+Con runs < 4 il sim mg1 da problemi con le variabile distrubutions 
+generatore traffico con pareto e alfa eg =1 si pianta
