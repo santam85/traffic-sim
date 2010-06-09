@@ -32,6 +32,68 @@ public class Utils {
 		return ts*Math.sqrt(cvar/runs);
 	}
 	
+	public static double[][] testConfidenceIntervalWithVariableConfidence() {
+		int N = 6;
+		int numberPerRun = 50;
+		double[] nd = new double[]{0.5,0.75,0.9,0.95,0.975};
+		
+		double[] means = new double[N];
+		double[] vars = new double[N];
+
+		            
+		RandomProvider rnd = new RandomProvider(Provider.Java,1);
+		Distribution d = new UniformDistribution(rnd);
+		
+		for(int i = 0;i<N;i++){
+			double[] run = new double[numberPerRun];
+			
+			for (int j = 0; j<numberPerRun;j++){
+				run[j]=d.nextValue();
+			}
+			
+			means[i] = Utils.mean(run);
+			vars[i] = Utils.cvar(run,means[i]);
+		}
+		
+		double[][] delta = new double[2][nd.length];
+		for(int i = 0; i<nd.length;i++){
+			delta[1][i] = Utils.confidenceInterval(numberPerRun,nd[i],vars[i]);
+			delta[0][i] = nd[i];
+		}
+		return delta;
+	}
+	
+	public static double[][] testConfidenceIntervalWithVariableRuns() {
+		int[] nr = new int[]{25,50,100,250,500,1000};
+		
+		double[] means = new double[nr.length];
+		double[] vars = new double[nr.length];
+
+		            
+		RandomProvider rnd = new RandomProvider(Provider.Java,1);
+		Distribution d = new UniformDistribution(rnd);
+		
+		for(int i = 0;i<nr.length;i++){
+			double[] run = new double[nr[i]];
+			
+			for (int j = 0; j<nr[i];j++){
+				run[j]=d.nextValue();
+			}
+			
+			means[i] = Utils.mean(run);
+			vars[i] = Utils.cvar(run,means[i]);
+		}
+		
+		double[][] delta = new double[2][nr.length];
+		
+		for(int i = 0; i<nr.length;i++){
+			delta[1][i] = Utils.confidenceInterval(nr[i],0.975,vars[i]);
+			delta[0][i] = nr[i];
+		}
+		return delta;
+
+	}
+	
 	public static void generateTraffic(double lambda, Distribution dist, int N) {
 		double T = lambda*30;
 		double[] runs = new double[N];

@@ -1,7 +1,9 @@
 package gui;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Rectangle;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
@@ -14,12 +16,45 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.category.StatisticalLineAndShapeRenderer;
 import org.jfree.chart.renderer.xy.DeviationRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.statistics.DefaultStatisticalCategoryDataset;
+import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.data.xy.YIntervalSeries;
 import org.jfree.data.xy.YIntervalSeriesCollection;
 import org.jfree.ui.RectangleInsets;
 
 public class GraphUtils {
+	
+	public static void displayStatisticalLineChart(String frameTitle, String chartTitle, String xLable, String yLabel, double[][] values) {
+		DefaultXYDataset dataset = new DefaultXYDataset();
+		dataset.addSeries("Fixed confidence level",values);
+		
+		JFreeChart chart1 = ChartFactory.createXYLineChart(chartTitle, // chart title 
+				xLable, // domain axis label 
+				yLabel, // range axis label 
+				dataset, // data
+				PlotOrientation.VERTICAL, // orientation 
+				true, // include legend 
+				true, // tooltips 
+				false // urls
+		);
+		
+		ChartFrame f1 = new ChartFrame(frameTitle, chart1);
+		f1.setBounds(0, 0, 1000, 600);
+		
+		// Graphic layout chart1
+		XYPlot cp=(XYPlot)chart1.getPlot();
+		cp.setBackgroundPaint(Color.white);
+		cp.setRangeGridlinePaint(Color.gray);
+		XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) cp.getRenderer();
+		renderer.setSeriesShapesVisible(0,true);
+		renderer.setDrawOutlines(true); 
+		renderer.setUseFillPaint(true);
+		renderer.setSeriesStroke(0, new BasicStroke(2));
+		renderer.setSeriesShape(0, new Rectangle(-2,-2,4,4));
+		
+		f1.setVisible(true);
+	}
 	
 	public static void displayStatisticalBarChart(String title, double[] x, String xLabel, double[] y, String legendLabel, double[] confidence) {
 		DefaultStatisticalCategoryDataset dataset = new DefaultStatisticalCategoryDataset();

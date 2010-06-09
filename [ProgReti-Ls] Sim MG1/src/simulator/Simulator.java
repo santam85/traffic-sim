@@ -2,7 +2,6 @@ package simulator;
 
 import java.util.LinkedList;
 import java.util.Vector;
-import java.util.concurrent.ConcurrentSkipListSet;
 
 public class Simulator implements Runnable {
 

@@ -13,7 +13,7 @@ public class RandomProvider {
 	
 	
 	public RandomProvider(){
-		this.p = Provider.Java;
+		this.p = Provider.Java ;
 	}
 	
 	public RandomProvider(Provider p){

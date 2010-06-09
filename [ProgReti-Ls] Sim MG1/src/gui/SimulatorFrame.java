@@ -1,14 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * NewJFrame.java
- *
- * Created on Jun 3, 2010, 4:54:33 PM
- */
-
 package gui;
 
 import java.awt.BorderLayout;
@@ -51,6 +40,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
         rhoRbt.addActionListener(this);
         toggleMG1Parameters(false,true);
         this.simulate_prio.addActionListener(this);
+        this.testConfidence.addActionListener(this);
         
     }
 
@@ -363,6 +353,9 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 		if (e.getSource() == distCbx) {
 			handleAdditionalParametersPanel();
 		}
+		else if (e.getSource() == this.testConfidence) {
+			handleTestConfidence();
+		}
 		else if (e.getSource() == this.generateReport) {
 			handleTrafficGeneration();
 		}
@@ -400,6 +393,11 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 				placeholderPanel.removeAll();
 		}
 		this.repaint();
+	}
+	
+	private void handleTestConfidence() {
+		GraphUtils.displayStatisticalLineChart("Confidence interval", "Confidence interval", "confidence level", "confidence interval size", Utils.testConfidenceIntervalWithVariableConfidence());
+		GraphUtils.displayStatisticalLineChart("Confidence interval", "Confidence interval", "values", "confidence interval size", Utils.testConfidenceIntervalWithVariableRuns());
 	}
 	
 	private void handleTrafficGeneration() {

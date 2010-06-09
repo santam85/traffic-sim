@@ -15,15 +15,15 @@ public class TestTrafficWithDifferentVariability {
 	public static void main(String[] args) {
 
 		int N = 100;
-		float lambda = 2;
+		double lambda = 2;
 		double T = 30/lambda;
-		float k = 10;
-		float q01 = 0.1f;
-		float q10 = 0.9f;
-		float lambda0 = lambda/(q01+q10*k);
-		float lambda1 = k*lambda0;
-		float shape = 3f; // impostato a piacere
-		float mode = ((1/lambda) * (shape - 1))/shape;
+		double k = 10;
+		double q01 = 0.1;
+		double q10 = 0.9;
+		double lambda0 = lambda/(q01+q10*k);
+		double lambda1 = k*lambda0;
+		double shape = 3f; // impostato a piacere
+		double mode = ((1/lambda) * (shape - 1))/shape;
 		
 		String[] distNames = new String[]{"Deterministic","Exponential","SPP","Pareto"};
 		Distribution[] ds = new Distribution[]{
