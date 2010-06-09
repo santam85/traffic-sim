@@ -29,11 +29,11 @@ public abstract class Event implements Comparable<Event>{
 	@Override
 	public int compareTo(Event o) {
 		if(occurrenceTime < o.occurrenceTime)
-			return 1;
+			return -1;
 		else if(occurrenceTime == o.occurrenceTime)
 			return 0;
 		else //if(occurrencetime > o.occurrencetime)
-			return -1;
+			return 1;
 
 	}
 	

@@ -12,7 +12,7 @@ public class UniformDistribution extends Distribution {
 	
 	@Override
 	public double nextValue() {
-		return (double) (rp.nextRandom()*1.0);
+		return  (rp.nextRandom());
 	}
 
 }

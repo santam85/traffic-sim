@@ -1,12 +1,13 @@
 package simulator;
 
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Vector;
 
 public class Simulator implements Runnable {
 
-	private Vector<SortedQueue<Event>> eventList;
-	private SortedQueue<Event> futureEventList;
+	private Vector<PriorityQueue<Arrival>> eventList;
+	private PriorityQueue<Event> futureEventList;
 	
 	private int[] arrivalsByClass, departuresByClass;
 	private int arrivals, departures, k;
@@ -27,8 +28,8 @@ public class Simulator implements Runnable {
 		history = new LinkedList<Event>();
 		this.priorityClasses = arrivalTimeDistribution.length;
 		
-		eventList = new Vector<SortedQueue<Event>>(priorityClasses);
-		futureEventList = new SortedQueue<Event>();
+		eventList = new Vector<PriorityQueue<Arrival>>(priorityClasses);
+		futureEventList = new PriorityQueue<Event>();
 		
 		this.arrivalTimeDistribution = arrivalTimeDistribution;
 		this.serviceTimeDistribution = serviceTimeDistribution;
@@ -104,7 +105,7 @@ public class Simulator implements Runnable {
 		this.departuresByClass = new int[priorityClasses];
 		this.waitTime = new double[priorityClasses];
 		for (int i = 0; i < priorityClasses; i ++) {
-			eventList.add(i,new SortedQueue<Event>());
+			eventList.add(i,new PriorityQueue<Arrival>());
 			arrivalsByClass[i] = 0; departuresByClass[i] = 0;
 			futureEventList.add(generateArrival(i));
 		}
@@ -129,7 +130,7 @@ public class Simulator implements Runnable {
 	private Arrival serviceEvent() {
 		Arrival e = null;
 		for (int i = 0; i < this.priorityClasses && e == null; i ++) {
-			e = (Arrival) eventList.get(i).poll();
+			e = eventList.get(i).poll();
 		}
 		return e;
 	}

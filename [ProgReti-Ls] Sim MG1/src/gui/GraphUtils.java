@@ -25,7 +25,7 @@ import org.jfree.ui.RectangleInsets;
 
 public class GraphUtils {
 	
-	public static void displayStatisticalLineChart(String frameTitle, String chartTitle, String xLable, String yLabel, double[][] values) {
+	public static void displayLineChart(String frameTitle, String chartTitle, String xLable, String yLabel, double[][] values) {
 		DefaultXYDataset dataset = new DefaultXYDataset();
 		dataset.addSeries("Fixed confidence level",values);
 		
@@ -39,9 +39,6 @@ public class GraphUtils {
 				false // urls
 		);
 		
-		ChartFrame f1 = new ChartFrame(frameTitle, chart1);
-		f1.setBounds(0, 0, 1000, 600);
-		
 		// Graphic layout chart1
 		XYPlot cp=(XYPlot)chart1.getPlot();
 		cp.setBackgroundPaint(Color.white);
@@ -53,6 +50,8 @@ public class GraphUtils {
 		renderer.setSeriesStroke(0, new BasicStroke(2));
 		renderer.setSeriesShape(0, new Rectangle(-2,-2,4,4));
 		
+		ChartFrame f1 = new ChartFrame(frameTitle, chart1);
+		f1.pack();
 		f1.setVisible(true);
 	}
 	

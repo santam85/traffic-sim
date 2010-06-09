@@ -33,10 +33,10 @@ public class Utils {
 	}
 	
 	public static double computeSPPLambda0(double lambda, double p0, double p1, int k) {
-		return (double)(lambda/(p0+p1*k));
+		return (lambda/(p0+p1*k));
 	}
 	
 	public static double computeParetoBeta(double lambda, double alfa) {
-		return (double) (((1/lambda) * (alfa - 1))/alfa);
+		return  (((1/lambda) * (alfa - 1))/alfa);
 	}
 }

@@ -12,7 +12,7 @@ public class ParetoDistribution extends Distribution {
 	
 	@Override
 	public double nextValue() {
-		return (double)Math.pow((1 - rp.nextRandom()),-1/shape)*mode;
+		return Math.pow((1 - rp.nextRandom()),-1/shape)*mode;
 		// r=mode*pow(1-u,-1/shape)
 	}
 

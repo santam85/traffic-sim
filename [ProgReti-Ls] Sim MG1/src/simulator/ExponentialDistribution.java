@@ -15,7 +15,7 @@ public class ExponentialDistribution extends Distribution {
 	
 	@Override
 	public double nextValue() {
-		return (double) -Math.log(rp.nextRandom()*1.0)/mu;
+		return  -Math.log(rp.nextRandom()*1.0)/mu;
 	}
 
 }

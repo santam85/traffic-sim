@@ -18,7 +18,7 @@ public class SPPDistribution extends Distribution {
 		this.p1 = p1;
 		this.rp = rp;
 		this.isState0 = true;
-		this.untilNewState = (double) -Math.log(rp.nextRandom()*1.0)/p1;
+		this.untilNewState =  -Math.log(rp.nextRandom()*1.0)/p1;
 	}
 	
 	
@@ -33,7 +33,7 @@ public class SPPDistribution extends Distribution {
 	}
 	
 	private double handleState0() {
-		double untilNewOccurrence = (double) -Math.log(rp.nextRandom()*1.0)/mu0;
+		double untilNewOccurrence =  -Math.log(rp.nextRandom()*1.0)/mu0;
 		if (untilNewState > untilNewOccurrence) {
 			untilNewState = untilNewState - untilNewOccurrence;
 			return untilNewOccurrence;
@@ -41,13 +41,13 @@ public class SPPDistribution extends Distribution {
 		else {
 			isState0 = false;
 			double tmp = untilNewState;
-			this.untilNewState = (double) -Math.log(rp.nextRandom()*1.0)/p0;
+			this.untilNewState =  -Math.log(rp.nextRandom()*1.0)/p0;
 			return tmp + handleState1();
 		}
 	}
 	
 	private double handleState1() {
-		double untilNewOccurrence = (double) -Math.log(rp.nextRandom()*1.0)/mu1;
+		double untilNewOccurrence =  -Math.log(rp.nextRandom()*1.0)/mu1;
 		if (untilNewState > untilNewOccurrence) {
 			untilNewState = untilNewState - untilNewOccurrence;
 			return untilNewOccurrence;
@@ -55,7 +55,7 @@ public class SPPDistribution extends Distribution {
 		else {
 			isState0 = true;
 			double tmp = untilNewState;
-			this.untilNewState = (double) -Math.log(rp.nextRandom()*1.0)/p1;
+			this.untilNewState =  -Math.log(rp.nextRandom()*1.0)/p1;
 			return tmp + handleState0();
 		}
 	}
