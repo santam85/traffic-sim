@@ -120,8 +120,11 @@ public class GraphUtils {
         renderer.setSeriesFillPaint(1, new Color(200, 200, 255));
         renderer.setSeriesFillPaint(2, new Color(200, 255, 200));
         
-        plot.setRenderer(renderer);
+        // Sets black color for eta serie
+        renderer.setSeriesPaint(values[0].length-1, Color.BLACK);
         
+        plot.setRenderer(renderer);
+                
         
         // change the auto tick unit selection to integer units only...
         NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
