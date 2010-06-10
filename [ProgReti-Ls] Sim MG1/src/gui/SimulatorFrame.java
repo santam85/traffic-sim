@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -522,7 +523,9 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 					final double[][] res1 = SimulationRunners.testConfidenceIntervalWithVariableConfidence(provider,getConfidenceIntervalSimulationRuns());
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
-							GraphUtils.displayLineChart("Confidence interval with variable confidence level","Confidence interval [random provider " + provider.toString() + " ]", "confidence level", "confidence interval size",res1 );
+							LinkedList<double[][]> tmp = new LinkedList<double[][]>();
+							tmp.add(res1);
+							GraphUtils.displayLineChart("Confidence interval with variable confidence level","Confidence interval [random provider " + provider.toString() + " ]", "confidence level", "confidence interval size",new String[]{"Confidence interval"},tmp);
 						}
 					});
 				}
@@ -534,7 +537,9 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 					final double[][] res2 = SimulationRunners.testConfidenceIntervalWithVariableRuns(provider,getConfidenceIntervalConfidenceLevel());
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
-							GraphUtils.displayLineChart("Confidence interval with variable runs","Confidence interval [random provider " + provider.toString() + " ]", "values", "confidence interval size", res2);
+							LinkedList<double[][]> tmp = new LinkedList<double[][]>();
+							tmp.add(res2);
+							GraphUtils.displayLineChart("Confidence interval with variable runs","Confidence interval [random provider " + provider.toString() + " ]", "# of values", "confidence interval size", new String[]{"Confidence interval"},tmp);
 						}
 					});
 				}
@@ -609,10 +614,24 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 		
 		executor.submit(new Runnable() {
 			public void run() {
-				final double[][] res = SimulationRunners.compareMG1Simulations(getRho(),getMu(),getMG1SimulationRuns());
+				double rho = getRho();
+				double mu = getMu();
+				int N = getMG1SimulationRuns();
+				
+				Distribution[] dists = new Distribution[]{new DeterministicDistribution(mu),
+						new ExponentialDistribution(mu),
+						new ParetoDistribution(2.5,Utils.computeParetoBeta(mu,2.5)),
+						new ParetoDistribution(1.2,Utils.computeParetoBeta(mu,1.2))
+				};
+				
+				final double[][] res = SimulationRunners.compareMG1Simulations(dists,rho,mu,N);
+				final String[] keys = new String[dists.length];
+				for(int i=0;i<keys.length;i++){
+					keys[i]=dists[i].toString();
+				}
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						GraphUtils.displayStatisticalBarChart("Eta",new double[]{0,1,2,3},"dist=",res[0],"Mean eta",res[2]);
+						GraphUtils.displayStatisticalLineChart("MG1Sim","Variable distribution","Distribution","Time","Eta",keys,res[0],res[2]);
 					}
 				});
 			}
@@ -640,9 +659,11 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 			public void run() {
 				final double[] rhos = new double[]{0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9};
 				final double[][] res = SimulationRunners.simulateMG1WithVariableRho(d,rhos,getMu(),getMG1SimulationRuns());
+				final String[] keys = new String[]{"0.1","0.2","0.3","0.4","0.5","0.6","0.7","0.8","0.9"};
+				
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						GraphUtils.displayStatisticalBarChart("Eta",rhos,"rho=",res[0],"Mean eta",res[2]);
+						GraphUtils.displayStatisticalLineChart("MG1Sim","Variable rho","Rho","Time","Eta",keys,res[0],res[2]);
 					}
 				});
 			}
@@ -677,7 +698,9 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 							values[0][i] = i;
 							values[1][i] = res[0][i];
 						}
-						GraphUtils.displayLineChart("state's probability","Probability of each state","state","probability",values);
+						LinkedList<double[][]> tmp = new LinkedList<double[][]>();
+						tmp.add(values);
+						GraphUtils.displayLineChart("State probability","Probability of each state","K","Probability",new String[]{"State probability"},tmp);
 					}
 				});
 			}

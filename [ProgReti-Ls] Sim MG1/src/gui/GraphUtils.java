@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
+import java.util.LinkedList;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
@@ -26,12 +27,13 @@ import org.jfree.ui.RectangleInsets;
 
 public class GraphUtils {
 	
-	public static void displayLineChart(String frameTitle, String chartTitle, String xLable, String yLabel, double[][] values) {
+	public static void displayLineChart(String frameTitle, String chartTitle, String xLabel, String yLabel,String[] seriesTitle, LinkedList<double[][]> values) {
 		DefaultXYDataset dataset = new DefaultXYDataset();
-		dataset.addSeries("Fixed confidence level",values);
+		for(int i=0;i<seriesTitle.length;i++)
+			dataset.addSeries(seriesTitle[i],values.get(i));
 		
 		JFreeChart chart1 = ChartFactory.createXYLineChart(chartTitle, // chart title 
-				xLable, // domain axis label 
+				xLabel, // domain axis label 
 				yLabel, // range axis label 
 				dataset, // data
 				PlotOrientation.VERTICAL, // orientation 
@@ -56,30 +58,28 @@ public class GraphUtils {
 		f1.setVisible(true);
 	}
 	
-	public static void displayStatisticalBarChart(String title, double[] x, String xLabel, double[] y, String legendLabel, double[] confidence) {
+	public static void displayStatisticalLineChart(String frameTitle,String chartTitle, String xLabel, String yLabel,String legendLabel,String[] categoryKeys, double[] y, double[] confidence) {
 		DefaultStatisticalCategoryDataset dataset = new DefaultStatisticalCategoryDataset();
 
-		for(int i=0; i<x.length;i++){
-			dataset.add(y[i], confidence[i], legendLabel, xLabel+x[i]);
+		for(int i=0; i<categoryKeys.length;i++){
+			dataset.add(y[i], confidence[i], legendLabel, categoryKeys[i]);
 		}
 		
-		CategoryAxis xAxis = new CategoryAxis("Type");
-        xAxis.setLowerMargin(0.01d); // percentage of space before first bar
-        xAxis.setUpperMargin(0.01d); // percentage of space after last bar
-        xAxis.setCategoryMargin(0.05d); // percentage of space between categories
-        ValueAxis yAxis = new NumberAxis("Value");
-
+		CategoryAxis xAxis = new CategoryAxis(xLabel);
+		xAxis.setMaximumCategoryLabelLines(2);
+		xAxis.setMaximumCategoryLabelWidthRatio(1);
+        ValueAxis yAxis = new NumberAxis(yLabel);
         StatisticalLineAndShapeRenderer renderer = new StatisticalLineAndShapeRenderer();
         CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
         renderer.setErrorIndicatorPaint(Color.DARK_GRAY);
         renderer.setSeriesShape(0, new Ellipse2D.Double(-2,-2,4,4));
         
-        JFreeChart chart = new JFreeChart(title,
+        JFreeChart chart = new JFreeChart(chartTitle,
                                           new Font("Helvetica", Font.BOLD, 14),
                                           plot,
                                           true);
 
-		ChartFrame f = new ChartFrame("Chart", chart);
+		ChartFrame f = new ChartFrame(frameTitle, chart);
 		f.pack();
 		f.setVisible(true);
 	}

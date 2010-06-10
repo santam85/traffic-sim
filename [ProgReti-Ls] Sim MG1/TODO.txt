@@ -6,3 +6,5 @@ check dei parametri in handleMG1SimulationWithVariableRho
 (per il primo punto opzionale) 	-> confronto con i risultati teorici M/D/1 e M/M/1
 							   	-> check consistency (Simulator) non da sempre risultati uguali, xk?
 (per il secondo punto opzionale)-> SimulatorSJF da modificare del tutto per supportare lo scheduling SJF (per ora è solo una mera copia di Simulator)
+
+Aggiungere probabilitˆ di stato teorica nel plot.

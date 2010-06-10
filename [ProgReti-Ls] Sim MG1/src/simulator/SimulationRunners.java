@@ -1,6 +1,5 @@
 package simulator;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.apache.log4j.Level;
@@ -159,13 +158,7 @@ public class SimulationRunners {
 		return res;
 	}
 
-	public static double[][] compareMG1Simulations(double rho, double mu, int N) {
-	
-		Distribution[] dists = new Distribution[]{new DeterministicDistribution(mu),
-				new ExponentialDistribution(mu),
-				new ParetoDistribution(2.5,Utils.computeParetoBeta(mu,2.5)),
-				new ParetoDistribution(1.2,Utils.computeParetoBeta(mu,1.2))
-		};
+	public static double[][] compareMG1Simulations(Distribution[] dists,double rho, double mu, int N) {
 		double[][] res = new double[3][dists.length];
 		
 		log.info("--------------------------------------------");
