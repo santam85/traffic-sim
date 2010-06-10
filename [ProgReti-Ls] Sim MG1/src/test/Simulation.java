@@ -84,46 +84,6 @@ public class Simulation {
 		renderer.setUseFillPaint(true);
 		renderer.setSeriesStroke(0, new BasicStroke(2));
 		renderer.setSeriesShape(0, new Rectangle(-1,-1,2,2));
-		
-		
-		/* GRAFICO K
-		 * 
-		 *
-		int k=0;
-		XYSeries series = new XYSeries("Series 1");
-
-		LinkedList<Event> history = s.getHistory();
-		for ( int i=0; i< history.size();i++){
-			series.add(history.get(i).occurrenceTime,history.get(i).getClass()==Arrival.class?k++:k--);
-		}
-		
-		XYSeriesCollection dataset = new XYSeriesCollection(); 
-        dataset.addSeries(series); 
-
-		JFreeChart chart = ChartFactory.createXYLineChart(
-				"Titolo", 
-				"Time", 
-				"Clients", 
-				dataset, 
-				PlotOrientation.VERTICAL, 
-				true, 
-				true, 
-				true);
-		
-		XYPlot plot = (XYPlot) chart.getPlot(); 
-        XYStepRenderer renderer = new XYStepRenderer(); 
-        renderer.setSeriesStroke(0,new BasicStroke(1.2f));
-
-        renderer.setSeriesPaint(0, Color.BLACK);
-        renderer.setBaseToolTipGenerator(new StandardXYToolTipGenerator()); 
-        renderer.setDefaultEntityRadius(6);
-        plot.setRenderer(renderer);
-        
-		ChartFrame f = new ChartFrame("Title", chart);
-		f.pack();
-		f.setVisible(true);
-		*/
-		
 	}
 
 }

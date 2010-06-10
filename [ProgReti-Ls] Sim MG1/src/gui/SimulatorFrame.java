@@ -34,7 +34,12 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
     public SimulatorFrame() {
         initComponents();
         
-        distCbx.setModel(new DefaultComboBoxModel(simulator.distribution.DistributionType.values()));
+        DistributionType[] dts= new DistributionType[DistributionType.values().length-1];
+        dts[0]=DistributionType.Deterministic;
+        dts[1]=DistributionType.Exponential;
+        dts[2]=DistributionType.SPP;
+        dts[3]=DistributionType.Pareto;
+        distCbx.setModel(new DefaultComboBoxModel(dts));
         distCbx.addActionListener(this);
         distCbx_mg1.setModel(new DefaultComboBoxModel(new String[]{"Deterministic","Exponential","Pareto 2.5","Pareto 1.2"}));
         classes_prio.setModel(new DefaultComboBoxModel(new String[]{"2","3a","3b","3c"}));
@@ -584,7 +589,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 				
 				double lambda = (double)getLambda();
 				double alfa = (double)p.getAlfa();
-				double beta = ((1/lambda) * (alfa - 1))/alfa;
+				double beta = Utils.computeParetoBeta(lambda, alfa);
 				dist = new ParetoDistribution(alfa,beta);
 				break;
 			}
@@ -626,12 +631,17 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 				
 				final double[][] res = SimulationRunners.compareMG1Simulations(dists,rho,mu,N);
 				final String[] keys = new String[dists.length];
+				final LinkedList<double[]> y = new LinkedList<double[]>();
+				final LinkedList<double[]> c = new LinkedList<double[]>();
+				y.add(res[0]);
+				c.add(res[2]);
 				for(int i=0;i<keys.length;i++){
 					keys[i]=dists[i].toString();
 				}
+				
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						GraphUtils.displayStatisticalLineChart("MG1Sim","Variable distribution","Distribution","Time","Eta",keys,res[0],res[2]);
+						GraphUtils.displayStatisticalLineChart("MG1Sim","Variable distribution","Distribution","Time",new String[]{"Simulation Eta"},keys,y,c);
 					}
 				});
 			}
@@ -660,10 +670,27 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 				final double[] rhos = new double[]{0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9};
 				final double[][] res = SimulationRunners.simulateMG1WithVariableRho(d,rhos,getMu(),getMG1SimulationRuns());
 				final String[] keys = new String[]{"0.1","0.2","0.3","0.4","0.5","0.6","0.7","0.8","0.9"};
+				final LinkedList<double[]> y = new LinkedList<double[]>();
+				final LinkedList<double[]> c = new LinkedList<double[]>();
+				y.add(res[0]);
+				c.add(res[2]);
+				
+				double[] t1= new double[rhos.length];
+				double[] t2= new double[rhos.length];
+				//Generazione delle funz. teoriche
+				for(int i=0; i<rhos.length;i++){
+					if(d.getClass()==DeterministicDistribution.class)
+						t1[i]=(1.0/getMu())*(rhos[i]/(2*(1-rhos[i])));
+					else
+						t1[i]=(1.0/getMu())*(rhos[i]/((1-rhos[i])));
+					t2[i]=0;
+				}
+				y.add(t1);
+				c.add(t2);
 				
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						GraphUtils.displayStatisticalLineChart("MG1Sim","Variable rho","Rho","Time","Eta",keys,res[0],res[2]);
+						GraphUtils.displayStatisticalLineChart("MG1Sim","Variable rho ["+d.toString()+"]","Rho","Time",new String[]{"Simulation Eta","Theoretical Eta"},keys,y,c);
 					}
 				});
 			}
@@ -717,10 +744,14 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 		final int N = getNRunsPrio();
 		executor.submit(new Runnable() {
 			public void run() {
-				final double[][][] res = SimulationRunners.simulateMG1PrioWithVariableRhos(mu,N,classes_prio.getSelectedItem().toString());
+				final LinkedList<double[][]> res = SimulationRunners.simulateMG1PrioWithVariableRhos(mu,N,classes_prio.getSelectedItem().toString());
+				final String[] keys = new String[res.size()];
+				for(int i=0;i<keys.length;i++){
+					keys[i] = "C"+i;
+				}
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						GraphUtils.displayDevRendererGraph("Eta ("+classes_prio.getSelectedItem().toString()+")","eta mean","x","eta",res);
+						GraphUtils.displayDevRendererGraph("Eta ("+classes_prio.getSelectedItem().toString()+")","x","Time",keys,res);
 					}
 				});
 				

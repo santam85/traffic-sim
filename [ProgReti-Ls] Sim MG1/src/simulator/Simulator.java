@@ -123,8 +123,6 @@ public abstract class Simulator {
 			etaByClass[i] = waitTime[i]/arrivalsByClass[i];
 		}
 		eta = eta/arrivals;
-		
-		checkConsistency();
 	}
 
 	private void init() {
@@ -173,21 +171,10 @@ public abstract class Simulator {
 	}
 	
 	protected Arrival serviceEvent() {
-		Arrival e = null;
+		ComparableEvent e = null;
 		for (int i = 0; i < this.priorityClasses && e == null; i ++) {
-			e = (Arrival)eventList.get(i).poll().getEvent();
+			e = eventList.get(i).poll();
 		}
-		return e;
-	}
-	
-	protected void checkConsistency() {
-		java.util.Iterator<Double> it = states.iterator();
-		double sum = 0;
-		while (it.hasNext()) 
-			sum += it.next();
-		System.out.println(sum + " " + now + " " + (now - sum));
-		if (sum != now) {
-			System.out.println("consistency check failed");
-		}
+		return (Arrival) e.getEvent();
 	}
 }

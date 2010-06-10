@@ -67,8 +67,8 @@ public class ParetoPanel extends javax.swing.JPanel {
     	if (alfa.getText() == "")
     		return false;
     	try {
-    		Double.parseDouble(alfa.getText());
-    		return true;
+    		double a = Double.parseDouble(alfa.getText());
+    		return a>1;
     	}
     	catch (NumberFormatException e) {
     		return false;

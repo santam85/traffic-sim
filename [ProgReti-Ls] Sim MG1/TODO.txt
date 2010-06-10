@@ -1,7 +1,6 @@
 COSE DA FARE
 Aggiungere scatter plot al primo tab
 generatore traffico con pareto e alfa eg =1 si pianta
-migliorare il parameter checking inserendo i validator a livello grafico
 check dei parametri in handleMG1SimulationWithVariableRho 
 (per il primo punto opzionale) 	-> confronto con i risultati teorici M/D/1 e M/M/1
 							   	-> check consistency (Simulator) non da sempre risultati uguali, xk?

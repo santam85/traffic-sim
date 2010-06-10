@@ -4,7 +4,6 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Rectangle;
-import java.awt.geom.Ellipse2D;
 import java.util.LinkedList;
 
 import org.jfree.chart.ChartFactory;
@@ -19,11 +18,17 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.category.StatisticalLineAndShapeRenderer;
 import org.jfree.chart.renderer.xy.DeviationRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.renderer.xy.XYStepRenderer;
 import org.jfree.data.statistics.DefaultStatisticalCategoryDataset;
 import org.jfree.data.xy.DefaultXYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.data.xy.YIntervalSeries;
 import org.jfree.data.xy.YIntervalSeriesCollection;
 import org.jfree.ui.RectangleInsets;
+
+import simulator.events.Arrival;
+import simulator.events.ComparableEvent;
 
 public class GraphUtils {
 	
@@ -58,11 +63,12 @@ public class GraphUtils {
 		f1.setVisible(true);
 	}
 	
-	public static void displayStatisticalLineChart(String frameTitle,String chartTitle, String xLabel, String yLabel,String legendLabel,String[] categoryKeys, double[] y, double[] confidence) {
+	public static void displayStatisticalLineChart(String frameTitle,String chartTitle, String xLabel, String yLabel,String[] legendLabel,String[] categoryKeys, LinkedList<double[]> y, LinkedList<double[]> confidence) {
 		DefaultStatisticalCategoryDataset dataset = new DefaultStatisticalCategoryDataset();
-
-		for(int i=0; i<categoryKeys.length;i++){
-			dataset.add(y[i], confidence[i], legendLabel, categoryKeys[i]);
+		for(int j=0; j<legendLabel.length;j++){
+			for(int i=0; i<categoryKeys.length;i++){
+				dataset.add(y.get(j)[i], confidence.get(j)[i], legendLabel[j], categoryKeys[i]);
+			}
 		}
 		
 		CategoryAxis xAxis = new CategoryAxis(xLabel);
@@ -73,8 +79,8 @@ public class GraphUtils {
         StatisticalLineAndShapeRenderer renderer = new StatisticalLineAndShapeRenderer();
         CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
         renderer.setErrorIndicatorPaint(Color.DARK_GRAY);
-        renderer.setSeriesShape(0, new Ellipse2D.Double(-2,-2,4,4));
-        
+        //renderer.setSeriesShape(0, new Ellipse2D.Double(-2,-2,4,4));
+        //renderer.setBaseLegendShape(new Ellipse2D.Double(-2,-2,4,4));
         JFreeChart chart = new JFreeChart(chartTitle,
                                           new Font("Helvetica", Font.BOLD, 14),
                                           plot,
@@ -85,21 +91,21 @@ public class GraphUtils {
 		f.setVisible(true);
 	}
 	
-	public static void displayDevRendererGraph(String title, String legend, String xLabel, String yLabel, double[][][] values) {
+	public static void displayDevRendererGraph(String chartTitle,String xLabel, String yLabel, String[] seriesKeys, LinkedList<double[][]> values) {
 		YIntervalSeriesCollection dataset = new YIntervalSeriesCollection();
 		
-		for (int x = 0; x < values[0].length; x ++) {
-			YIntervalSeries series1 = new YIntervalSeries(legend+x);
-		
-			for (int i = 0; i < values.length; i++) {
-				series1.add(values[i][x][0],values[i][x][1],values[i][x][1] - values[i][x][3]/2, values[i][x][1] + values[i][x][3]/2);
+		for (int x = 0; x < seriesKeys.length; x ++) {
+			YIntervalSeries series1 = new YIntervalSeries(seriesKeys[x]);
+			double[][] v = values.get(x);
+			for (int i = 0; i < v.length; i++) {
+				series1.add(v[i][0],v[i][1],v[i][1] - v[i][3]/2, v[i][1] + v[i][3]/2);
 			}
 		
 			dataset.addSeries(series1);
 		}
 		
 	    JFreeChart chart = ChartFactory.createXYLineChart(
-	                title,      // chart title
+	                chartTitle,      // chart title
 	                xLabel,                      // x axis label
 	                yLabel,                      // y axis label
 	                dataset,                  // data
@@ -124,7 +130,7 @@ public class GraphUtils {
         renderer.setSeriesFillPaint(2, new Color(200, 255, 200));
         
         // Sets black color for eta serie
-        renderer.setSeriesPaint(values[0].length-1, Color.BLACK);
+        renderer.setSeriesPaint(seriesKeys.length-1, Color.BLACK);
         
         plot.setRenderer(renderer);
                 
@@ -134,8 +140,43 @@ public class GraphUtils {
         yAxis.setAutoRangeIncludesZero(false);
         yAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
          
-        ChartFrame f = new ChartFrame(title, chart);
+        ChartFrame f = new ChartFrame(chartTitle, chart);
         f.pack();
         f.setVisible(true);
+	}
+	
+	public static void displayStateStepChart(String frameTitle, String chartTitle, String xAxisLabel, String yAxisLabel, String legendKey,LinkedList<ComparableEvent> history){
+		int k=0;
+		XYSeries series = new XYSeries("Series 1");
+		
+		for (int i=0; i< history.size();i++){
+			series.add(history.get(i).getEvent().getOccurrenceTime(),(history.get(i).getEvent().getClass()==Arrival.class)?k++:k--);
+		}
+		
+		XYSeriesCollection dataset = new XYSeriesCollection(); 
+        dataset.addSeries(series); 
+
+		JFreeChart chart = ChartFactory.createXYLineChart(
+				chartTitle, 
+				xAxisLabel, 
+				yAxisLabel, 
+				dataset, 
+				PlotOrientation.VERTICAL, 
+				true, 
+				true, 
+				true);
+		
+		XYPlot plot = (XYPlot) chart.getPlot(); 
+        XYStepRenderer renderer = new XYStepRenderer(); 
+        renderer.setSeriesStroke(0,new BasicStroke(1.2f));
+
+        renderer.setSeriesPaint(0, Color.BLACK);
+        //renderer.setBaseToolTipGenerator(new StandardXYToolTipGenerator()); 
+        //renderer.setDefaultEntityRadius(6);
+        plot.setRenderer(renderer);
+        
+		ChartFrame f = new ChartFrame(frameTitle, chart);
+		f.pack();
+		f.setVisible(true);
 	}
 }

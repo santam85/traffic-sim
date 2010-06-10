@@ -22,7 +22,7 @@ public class SimulationRunners {
 	
 	public static double[][] testConfidenceIntervalWithVariableConfidence(Provider provider, int N) {
 		int numberPerRun = 1000;
-		double[] nd = new double[]{0.5,0.75,0.9,0.95,0.975};
+		double[] nd = new double[]{0.75,0.85,0.9,0.95,0.975,0.99};
 		
 		log.info("--------------------------------------------");
 		log.info("Test confidence interval with variable level of confidence");
@@ -282,8 +282,14 @@ public class SimulationRunners {
 		return res;
 	}
 
-	public static double[][][] simulateMG1PrioWithVariableRhos(double mu, int N, String type) {
-		double[][][] res = new double[99][type.equals("2")?2 + 1:3 + 1][4];
+	public static LinkedList<double[][]> simulateMG1PrioWithVariableRhos(double mu, int N, String type) {
+		//
+		LinkedList<double[][]> res = new LinkedList<double[][]>();
+		//double[99][type.equals("2")?2 + 1:3 + 1][4]
+		for (int i = 0; i < (type.equals("2")?2 + 1:3 + 1); i ++) {	
+			res.add(new double[99][4]);
+		}
+		
 		double[] rhos = null;
 		double rho = 0.8;
 		ExponentialDistribution dist = new ExponentialDistribution(mu);
@@ -326,18 +332,18 @@ public class SimulationRunners {
 			
 			String s = "";
 			for (int j = 0; j < rhos.length; j ++) {
-				res[i][j][0] = x;
-				res[i][j][1] = partial_res[j][0];
-				res[i][j][2] = partial_res[j][1];
-				res[i][j][3] = partial_res[j][2];
+				res.get(j)[i][0] = x;
+				res.get(j)[i][1] = partial_res[j][0];
+				res.get(j)[i][2] = partial_res[j][1];
+				res.get(j)[i][3] = partial_res[j][2];
 				s += "MEAN-" + j + " " + partial_res[j][0] + " ";
 			}
 			log.info("[x= " + x + "] " + " [ " + s + "]");
 			
-			res[i][res[0].length - 1][0] = x;
-			res[i][res[0].length - 1][1] = 1.0/mu*(rho/(1.0 - rho));
-			res[i][res[0].length - 1][2] = 0;
-			res[i][res[0].length - 1][3] = 0;
+			res.get(rhos.length)[i][0] = x;
+			res.get(rhos.length)[i][1] = 1.0/mu*(rho/(1.0 - rho));
+			res.get(rhos.length)[i][2] = 0;
+			res.get(rhos.length)[i][3] = 0;
 			
 			progress.updateCurrentAmmount(1);
 		}
