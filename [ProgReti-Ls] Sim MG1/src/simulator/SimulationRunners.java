@@ -1,5 +1,7 @@
 package simulator;
 
+import java.util.HashMap;
+
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -150,12 +152,12 @@ public class SimulationRunners {
 
 	public static double[][] compareMG1Simulations(double rho, double mu, int N) {
 	
-		double[][] res = new double[3][N];
 		Distribution[] dists = new Distribution[]{new DeterministicDistribution(mu),
 				new ExponentialDistribution(mu),
 				new ParetoDistribution(2.5,Utils.computeParetoBeta(mu,2.5)),
 				new ParetoDistribution(1.2,Utils.computeParetoBeta(mu,1.2))
 		};
+		double[][] res = new double[3][dists.length];
 		
 		log.info("--------------------------------------------");
 		log.info("Compare M/G/1 simulation");
@@ -168,7 +170,7 @@ public class SimulationRunners {
 			res[0][i] = values[0];
 			res[1][i] = values[1];
 			res[2][i] = values[2];
-			log.info("[" + dists[i].getDistributionName() + " ] [ MEAN: " + res[0][i] + " VAR: " + res[1][i] + " CONF: " + res[2][i] + " ]");
+			log.info("[ " + dists[i].getDistributionName() + " ] [ MEAN: " + res[0][i] + " VAR: " + res[1][i] + " CONF: " + res[2][i] + " ]");
 			progress.updateCurrentAmmount(1);
 		}
 		log.info("--------------------------------------------");
@@ -193,13 +195,33 @@ public class SimulationRunners {
 			res[0][i] = vals[0];
 			res[1][i] = vals[1];
 			res[2][i] = vals[2];
-			log.info("[rho " + rhos[i] + "[ MEAN: " + res[0][i] + " VAR: " + res[1][i] + " CONF: " + res[2][i] + " ]");
+			log.info("[rho " + rhos[i] + " ]  [ MEAN: " + res[0][i] + " VAR: " + res[1][i] + " CONF: " + res[2][i] + " ]");
 			progress.updateCurrentAmmount(1);
 		}
 		
 		log.info("--------------------------------------------");
 		
 		return res;
+	}
+	
+	public static void simulateMG1EvaluatingProbability(Distribution dist, double rho, double mu, int N) {
+		log.info("--------------------------------------------");
+		log.info("Evaluating M/G/1 state's probability");
+		
+		double lambda = rho*mu;
+		
+		progress.reset();
+		progress.updateTotalAmmount(N);
+		HashMap<Integer,double[]> prob = new HashMap<Integer,double[]>();
+		for(int j=0;j<N;j++){
+			Simulator s = new Simulator(new Distribution[]{new ExponentialDistribution(lambda)},dist);
+			s.run();
+			HashMap<Integer,Double> temp = s.getStatesProbobility();
+			Utils.meshMaps(prob,temp);
+			log.info("[run " + j + "] " + Utils.mapToString(temp));
+			progress.updateCurrentAmmount(1);
+		}
+		log.info("[MEAN of runs] " + Utils.mapToString(Utils.computeMeanOnMap(prob)));
 	}
 
 	private static double[][] simulateMG1Prio(Distribution dist, double[] rho, double mu, int N) {
@@ -234,14 +256,15 @@ public class SimulationRunners {
 		return res;
 	}
 
-	public static double[][][] simulateMG1PrioWithVariableRhos(double mu, String type) {
+	public static double[][][] simulateMG1PrioWithVariableRhos(double mu, int N, String type) {
 		double[][][] res = new double[99][type.equals("2")?2 + 1:3 + 1][4];
 		double[] rhos = null;
 		double rho = 0.8;
-		int N = 100;
 		ExponentialDistribution dist = new ExponentialDistribution(mu);
 		
 		log.info("--------------------------------------------");
+		log.info("Simulate M/G/1//PRIO with variable rho [TYPE: " + type + "]");
+		log.info("Simulation parameters [RHO: " + rho + " MU: " + mu + "]");
 		
 		progress.reset();
 		progress.updateTotalAmmount(N * 99);
@@ -275,12 +298,16 @@ public class SimulationRunners {
 			
 			double[][] partial_res = simulateMG1Prio(dist,rhos,mu,N);
 			
+			String s = "";
 			for (int j = 0; j < rhos.length; j ++) {
 				res[i][j][0] = x;
 				res[i][j][1] = partial_res[j][0];
 				res[i][j][2] = partial_res[j][1];
 				res[i][j][3] = partial_res[j][2];
+				s += "MEAN-" + j + " " + partial_res[j][0] + " ";
 			}
+			log.info("[x= " + x + "] " + " [ " + s + "]");
+			
 			res[i][res[0].length - 1][0] = x;
 			res[i][res[0].length - 1][1] = 1.0/mu*(rho/(1.0 - rho));
 			res[i][res[0].length - 1][2] = 0;

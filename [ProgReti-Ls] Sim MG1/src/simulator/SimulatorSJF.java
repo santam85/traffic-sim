@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Vector;
 
-public class Simulator implements Runnable {
+public class SimulatorSJF implements Runnable {
 
 	private Vector<PriorityQueue<Arrival>> eventList;
 	private PriorityQueue<Event> futureEventList;
@@ -27,7 +27,7 @@ public class Simulator implements Runnable {
 	
 	private LinkedList<Event> history;
 	
-	public Simulator(Distribution[] arrivalTimeDistribution, Distribution serviceTimeDistribution){
+	public SimulatorSJF(Distribution[] arrivalTimeDistribution, Distribution serviceTimeDistribution){
 		history = new LinkedList<Event>();
 		this.priorityClasses = arrivalTimeDistribution.length;
 		
