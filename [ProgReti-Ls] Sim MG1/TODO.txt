@@ -7,3 +7,4 @@ check dei parametri in handleMG1SimulationWithVariableRho
 (per il secondo punto opzionale)-> SimulatorSJF da modificare del tutto per supportare lo scheduling SJF (per ora è solo una mera copia di Simulator)
 
 Aggiungere probabilitˆ di stato teorica nel plot.
+Cavare quella teorica di eta con pareto in mg1
