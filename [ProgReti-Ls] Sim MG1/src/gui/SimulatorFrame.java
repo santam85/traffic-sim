@@ -669,7 +669,17 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 		final Distribution d = dist;
 		executor.submit(new Runnable() {
 			public void run() {
-				SimulationRunners.simulateMG1EvaluatingProbability(d,getRho(),getMu(),getMG1SimulationRuns());
+				final double[][] res = SimulationRunners.simulateMG1EvaluatingProbability(d,getRho(),getMu(),getMG1SimulationRuns());
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						double[][] values = new double[2][res[0].length];
+						for (int i = 0; i < values[0].length; i ++) {
+							values[0][i] = i;
+							values[1][i] = res[0][i];
+						}
+						GraphUtils.displayLineChart("state's probability","Probability of each state","state","probability",values);
+					}
+				});
 			}
 		});
 	}

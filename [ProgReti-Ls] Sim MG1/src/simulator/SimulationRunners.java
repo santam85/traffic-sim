@@ -1,6 +1,7 @@
 package simulator;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -204,7 +205,7 @@ public class SimulationRunners {
 		return res;
 	}
 	
-	public static void simulateMG1EvaluatingProbability(Distribution dist, double rho, double mu, int N) {
+	public static double[][] simulateMG1EvaluatingProbability(Distribution dist, double rho, double mu, int N) {
 		log.info("--------------------------------------------");
 		log.info("Evaluating M/G/1 state's probability");
 		
@@ -212,16 +213,42 @@ public class SimulationRunners {
 		
 		progress.reset();
 		progress.updateTotalAmmount(N);
-		HashMap<Integer,double[]> prob = new HashMap<Integer,double[]>();
+		LinkedList<double[]> prob = new LinkedList<double[]>();
 		for(int j=0;j<N;j++){
 			Simulator s = new Simulator(new Distribution[]{new ExponentialDistribution(lambda)},dist);
 			s.run();
-			HashMap<Integer,Double> temp = s.getStatesProbobility();
-			Utils.meshMaps(prob,temp);
-			log.info("[run " + j + "] " + Utils.mapToString(temp));
+			String out = "";
+			double[] tmp = s.getStatesProbobility();
+			double TP = 0;
+			for (int i = 0; i < tmp.length; i ++) {
+				if (prob.size() <= i) {
+					double[] a = new double[N];
+					a[j] = tmp[i];
+					prob.add(i,a);
+				}
+				else {
+					prob.get(i)[j] = tmp[i];
+				}
+				TP += tmp[i];
+				out += " P" + i + " " + tmp[i] + " ";
+			}
+			log.info("[run " + j + " ] [ " + out + " ]");
 			progress.updateCurrentAmmount(1);
 		}
-		log.info("[MEAN of runs] " + Utils.mapToString(Utils.computeMeanOnMap(prob)));
+		
+		double[][] res = new double[3][prob.size()];
+		String out = "";
+		double TP = 0;
+		for (int i = 0; i < prob.size(); i ++) {
+			res[0][i] = Utils.mean(prob.get(i));
+			res[1][i] = Utils.cvar(prob.get(i),res[0][i]);
+			res[2][i] = Utils.confidenceInterval(N,0.975,res[1][i]);
+			out += " P" + i + " " + res[0][i] + " ";
+			TP += res[0][i];
+		}
+		log.info("[MEAN of runs ] [ " + out + " ]");
+		
+		return res;
 	}
 
 	private static double[][] simulateMG1Prio(Distribution dist, double[] rho, double mu, int N) {

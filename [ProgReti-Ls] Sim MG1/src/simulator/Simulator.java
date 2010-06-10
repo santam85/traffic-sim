@@ -1,6 +1,5 @@
 package simulator;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
@@ -10,7 +9,7 @@ public class Simulator implements Runnable {
 
 	private Vector<PriorityQueue<Arrival>> eventList;
 	private PriorityQueue<Event> futureEventList;
-	private HashMap<Integer,Double> states;
+	private LinkedList<Double> states;
 	
 	private int[] arrivalsByClass, departuresByClass;
 	private int arrivals, departures, k;
@@ -33,7 +32,7 @@ public class Simulator implements Runnable {
 		
 		eventList = new Vector<PriorityQueue<Arrival>>(priorityClasses);
 		futureEventList = new PriorityQueue<Event>();
-		states = new HashMap<Integer,Double>();
+		states = new LinkedList<Double>();
 		
 		this.arrivalTimeDistribution = arrivalTimeDistribution;
 		this.serviceTimeDistribution = serviceTimeDistribution;
@@ -57,12 +56,10 @@ public class Simulator implements Runnable {
 		return history;
 	}
 	
-	public HashMap<Integer,Double> getStatesProbobility() {
-		HashMap<Integer,Double> probabilities = new HashMap<Integer,Double>();
-		Iterator<Integer> it = states.keySet().iterator();
-		while (it.hasNext()) {
-			int i = it.next();
-			probabilities.put(i,states.get(i)/now);
+	public double[] getStatesProbobility() {
+		double[] probabilities = new double[states.size()];
+		for (int i = 0; i < states.size(); i ++) {
+			probabilities[i] = states.get(i)/now;
 		}
 		return probabilities;
 	}
@@ -142,16 +139,16 @@ public class Simulator implements Runnable {
 	}
 
 	private boolean checkStopCondition() {
-		return arrivals < 1000;
+		return arrivals < 10000;
 	}
 	
 	private void updateState(Event e) {
 		double elapsedTime = e.occurrenceTime - now;
-		if (!states.containsKey(k)) {
-			states.put(k,elapsedTime);
+		if (states.size() <= k) {
+			states.add(k,elapsedTime);
 		}
 		else {
-			states.put(k,states.get(k) + elapsedTime);
+			states.set(k,states.get(k) + elapsedTime);
 		}
 	}
 	
@@ -164,7 +161,7 @@ public class Simulator implements Runnable {
 	}
 	
 	private void checkConsistency() {
-		Iterator<Double> it = states.values().iterator();
+		Iterator<Double> it = states.iterator();
 		double sum = 0;
 		while (it.hasNext()) 
 			sum += it.next();

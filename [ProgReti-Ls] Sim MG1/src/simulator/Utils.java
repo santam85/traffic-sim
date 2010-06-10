@@ -1,8 +1,5 @@
 package simulator;
 
-import java.util.HashMap;
-import java.util.Iterator;
-
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.distribution.TDistributionImpl;
 
@@ -45,39 +42,5 @@ public class Utils {
 	
 	public static double computeParetoBeta(double lambda, double alfa) {
 		return  (((1/lambda) * (alfa - 1))/alfa);
-	}
-	
-	public static void meshMaps(HashMap<Integer,double[]> result, HashMap<Integer,Double> partial) {
-		Iterator<Integer> it = partial.keySet().iterator();
-		while (it.hasNext()) {
-			int i = it.next();
-			if (!result.containsKey(i)) {
-				result.put(i,new double[]{1,partial.get(i)});
-			}
-			else {
-				double[] tmp = result.get(i);
-				result.put(i,new double[]{tmp[0] + 1, tmp[1] + partial.get(i)});
-			}
-		}
-	}
-	
-	public static String mapToString(HashMap<Integer,Double> map) {
-		String res = "";
-		Iterator<Integer> it = map.keySet().iterator();
-		while (it.hasNext()) {
-			int i = it.next();
-			res += "[ P" + i + " ]: " + map.get(i) + "  ";
-		}
-		return res;
-	}
-	
-	public static HashMap<Integer,Double> computeMeanOnMap(HashMap<Integer,double[]> values) {
-		HashMap<Integer,Double> res = new HashMap<Integer,Double>();
-		Iterator<Integer> it = values.keySet().iterator();
-		while (it.hasNext()) {
-			int i = it.next();
-			res.put(i,values.get(i)[1]/values.get(i)[0]);
-		}
-		return res;
 	}
 }
