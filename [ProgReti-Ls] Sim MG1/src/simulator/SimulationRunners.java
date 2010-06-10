@@ -5,10 +5,8 @@ import java.util.LinkedList;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import simulator.distribution.DeterministicDistribution;
 import simulator.distribution.Distribution;
 import simulator.distribution.ExponentialDistribution;
-import simulator.distribution.ParetoDistribution;
 import simulator.distribution.UniformDistribution;
 import simulator.random.Provider;
 import simulator.random.RandomProvider;
@@ -146,7 +144,7 @@ public class SimulationRunners {
 		
 		double[] run = new double[N];
 		for(int j=0;j<N;j++){
-			Simulator s = new Simulator(new Distribution[]{new ExponentialDistribution(lambda)},dist);
+			Simulator s = new FCFSSimulator(new Distribution[]{new ExponentialDistribution(lambda)},dist);
 			s.run();
 			run[j]=s.getEtaByClass(0);
 			progress.updateCurrentAmmount(1);
@@ -216,7 +214,7 @@ public class SimulationRunners {
 		progress.updateTotalAmmount(N);
 		LinkedList<double[]> prob = new LinkedList<double[]>();
 		for(int j=0;j<N;j++){
-			Simulator s = new Simulator(new Distribution[]{new ExponentialDistribution(lambda)},dist);
+			Simulator s = new FCFSSimulator(new Distribution[]{new ExponentialDistribution(lambda)},dist);
 			s.run();
 			String out = "";
 			double[] tmp = s.getStatesProbobility();
@@ -267,7 +265,7 @@ public class SimulationRunners {
 		
 		double[][] run = new double[rho.length][N];
 		for(int j=0;j<N;j++){
-			Simulator s = new Simulator(arrivalDists,dist);
+			Simulator s = new FCFSSimulator(arrivalDists,dist);
 			s.run();
 			for (int x = 0; x < rho.length; x ++) {
 				run[x][j]=s.getEtaByClass(x);
