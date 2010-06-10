@@ -1,41 +1,56 @@
 package simulator;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Vector;
 
-public class Simulator implements Runnable {
+import simulator.distribution.Distribution;
+import simulator.events.Arrival;
+import simulator.events.ComparableEvent;
+import simulator.events.Departure;
+import simulator.events.Event;
+import simulator.events.OccurrenceTimeComparedEvent;
 
-	private Vector<PriorityQueue<Arrival>> eventList;
-	private PriorityQueue<Event> futureEventList;
-	private LinkedList<Double> states;
+public class Simulator {
+
+	protected Vector<PriorityQueue<ComparableEvent>> eventList;
+	protected PriorityQueue<ComparableEvent> futureEventList;
+	protected LinkedList<Double> states;
 	
-	private int[] arrivalsByClass, departuresByClass;
-	private int arrivals, departures, k;
-	private double now, freeTime ;
-	private double[] waitTime;
+	protected int[] arrivalsByClass, departuresByClass;
+	protected int arrivals, departures, k, totalArrivals;
+	protected double now, freeTime ;
+	protected double[] waitTime;
 	
-	private Distribution[] arrivalTimeDistribution;
-	private Distribution serviceTimeDistribution;
+	protected Distribution[] arrivalTimeDistribution;
+	protected Distribution serviceTimeDistribution;
 	
 	
-	private double[] etaByClass;
-	private double eta, eps;
-	private int priorityClasses;
+	protected double[] etaByClass;
+	protected double eta, eps;
+	protected int priorityClasses;
 	
-	private LinkedList<Event> history;
+	protected LinkedList<ComparableEvent> history;
 	
 	public Simulator(Distribution[] arrivalTimeDistribution, Distribution serviceTimeDistribution){
-		history = new LinkedList<Event>();
+		this(arrivalTimeDistribution,serviceTimeDistribution,100);
+	}
+	
+	public Simulator(Distribution[] arrivalTimeDistribution, Distribution serviceTimeDistribution, int totalArrivals){
+		this.history = new LinkedList<ComparableEvent>();
 		this.priorityClasses = arrivalTimeDistribution.length;
 		
-		eventList = new Vector<PriorityQueue<Arrival>>(priorityClasses);
-		futureEventList = new PriorityQueue<Event>();
-		states = new LinkedList<Double>();
+		this.eventList = new Vector<PriorityQueue<ComparableEvent>>(priorityClasses);
+		this.futureEventList = new PriorityQueue<ComparableEvent>();
+		this.states = new LinkedList<Double>();
 		
 		this.arrivalTimeDistribution = arrivalTimeDistribution;
 		this.serviceTimeDistribution = serviceTimeDistribution;
+		this.totalArrivals = totalArrivals;
+	}
+	
+	public int getTotalArrivals() {
+		return totalArrivals;
 	}
 	
 	public double getEta() {
@@ -52,7 +67,7 @@ public class Simulator implements Runnable {
 		return eps;
 	}
 	
-	public LinkedList<Event> getHistory() {
+	public LinkedList<ComparableEvent> getHistory() {
 		return history;
 	}
 	
@@ -64,42 +79,40 @@ public class Simulator implements Runnable {
 		return probabilities;
 	}
 	
-	@Override
 	public void run() {
 		init();
 		
 		//System.out.println("---------------------------------------------");
 		while (futureEventList.size() > 0){
-			Event e = futureEventList.poll();
-			history.add(e);
+			Event e = futureEventList.poll().getEvent();
+			history.add(new OccurrenceTimeComparedEvent(e));
 			
 			updateState(e);
 			
-			now = e.occurrenceTime;
+			now = e.getOccurrenceTime();
 			
 			//System.out.println(e);
 			
 			if (e.getClass() == Arrival.class){
 				Arrival a = (Arrival)e;
 				k++; arrivals++; arrivalsByClass[e.getPriorityClass()]++;
-				int id = a.id;
 				if (k==1){
-					freeTime = now + a.serviceTime;
-					futureEventList.add(new Departure(freeTime,id,a.getPriorityClass()));
+					freeTime = now + a.getServiceTime();
+					futureEventList.add(generateNewDepartureInFutureEventList(a)); // 
 				} else {
-					freeTime = freeTime + a.serviceTime;
-					eventList.get(a.getPriorityClass()).add(a);
+					freeTime = freeTime + a.getServiceTime();
+					eventList.get(a.getPriorityClass()).add(generateNewArrivalInEventList(a));
 				}
 				
 				if (checkStopCondition()){
-					futureEventList.add(generateArrival(e.getPriorityClass()));
+					futureEventList.add(new OccurrenceTimeComparedEvent(generateArrival(e.getPriorityClass())));
 				}	
 			}else if(e.getClass() == Departure.class){
 				k--; departures++; departuresByClass[e.getPriorityClass()]++;
 				if (k > 0) {
 					Arrival a = serviceEvent();
 					waitTime[a.getPriorityClass()] += (now - a.getOccurrenceTime());
-					futureEventList.add(new Departure(now + a.serviceTime,a.getId(),a.getPriorityClass()));
+					futureEventList.add(new OccurrenceTimeComparedEvent(new Departure(now + a.getServiceTime(),a.getId(),a.getPriorityClass())));
 				}
 			}
 		}
@@ -120,10 +133,18 @@ public class Simulator implements Runnable {
 		this.departuresByClass = new int[priorityClasses];
 		this.waitTime = new double[priorityClasses];
 		for (int i = 0; i < priorityClasses; i ++) {
-			eventList.add(i,new PriorityQueue<Arrival>());
+			eventList.add(i,new PriorityQueue<ComparableEvent>());
 			arrivalsByClass[i] = 0; departuresByClass[i] = 0;
-			futureEventList.add(generateArrival(i));
+			futureEventList.add(new OccurrenceTimeComparedEvent(generateArrival(i)));
 		}
+	}
+	
+	protected ComparableEvent generateNewDepartureInFutureEventList(Event e) {
+		return new OccurrenceTimeComparedEvent(new Departure(freeTime,e.getId(),e.getPriorityClass()));
+	}
+	
+	protected ComparableEvent generateNewArrivalInEventList(Arrival a) {
+		return new OccurrenceTimeComparedEvent(a);
 	}
 	
 	private double generateServiceTime(){
@@ -139,11 +160,11 @@ public class Simulator implements Runnable {
 	}
 
 	private boolean checkStopCondition() {
-		return arrivals < 10000;
+		return arrivals < totalArrivals;
 	}
 	
 	private void updateState(Event e) {
-		double elapsedTime = e.occurrenceTime - now;
+		double elapsedTime = e.getOccurrenceTime() - now;
 		if (states.size() <= k) {
 			states.add(k,elapsedTime);
 		}
@@ -155,12 +176,12 @@ public class Simulator implements Runnable {
 	private Arrival serviceEvent() {
 		Arrival e = null;
 		for (int i = 0; i < this.priorityClasses && e == null; i ++) {
-			e = eventList.get(i).poll();
+			e = (Arrival)eventList.get(i).poll().getEvent();
 		}
 		return e;
 	}
 	
-	private void checkConsistency() {
+	/*private void checkConsistency() {
 		Iterator<Double> it = states.iterator();
 		double sum = 0;
 		while (it.hasNext()) 
@@ -169,5 +190,5 @@ public class Simulator implements Runnable {
 		if (sum != now) {
 			System.out.println("consistency check failed");
 		}
-	}
+	}*/
 }

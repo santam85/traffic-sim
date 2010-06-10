@@ -1,4 +1,4 @@
-package simulator;
+package simulator.distribution;
 
 public class DeterministicDistribution extends Distribution {
 

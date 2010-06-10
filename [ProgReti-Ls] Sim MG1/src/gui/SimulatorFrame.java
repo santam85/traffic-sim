@@ -9,18 +9,18 @@ import java.util.concurrent.Executors;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.SwingUtilities;
 
-import simulator.DeterministicDistribution;
-import simulator.Distribution;
-import simulator.DistributionType;
-import simulator.ExponentialDistribution;
 import simulator.ISimulationProgressListener;
-import simulator.ParetoDistribution;
-import simulator.Provider;
-import simulator.SPPDistribution;
 import simulator.SimulationProgress;
 import simulator.SimulationRunners;
-import simulator.UniformDistribution;
 import simulator.Utils;
+import simulator.distribution.DeterministicDistribution;
+import simulator.distribution.Distribution;
+import simulator.distribution.DistributionType;
+import simulator.distribution.ExponentialDistribution;
+import simulator.distribution.ParetoDistribution;
+import simulator.distribution.SPPDistribution;
+import simulator.distribution.UniformDistribution;
+import simulator.random.Provider;
 
 /**
  *
@@ -33,7 +33,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
     public SimulatorFrame() {
         initComponents();
         
-        distCbx.setModel(new DefaultComboBoxModel(simulator.DistributionType.values()));
+        distCbx.setModel(new DefaultComboBoxModel(simulator.distribution.DistributionType.values()));
         distCbx.addActionListener(this);
         distCbx_mg1.setModel(new DefaultComboBoxModel(new String[]{"Deterministic","Exponential","Pareto 2.5","Pareto 1.2"}));
         classes_prio.setModel(new DefaultComboBoxModel(new String[]{"2","3a","3b","3c"}));

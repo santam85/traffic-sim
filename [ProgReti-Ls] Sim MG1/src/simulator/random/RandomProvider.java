@@ -1,4 +1,4 @@
-package simulator;
+package simulator.random;
 
 import java.security.SecureRandom;
 import java.util.Random;

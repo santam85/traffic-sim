@@ -1,4 +1,6 @@
-package simulator;
+package simulator.distribution;
+
+import simulator.random.RandomProvider;
 
 public class SPPDistribution extends Distribution {
 	

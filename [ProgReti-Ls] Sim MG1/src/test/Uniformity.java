@@ -14,10 +14,10 @@ import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.DefaultXYDataset;
 
-import simulator.Distribution;
-import simulator.Provider;
-import simulator.RandomProvider;
-import simulator.UniformDistribution;
+import simulator.distribution.Distribution;
+import simulator.distribution.UniformDistribution;
+import simulator.random.Provider;
+import simulator.random.RandomProvider;
 
 public class Uniformity {
 

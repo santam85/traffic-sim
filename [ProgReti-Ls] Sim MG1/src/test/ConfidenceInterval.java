@@ -13,11 +13,11 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.DefaultXYDataset;
 
-import simulator.Distribution;
-import simulator.Provider;
-import simulator.RandomProvider;
-import simulator.UniformDistribution;
 import simulator.Utils;
+import simulator.distribution.Distribution;
+import simulator.distribution.UniformDistribution;
+import simulator.random.Provider;
+import simulator.random.RandomProvider;
 
 public class ConfidenceInterval {
 

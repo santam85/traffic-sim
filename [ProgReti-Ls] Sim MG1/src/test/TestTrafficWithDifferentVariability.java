@@ -1,11 +1,11 @@
 package test;
 
-import simulator.Distribution;
-import simulator.DeterministicDistribution;
-import simulator.ExponentialDistribution;
-import simulator.SPPDistribution;
-import simulator.ParetoDistribution;
 import simulator.Utils;
+import simulator.distribution.DeterministicDistribution;
+import simulator.distribution.Distribution;
+import simulator.distribution.ExponentialDistribution;
+import simulator.distribution.ParetoDistribution;
+import simulator.distribution.SPPDistribution;
 
 public class TestTrafficWithDifferentVariability {
 

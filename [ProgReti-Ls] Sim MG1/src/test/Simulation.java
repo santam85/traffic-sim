@@ -14,12 +14,12 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.category.StatisticalLineAndShapeRenderer;
 import org.jfree.data.statistics.DefaultStatisticalCategoryDataset;
 
-import simulator.Distribution;
-import simulator.ExponentialDistribution;
-import simulator.Provider;
-import simulator.RandomProvider;
 import simulator.Simulator;
 import simulator.Utils;
+import simulator.distribution.Distribution;
+import simulator.distribution.ExponentialDistribution;
+import simulator.random.Provider;
+import simulator.random.RandomProvider;
 
 public class Simulation {
 

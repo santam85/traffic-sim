@@ -1,4 +1,4 @@
-package simulator;
+package simulator.events;
 
 public class Departure extends Event {
 	public int id;

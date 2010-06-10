@@ -1,4 +1,6 @@
-package simulator;
+package simulator.distribution;
+
+import simulator.random.RandomProvider;
 
 public class UniformDistribution extends Distribution {
 	

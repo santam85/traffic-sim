@@ -1,4 +1,4 @@
-package simulator;
+package simulator.random;
 
 public enum Provider {
 Java,
