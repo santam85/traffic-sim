@@ -14,6 +14,7 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.category.StatisticalLineAndShapeRenderer;
 import org.jfree.data.statistics.DefaultStatisticalCategoryDataset;
 
+import simulator.FCFSSimulator;
 import simulator.Simulator;
 import simulator.Utils;
 import simulator.distribution.Distribution;
@@ -42,7 +43,7 @@ public class Simulation {
 		for(int i=0; i<rhos.length;i++){
 			double lambda = rhos[i]*mu;
 			for(int j=0;j<N;j++){
-				Simulator s = new Simulator(new Distribution[]{new ExponentialDistribution(lambda)},new ExponentialDistribution(mu,r));
+				Simulator s = new FCFSSimulator(new Distribution[]{new ExponentialDistribution(lambda)},new ExponentialDistribution(mu,r));
 				s.run();
 				runetas[j]=s.getEta();
 			}
