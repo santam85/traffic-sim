@@ -20,4 +20,9 @@ public class ExponentialDistribution extends Distribution {
 		return  -Math.log(rp.nextRandom()*1.0)/mu;
 	}
 
+	@Override
+	public String toString() {
+		return this.distributionName+" (mu="+mu+")";
+	}
+
 }

@@ -14,4 +14,11 @@ public class DeterministicDistribution extends Distribution {
 		return 1/mu;
 	}
 
+	@Override
+	public String toString() {
+		return this.distributionName + " (mu="+mu+")";
+	}
+	
+	
+
 }

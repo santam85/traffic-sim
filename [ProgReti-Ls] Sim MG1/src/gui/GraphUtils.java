@@ -66,6 +66,7 @@ public class GraphUtils {
 		}
 		
 		CategoryAxis xAxis = new CategoryAxis(xLabel);
+		xAxis.setCategoryMargin(0.001);
 		xAxis.setMaximumCategoryLabelLines(2);
 		xAxis.setMaximumCategoryLabelWidthRatio(1);
         ValueAxis yAxis = new NumberAxis(yLabel);

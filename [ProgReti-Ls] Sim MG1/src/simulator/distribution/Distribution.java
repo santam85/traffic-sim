@@ -21,4 +21,6 @@ public abstract class Distribution {
 	public String getDistributionName() {
 		return distributionName;
 	}
+	
+	public abstract String toString();
 }

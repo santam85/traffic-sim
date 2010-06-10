@@ -16,4 +16,9 @@ public class ParetoDistribution extends Distribution {
 		// r=mode*pow(1-u,-1/shape)
 	}
 
+	@Override
+	public String toString() {
+		return this.distributionName+" (a="+shape+",b="+(Math.round(mode*1000)*1.0)/1000+")";
+	}
+
 }

@@ -17,4 +17,8 @@ public class UniformDistribution extends Distribution {
 		return  (rp.nextRandom());
 	}
 
+	@Override
+	public String toString() {
+		return this.distributionName;
+	}
 }

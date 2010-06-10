@@ -243,13 +243,13 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
        jLabel7.setText("# runs:");
 
        buttonGroup1.add(distRbt);
-       distRbt.setText("variable distribution");
+       distRbt.setText("Variable distribution");
 
        buttonGroup1.add(rhoRbt);
-       rhoRbt.setText("variable rho");
+       rhoRbt.setText("Variable rho");
 
        buttonGroup1.add(estimateRbtn);
-       estimateRbtn.setText("esimate state's probability");
+       estimateRbtn.setText("Estimate state probability");
 
        org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
        jPanel3.setLayout(jPanel3Layout);

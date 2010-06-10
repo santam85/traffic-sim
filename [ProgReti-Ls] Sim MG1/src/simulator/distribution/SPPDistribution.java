@@ -61,5 +61,10 @@ public class SPPDistribution extends Distribution {
 			return tmp + handleState0();
 		}
 	}
+	
+	@Override
+	public String toString() {
+		return this.distributionName+" (mu0="+mu0+",mu1="+mu1+",p0="+p0+",p1="+p1+")";
+	}
 
 }
