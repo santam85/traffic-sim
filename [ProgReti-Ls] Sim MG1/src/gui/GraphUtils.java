@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Rectangle;
+import java.awt.geom.Ellipse2D;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
@@ -70,7 +71,9 @@ public class GraphUtils {
 
         StatisticalLineAndShapeRenderer renderer = new StatisticalLineAndShapeRenderer();
         CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
-
+        renderer.setErrorIndicatorPaint(Color.DARK_GRAY);
+        renderer.setSeriesShape(0, new Ellipse2D.Double(-2,-2,4,4));
+        
         JFreeChart chart = new JFreeChart(title,
                                           new Font("Helvetica", Font.BOLD, 14),
                                           plot,
