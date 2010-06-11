@@ -1,7 +1,5 @@
 package simulator;
 
-import gui.GraphUtils;
-
 import java.util.LinkedList;
 
 import org.apache.log4j.Level;
@@ -111,7 +109,7 @@ public class SimulationRunners {
 	}
 
 	public static void generateTraffic(double lambda, Distribution dist, int N) {
-		double T = 30.0/lambda;
+		double T = lambda*30;
 		double[] runs = new double[N];
 		double cmean, cvar, idc;
 		
@@ -134,21 +132,21 @@ public class SimulationRunners {
 		
 		cmean = Utils.mean(runs);
 		cvar = Utils.cvar(runs,cmean);
-		idc = cvar/cmean;
+		idc = cvar/(cmean);
 		log.info(dist.getDistributionName() + " [ MEAN: " + cmean + " VAR: " + cvar + " IDC: " + idc + " ]");
 		
 		progress.updateCurrentAmmount(1);
 		log.info("--------------------------------------------");
 	}
 	
-	private static double[] simulateMG1(Distribution dist, double rho, double mu, int N) {
+	private static double[] simulateMG1(Distribution dist, double rho, double mu, int N, int arrivals) {
 		double[] res = new double[3];
 		double lambda = rho*mu;
 		double confLevel = 0.975;
 		
 		double[] run = new double[N];
 		for(int j=0;j<N;j++){
-			Simulator s = new FCFSSimulator(new Distribution[]{new ExponentialDistribution(lambda)},dist);
+			Simulator s = new FCFSSimulator(new Distribution[]{new ExponentialDistribution(lambda)},dist,arrivals);
 			s.run();
 			run[j]=s.getEtaByClass(0);
 			progress.updateCurrentAmmount(1);
@@ -160,7 +158,7 @@ public class SimulationRunners {
 		return res;
 	}
 
-	public static double[][] compareMG1Simulations(Distribution[] dists,double rho, double mu, int N) {
+	public static double[][] compareMG1Simulations(Distribution[] dists,double rho, double mu, int N, int arrivals) {
 		double[][] res = new double[3][dists.length];
 		
 		log.info("--------------------------------------------");
@@ -170,7 +168,7 @@ public class SimulationRunners {
 		progress.reset();
 		progress.updateTotalAmmount(dists.length * N);
 		for(int i=0; i<dists.length;i++){
-			double[] values = SimulationRunners.simulateMG1(dists[i],rho,mu,N);
+			double[] values = SimulationRunners.simulateMG1(dists[i],rho,mu,N,arrivals);
 			res[0][i] = values[0];
 			res[1][i] = values[1];
 			res[2][i] = values[2];
@@ -182,7 +180,7 @@ public class SimulationRunners {
 		return res;
 	}
 
-	public static double[][] simulateMG1WithVariableRho(Distribution dist, double[] rhos, double mu, int N) {
+	public static double[][] simulateMG1WithVariableRho(Distribution dist, double[] rhos, double mu, int N, int arrivals) {
 		double[][] res = new double[3][rhos.length];
 		
 		log.info("--------------------------------------------");
@@ -195,7 +193,7 @@ public class SimulationRunners {
 		progress.reset();
 		progress.updateTotalAmmount(rhos.length * N);
 		for(int i=0; i<rhos.length;i++){
-			double[] vals = simulateMG1(dist,rhos[i],mu,N);
+			double[] vals = simulateMG1(dist,rhos[i],mu,N,arrivals);
 			res[0][i] = vals[0];
 			res[1][i] = vals[1];
 			res[2][i] = vals[2];
@@ -208,7 +206,7 @@ public class SimulationRunners {
 		return res;
 	}
 	
-	public static double[][] simulateMG1EvaluatingProbability(Distribution dist, double rho, double mu, int N) {
+	public static double[][] simulateMG1EvaluatingProbability(Distribution dist, double rho, double mu, int N, int arrivals) {
 		log.info("--------------------------------------------");
 		log.info("Evaluating M/G/1 state's probability");
 		
@@ -218,7 +216,7 @@ public class SimulationRunners {
 		progress.updateTotalAmmount(N);
 		LinkedList<double[]> prob = new LinkedList<double[]>();
 		for(int j=0;j<N;j++){
-			Simulator s = new FCFSSimulator(new Distribution[]{new ExponentialDistribution(lambda)},dist);
+			Simulator s = new FCFSSimulator(new Distribution[]{new ExponentialDistribution(lambda)},dist,arrivals);
 			s.run();
 			String out = "";
 			double[] tmp = s.getStatesProbobility();
@@ -254,7 +252,7 @@ public class SimulationRunners {
 		return res;
 	}
 
-	private static double[][] simulateMG1Prio(Distribution dist, double[] rho, double mu, int N) {
+	private static double[][] simulateMG1Prio(Distribution dist, double[] rho, double mu, int N, int arrivals) {
 		double[][] res = new double[rho.length][3];
 		double[] lambda = new double[rho.length];
 		Distribution[] arrivalDists = new Distribution[rho.length];
@@ -269,7 +267,7 @@ public class SimulationRunners {
 		
 		double[][] run = new double[rho.length][N];
 		for(int j=0;j<N;j++){
-			Simulator s = new FCFSSimulator(arrivalDists,dist);
+			Simulator s = new FCFSSimulator(arrivalDists,dist,arrivals);
 			s.run();
 			for (int x = 0; x < rho.length; x ++) {
 				run[x][j]=s.getEtaByClass(x);
@@ -286,7 +284,7 @@ public class SimulationRunners {
 		return res;
 	}
 
-	public static LinkedList<double[][]> simulateMG1PrioWithVariableRhos(double mu, int N, String type) {
+	public static LinkedList<double[][]> simulateMG1PrioWithVariableRhos(double mu, int N, String type, int arrivals) {
 		//
 		LinkedList<double[][]> res = new LinkedList<double[][]>();
 		//double[99][type.equals("2")?2 + 1:3 + 1][4]
@@ -332,7 +330,7 @@ public class SimulationRunners {
 			}
 			
 			
-			double[][] partial_res = simulateMG1Prio(dist,rhos,mu,N);
+			double[][] partial_res = simulateMG1Prio(dist,rhos,mu,N,arrivals);
 			
 			String s = "";
 			for (int j = 0; j < rhos.length; j ++) {
@@ -357,18 +355,18 @@ public class SimulationRunners {
 		return res;
 	}
 	
-	public static double[][] simulateMG1SJN() {
-		double mu = 1;
-		double lambda = 0.8*mu;
-		int N = 50;
+	public static LinkedList<double[][]> simulateMG1SJN(double rho, double mu, int N, int arrivals, int steps, double multiplier) {
+		double lambda = rho*mu;
 		
 		log.info("--------------------------------------------");
 		log.info("Simulate M/G/1 with SJN queuing-policy");
 		
+		progress.reset();
+		progress.updateTotalAmmount(N + 1);
 		LinkedList<double[]> runs = new LinkedList<double[]>();
 		double[] xs = null;
 		for (int x = 0; x < N; x ++) {
-			SJNSimulator s = new SJNSimulator(new Distribution[]{new ExponentialDistribution(lambda)},new ExponentialDistribution(mu),10000000);
+			SJNSimulator s = new SJNSimulator(new Distribution[]{new ExponentialDistribution(lambda)},new ExponentialDistribution(mu),arrivals,steps,multiplier);
 			s.run();
 			xs = new double[s.getNumberOfClasses()];
 			for (int i = 0; i < s.getNumberOfClasses(); i ++) {
@@ -382,6 +380,7 @@ public class SimulationRunners {
 				}
 				xs[i] = s.getDiscretizetionValueByClass(i);
 			}
+			progress.updateCurrentAmmount(1);
 		}
 		
 		double[][] res = new double[3][runs.size()];
@@ -394,6 +393,7 @@ public class SimulationRunners {
 			s[i] = i + "";
  			out += " eta-" + i + " " + res[0][i] + " ";
 		}
+		progress.updateCurrentAmmount(1);
 		log.info("[MEAN of runs ] [ " + out + " ]");
 		
 		LinkedList<double[]> y = new LinkedList<double[]>(); y.add(res[0]);
@@ -403,9 +403,8 @@ public class SimulationRunners {
 		val[1] = res[0];
 		LinkedList<double[][]> values = new LinkedList<double[][]>(); values.add(val);
 		// GraphUtils.displayStatisticalLineChart("M/G/1//SJN", "mean eta", "class", "eta", new String[]{"eta"},s, y, confidence);
-		GraphUtils.displayLineChart("M/G/1//SJN", "mean eta", "class", "eta", new String[]{"eta"},values);
 		log.info("--------------------------------------------");
-		return res;
+		return values;
 	}
 
 }
