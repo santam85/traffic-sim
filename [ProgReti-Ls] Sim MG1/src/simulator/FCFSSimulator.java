@@ -30,7 +30,7 @@ public class FCFSSimulator extends Simulator {
 	}
 
 	@Override
-	protected int generatePriorityClass(Arrival a) {
+	protected int generatePriorityClass(Event a) {
 		return a.getPriorityClass();
 	}
 }

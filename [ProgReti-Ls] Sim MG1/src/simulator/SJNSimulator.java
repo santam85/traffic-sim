@@ -13,6 +13,7 @@ import simulator.misc.LogaritmicQuantizator;
 public class SJNSimulator extends Simulator {
 
 	private LogaritmicQuantizator quantizator;
+	private int classes;
 	
 	public SJNSimulator(Distribution[] arrivalTimeDistribution, ExponentialDistribution serviceTimeDistribution){
 		this(arrivalTimeDistribution,serviceTimeDistribution,1000);
@@ -22,7 +23,13 @@ public class SJNSimulator extends Simulator {
 		super(arrivalTimeDistribution,serviceTimeDistribution,totalArrivals);
 		
 		quantizator = new LogaritmicQuantizator(1.0/serviceTimeDistribution.getMu());
-		this.waitTime = new double[quantizator.getIntervalNumber()];
+		classes = quantizator.getIntervalNumber();
+		this.waitTime = new double[classes];
+		
+		this.etaByClass = new double[classes];
+		this.arrivalsByClass = new int[classes];
+		this.departuresByClass = new int[classes];
+		this.waitTime = new double[classes];
 	}
 	
 	protected ComparableEvent generateNewDepartureInFutureEventList(Event e,double occurrenceTime) {
@@ -38,9 +45,16 @@ public class SJNSimulator extends Simulator {
 	}
 
 	@Override
-	protected int generatePriorityClass(Arrival a) {
-		System.out.println(a.getServiceTime());
+	protected int generatePriorityClass(Event a) {
+		// System.out.println(a.getServiceTime());
 		return quantizator.getDiscretizationClass(a.getServiceTime());
 	}
-
+	
+	public int getNumberOfClasses() {
+		return this.classes;
+	}
+	
+	public double getDiscretizetionValueByClass(int c) {
+		return quantizator.getDiscretizationValueByClass(c);
+	}
 }

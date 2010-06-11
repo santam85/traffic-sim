@@ -60,7 +60,7 @@ public abstract class Simulator {
 	}
 	
 	public double getEtaByClass(int priorityClass) {
-		if (priorityClass > this.priorityClasses)
+		if (priorityClass > this.etaByClass.length)
 			return -1;
 		return etaByClass[priorityClass];
 	}
@@ -96,7 +96,7 @@ public abstract class Simulator {
 			
 			if (e.getClass() == Arrival.class){
 				Arrival a = (Arrival)e;
-				k++; arrivals++; arrivalsByClass[e.getPriorityClass()]++;
+				k++; arrivals++; arrivalsByClass[generatePriorityClass(a)]++;
 				if (k==1){
 					freeTime = now + a.getServiceTime();
 					futureEventList.add(generateNewDepartureInFutureEventList(a,freeTime)); // specialization point
@@ -109,9 +109,10 @@ public abstract class Simulator {
 					futureEventList.add(generateNewArrivalInFutureEventList(a)); // specialization point
 				}	
 			}else if(e.getClass() == Departure.class){
-				k--; departures++; departuresByClass[e.getPriorityClass()]++;
+				k--; departures++; departuresByClass[generatePriorityClass(e)]++;
 				if (k > 0) {
 					Arrival a = serviceEvent();
+					// System.out.println("ST: " + a.getServiceTime() + " C: " + generatePriorityClass(a));
 					waitTime[generatePriorityClass(a)] += (now - a.getOccurrenceTime());
 					// waitTime[a.getPriorityClass()] += (now - a.getOccurrenceTime());
 					futureEventList.add(generateNewDepartureInFutureEventList(a,now + a.getServiceTime())); // specialization point
@@ -120,9 +121,10 @@ public abstract class Simulator {
 			}
 		}
 		
-		for (int i = 0; i < priorityClasses; i ++) {
+		for (int i = 0; i < waitTime.length; i ++) {
 			eta += waitTime[i];
-			etaByClass[i] = waitTime[i]/arrivalsByClass[i];
+			// System.out.println("------------WT: " + waitTime[i] + " AbC: " + arrivalsByClass[i]);
+			etaByClass[i] = waitTime[i]/(arrivalsByClass[i] > 0?arrivalsByClass[i]:1);
 		}
 		eta = eta/arrivals;
 	}
@@ -146,7 +148,11 @@ public abstract class Simulator {
 	
 	abstract protected ComparableEvent generateNewArrivalInFutureEventList(Arrival a) ;
 	
-	abstract protected int generatePriorityClass(Arrival a) ;
+	abstract protected int generatePriorityClass(Event a) ;
+	
+	public int getNumberOfClasses() {
+		return this.priorityClasses;
+	}
 	
 	protected double generateServiceTime(){
 		return serviceTimeDistribution.nextValue();

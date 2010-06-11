@@ -8,7 +8,7 @@ public class LogaritmicQuantizator {
 	private LinkedList<QuantizationInterval> intervals;
 	
 	public LogaritmicQuantizator(double mean) {
-		this(mean,0.01);
+		this(mean,mean/20);
 	}
 	
 	public LogaritmicQuantizator(double mean, double step) {
@@ -24,27 +24,28 @@ public class LogaritmicQuantizator {
 	}
 	
 	private void init() {
-		double y = step/2.0;
+		double y = step;
 		double x = 0;
 		for (; y < mean; y += step) {
 			double tmp = mean + a - Math.pow(10,- y + b + mean);
-			intervals.add(new QuantizationInterval(x,tmp,y - step/2.0));
+			intervals.add(new QuantizationInterval(x,tmp,x + ((tmp - x)/2.0)));
 			x = tmp;
 		}
-		for (; y < 2*mean; y += step) {
+		for (; x < 10*mean; y += step) {
 			double tmp = mean - a + Math.pow(10,y + b - mean);
-			intervals.add(new QuantizationInterval(x,tmp,y - step/2.0));
+			intervals.add(new QuantizationInterval(x,tmp,x + ((tmp - x)/2.0)));
 			x = tmp;
 		}
 		
-		java.util.Iterator<QuantizationInterval> it = intervals.iterator();
+		/*java.util.Iterator<QuantizationInterval> it = intervals.iterator();
 		while (it.hasNext()) {
-			System.out.println(it.next());
-		}
+			QuantizationInterval q = it.next();
+			System.out.println("[ " + q.x1 + "," + q.x2 + " ] -> " + q.yc + "[ " + (q.x2 - q.x1) + " ]");
+		}*/
 	}
 	
 	public int getDiscretizationClass(double value) {
-		if (value < 0)
+		if (value <= 0)
 			return 0;
 		int i = 0;
 		for (; i < intervals.size(); i ++) {
@@ -65,6 +66,13 @@ public class LogaritmicQuantizator {
 		return intervals.get(i - 1).yc;
 	}
 	
+	public double getDiscretizationValueByClass(int c) {
+		if (c < 0 || c >= intervals.size()) {
+			return -1;
+		}
+		return intervals.get(c).yc;
+	}
+	
 	public int getIntervalNumber() {
 		return intervals.size();
 	}
@@ -80,7 +88,7 @@ public class LogaritmicQuantizator {
 		}
 		
 		public String toString() {
-			return "[ " + x1 + "," + x2 + "] -> " + yc;
+			return "[ " + x1 + "," + x2 + "] -> " + yc + " [D: " + (x2 - x1) + " ]";
 		}
 		
 	}

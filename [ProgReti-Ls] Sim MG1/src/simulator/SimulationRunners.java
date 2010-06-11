@@ -1,5 +1,7 @@
 package simulator;
 
+import gui.GraphUtils;
+
 import java.util.LinkedList;
 
 import org.apache.log4j.Level;
@@ -17,6 +19,7 @@ public class SimulationRunners {
 	private static final Logger log = Logger.getLogger("simulation");
 	static {
 		log.setLevel(Level.INFO);
+		log.addAppender(new org.apache.log4j.ConsoleAppender(new org.apache.log4j.SimpleLayout()));
 	}
 	
 	private static final SimulationProgress progress = SimulationProgress.getInstance();
@@ -355,18 +358,52 @@ public class SimulationRunners {
 	}
 	
 	public static double[][] simulateMG1SJN() {
-		double[][] res = null;
-		double mu = 2;
+		double mu = 4;
 		double lambda = 0.8*mu;
+		int N = 1000;
 		
 		log.info("--------------------------------------------");
 		log.info("Simulate M/G/1 with SJN queuing-policy");
 		
-		SJNSimulator s = new SJNSimulator(new Distribution[]{new ExponentialDistribution(lambda)},new ExponentialDistribution(mu));
-		s.run();
-		s.getEtaByClass(0);
+		LinkedList<double[]> runs = new LinkedList<double[]>();
+		double[] xs = null;
+		for (int x = 0; x < N; x ++) {
+			SJNSimulator s = new SJNSimulator(new Distribution[]{new ExponentialDistribution(lambda)},new ExponentialDistribution(mu),100000);
+			s.run();
+			xs = new double[s.getNumberOfClasses()];
+			for (int i = 0; i < s.getNumberOfClasses(); i ++) {
+				if (runs.size() <= i) {
+					double[] tmp = new double[N];
+					tmp[x] = s.getEtaByClass(i);
+					runs.add(i,tmp);
+				}
+				else {
+					runs.get(i)[x] = s.getEtaByClass(i);
+				}
+				xs[i] = s.getDiscretizetionValueByClass(i);
+			}
+		}
 		
+		double[][] res = new double[3][runs.size()];
+		String[] s = new String[runs.size()];
+		String out = "";
+		for (int i = 0; i < runs.size(); i ++) {
+			res[0][i] = Utils.mean(runs.get(i));
+			res[1][i] = Utils.cvar(runs.get(i),res[0][i]);
+			res[2][i] = Utils.confidenceInterval(N,0.975,res[1][i]);
+			s[i] = i + "";
+ 			out += " eta-" + i + " " + res[0][i] + " ";
+		}
+		log.info("[MEAN of runs ] [ " + out + " ]");
 		
+		LinkedList<double[]> y = new LinkedList<double[]>(); y.add(res[0]);
+		LinkedList<double[]> confidence = new LinkedList<double[]>(); confidence.add(res[2]);
+		double[][] val = new double[2][res[0].length];
+		val[0] = xs;
+		val[1] = res[0];
+		LinkedList<double[][]> values = new LinkedList<double[][]>(); values.add(val);
+		// GraphUtils.displayStatisticalLineChart("M/G/1//SJN", "mean eta", "class", "eta", new String[]{"eta"},s, y, confidence);
+		GraphUtils.displayLineChart("M/G/1//SJN", "mean eta", "class", "eta", new String[]{"eta"},values);
 		log.info("--------------------------------------------");
 		return res;
 	}
