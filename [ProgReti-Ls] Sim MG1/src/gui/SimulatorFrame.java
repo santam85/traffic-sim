@@ -1,9 +1,6 @@
 package gui;
 
-import java.awt.BasicStroke;
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
@@ -12,16 +9,6 @@ import java.util.concurrent.Executors;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.SwingUtilities;
-
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartFrame;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.category.LineAndShapeRenderer;
-import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.xy.DefaultXYDataset;
 
 import simulator.ISimulationProgressListener;
 import simulator.SimulationProgress;
@@ -59,7 +46,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
         classes_prio.setModel(new DefaultComboBoxModel(new String[]{"2","3a","3b","3c"}));
         this.rndCbx.setModel(new DefaultComboBoxModel(Provider.values()));
         generateReport.addActionListener(this);
-        this.scatteredPlotBtn.addActionListener(this);
+        this.scatterPlotBtn.addActionListener(this);
         placeholderPanel.setLayout(new BorderLayout());
         simulate_mg1.addActionListener(this);
         distRbt.setSelected(true);
@@ -93,7 +80,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
        confRbtn = new javax.swing.JRadioButton();
        confidenceTxt = new javax.swing.JTextField();
        confidenceLbl = new javax.swing.JLabel();
-       scatteredPlotBtn = new javax.swing.JButton();
+       scatterPlotBtn = new javax.swing.JButton();
        jPanel2 = new javax.swing.JPanel();
        jLabel1 = new javax.swing.JLabel();
        placeholderPanel = new javax.swing.JPanel();
@@ -156,14 +143,14 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
        rndCbx.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
        buttonGroup2.add(runsRbtn);
-       runsRbtn.setText("variable runs");
+       runsRbtn.setText("Variable runs");
 
        buttonGroup2.add(confRbtn);
-       confRbtn.setText("variable confidence level");
+       confRbtn.setText("Variable confidence level");
 
-       confidenceLbl.setText("confidence level:");
+       confidenceLbl.setText("Confidence level:");
 
-       scatteredPlotBtn.setText("Scattered plot");
+       scatterPlotBtn.setText("Scatter plot");
 
        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
        jPanel1.setLayout(jPanel1Layout);
@@ -175,7 +162,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
                    .add(jPanel1Layout.createSequentialGroup()
                        .add(testConfidence)
                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 17, Short.MAX_VALUE)
-                       .add(scatteredPlotBtn))
+                       .add(scatterPlotBtn))
                    .add(runsRbtn)
                    .add(confRbtn)
                    .add(jPanel1Layout.createSequentialGroup()
@@ -206,7 +193,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 81, Short.MAX_VALUE)
                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                    .add(testConfidence)
-                   .add(scatteredPlotBtn))
+                   .add(scatterPlotBtn))
                .addContainerGap())
        );
 
@@ -302,15 +289,15 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
        jLabel7.setText("# runs:");
 
        buttonGroup1.add(distRbt);
-       distRbt.setText("variable distribution");
+       distRbt.setText("Variable distribution");
 
        buttonGroup1.add(rhoRbt);
-       rhoRbt.setText("variable rho");
+       rhoRbt.setText("Variable rho");
 
        buttonGroup1.add(estimateRbtn);
-       estimateRbtn.setText("esimate state's probability");
+       estimateRbtn.setText("Estimate state probability");
 
-       displayKCbx.setText("display k's graph");
+       displayKCbx.setText("Display k(t) graph");
 
        jLabel13.setText("# arrivals:");
 
@@ -641,7 +628,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
    private javax.swing.JTextField runs_mg1;
    private javax.swing.JTextField runs_prio;
    private javax.swing.JTextField runs_sjn;
-   private javax.swing.JButton scatteredPlotBtn;
+   private javax.swing.JButton scatterPlotBtn;
    private javax.swing.JProgressBar simPbr;
    private javax.swing.JButton simulate_mg1;
    private javax.swing.JButton simulate_prio;
@@ -662,7 +649,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 		else if (e.getSource() == this.testConfidence) {
 			handleTestConfidence();
 		}
-		else if (e.getSource() == this.scatteredPlotBtn) {
+		else if (e.getSource() == this.scatterPlotBtn) {
 			handleScatteredPlot();
 		}
 		else if (e.getSource() == this.generateReport) {
@@ -765,38 +752,22 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 		int N = 1000;
 		int K = 1;
 		
-		double[] ii = new double[N];
-		double[] ik = new double[N];
+		double[][] v = new double[2][N];
 		
 		for(int i = 0 ; i< N; i++){
-			ii[i] = d.nextValue();
+			v[0][i] = d.nextValue();
 			for(int j = 1 ; j< K; j++){
 				d.nextValue();
 			}
-			ik[i] = d.nextValue();
-			//System.out.println(ii[i]+" "+ik[i]);
+			v[1][i] = d.nextValue();
 		}
 		
-		double[][] data = new double[][]{ii,ik};
+		LinkedList<double[][]> sct = new LinkedList<double[][]>();
+		sct.add(v);
 		
-		DefaultXYDataset dataset = new DefaultXYDataset();
-		dataset.addSeries("Scatter", data);
-		
-		
-		JFreeChart chart = ChartFactory.createScatterPlot("", "", "", dataset, PlotOrientation.VERTICAL, false, false, false);
-		
-		XYPlot p=chart.getXYPlot();
-		p.setBackgroundPaint(Color.white);
-		p.setDomainCrosshairVisible(true);
-		p.setRangeGridlinePaint(Color.gray);
-		p.setDomainGridlinePaint(Color.gray);
-
-		ChartFrame f = new ChartFrame("Random number generator", chart);
-		f.setBounds(0, 0, 1000, 600);
-		f.setVisible(true);
+		GraphUtils.displayScatterPlot("Ramdom scatter",""+d.getProviderName(), "Random N", "Random N+1", new String[]{""+d.getProviderName()}, sct);
 		
 		//Media e varianza
-		
 		int [] nexp={5,10,20,50,100,500,1000,5000,10000,100000,1000000,1000000};
 		double[][] values=new double[2][nexp.length];
 		for (int j=0;j<nexp.length;j++){
@@ -812,36 +783,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 		LinkedList<double[][]> l = new LinkedList<double[][]>();
 		l.add(values);
 		
-		GraphUtils.displayCategoryLineChart("Random numbers", "Average", "Runs", "Mean", new String[]{d.getProviderName()}, l);
-		
-		/*
-		JFreeChart chart1 = ChartFactory.createLineChart("Average value", // chart title 
-				"n. of experiments", // domain axis label 
-				"Average value", // range axis label 
-				dataset1, // data
-				PlotOrientation.VERTICAL, // orientation 
-				true, // include legend 
-				true, // tooltips 
-				false // urls
-		);
-		
-		ChartFrame f1 = new ChartFrame("Average", chart1);
-		f1.setBounds(0, 0, 1000, 500);
-		
-		// Sugar
-		CategoryPlot cp=(CategoryPlot)chart1.getPlot();
-		cp.setBackgroundPaint(Color.white);
-		cp.setRangeGridlinePaint(Color.gray);
-		LineAndShapeRenderer renderer = (LineAndShapeRenderer) cp.getRenderer();
-		renderer.setSeriesShapesVisible(0,true);
-		renderer.setDrawOutlines(true); 
-		renderer.setUseFillPaint(true);
-		renderer.setSeriesStroke(0, new BasicStroke(2));
-		renderer.setSeriesShape(0, new Rectangle(-2,-2,4,4));
-		// sugar end
-		
-		f1.setVisible(true);
-		*/
+		GraphUtils.displayCategoryLineChart("Random numbers", d.getProviderName(), "Runs", "Mean", new String[]{"Average"}, l);
 	}
 	
 	private void handleTrafficGeneration() {

@@ -188,51 +188,39 @@ public class GraphUtils {
 		f.setVisible(true);
 	}
 	
-	public static void displayScatterPlot(String chartTitle,String xLabel, String yLabel, String[] seriesKeys, LinkedList<double[][]> values ){
-		/*
-		for(int i=0;i<values.size();i++){
-			
-			for (int j=0;j<v.length;j++){
-				dataset1.addValue(v[1][j], "Average", ""+(int)(v[0][j]));
-			}
-		}
+	public static void displayScatterPlot(String frameTitle,String chartTitle,String xLabel, String yLabel, String[] seriesKeys, LinkedList<double[][]> values ){
+
+		DefaultXYDataset dataset = new DefaultXYDataset();
+		for(int i=0;i<seriesKeys.length;i++)
+			dataset.addSeries(seriesKeys[i], values.get(i));
 		
+		JFreeChart chart = ChartFactory.createScatterPlot(
+				chartTitle,
+				xLabel,
+				yLabel,
+				dataset,
+				PlotOrientation.VERTICAL,
+				false,
+				false,
+				false);
 		
-		JFreeChart chart1 = ChartFactory.createLineChart("Average value", // chart title 
-				"n. of experiments", // domain axis label 
-				"Average value", // range axis label 
-				dataset1, // data
-				PlotOrientation.VERTICAL, // orientation 
-				true, // include legend 
-				true, // tooltips 
-				false // urls
-		);
-		
-		ChartFrame f1 = new ChartFrame("Average", chart1);
-		f1.setBounds(0, 0, 1000, 500);
-		
-		// Sugar
-		CategoryPlot cp=(CategoryPlot)chart1.getPlot();
-		cp.setBackgroundPaint(Color.white);
-		cp.setRangeGridlinePaint(Color.gray);
-		LineAndShapeRenderer renderer = (LineAndShapeRenderer) cp.getRenderer();
-		renderer.setSeriesShapesVisible(0,true);
-		renderer.setDrawOutlines(true); 
-		renderer.setUseFillPaint(true);
-		renderer.setSeriesStroke(0, new BasicStroke(2));
-		renderer.setSeriesShape(0, new Rectangle(-2,-2,4,4));
-		// sugar end
-		
-		f1.setVisible(true);
-		*/
+		XYPlot p=chart.getXYPlot();
+		p.setBackgroundPaint(Color.white);
+		p.setDomainCrosshairVisible(true);
+		p.setRangeGridlinePaint(Color.gray);
+		p.setDomainGridlinePaint(Color.gray);
+
+		ChartFrame f = new ChartFrame(frameTitle, chart);
+		f.pack();
+		f.setVisible(true);
 	}
 
 	public static void displayCategoryLineChart(String frameTitle, String chartTitle, String xLabel, String yLabel,String[] seriesTitle, LinkedList<double[][]> values) {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		for(int i=0;i<seriesTitle.length;i++){
 			double[][] v = values.get(i);
-			for(int j=0; j<v[0].length;j++);
-				dataset.addValue(v[1][i], ""+v[0][i], seriesTitle[i]);
+			for(int j=0; j<v[0].length;j++)
+				dataset.addValue(v[1][j], seriesTitle[i], ""+v[0][j]);
 		}
 		
 		JFreeChart chart1 = ChartFactory.createLineChart(chartTitle, // chart title 
