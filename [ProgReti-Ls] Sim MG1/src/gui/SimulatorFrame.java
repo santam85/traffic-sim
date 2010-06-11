@@ -1094,7 +1094,7 @@ public class SimulatorFrame extends javax.swing.JFrame implements ActionListener
 				final LinkedList<double[][]> values = SimulationRunners.simulateMG1SJN(rho,mu,runs,arrivals,step,multiplier);
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						GraphUtils.displayLineChart("M/G/1//SJN", "Mean etaa by service time", "Service time", "Wait Time", new String[]{"Mean Eta"},values);
+						GraphUtils.displayLineChart("M/G/1//SJN", "Mean eta by service time", "Service time", "Wait Time", new String[]{"Mean Eta"},values);
 					}
 				});
 				

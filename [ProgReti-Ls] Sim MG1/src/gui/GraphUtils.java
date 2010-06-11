@@ -16,6 +16,7 @@ import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.chart.renderer.category.StatisticalLineAndShapeRenderer;
 import org.jfree.chart.renderer.xy.DeviationRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
@@ -245,10 +246,10 @@ public class GraphUtils {
 		);
 		
 		// Graphic layout chart1
-		XYPlot cp=(XYPlot)chart1.getPlot();
+		CategoryPlot cp=(CategoryPlot)chart1.getPlot();
 		cp.setBackgroundPaint(Color.white);
 		cp.setRangeGridlinePaint(Color.gray);
-		XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) cp.getRenderer();
+		LineAndShapeRenderer renderer = (LineAndShapeRenderer) cp.getRenderer();
 		renderer.setSeriesShapesVisible(0,true);
 		renderer.setDrawOutlines(true); 
 		renderer.setUseFillPaint(true);
