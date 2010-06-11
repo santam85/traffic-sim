@@ -111,7 +111,7 @@ public class SimulationRunners {
 	}
 
 	public static void generateTraffic(double lambda, Distribution dist, int N) {
-		double T = lambda*30;
+		double T = 30.0/lambda;
 		double[] runs = new double[N];
 		double cmean, cvar, idc;
 		
@@ -134,7 +134,7 @@ public class SimulationRunners {
 		
 		cmean = Utils.mean(runs);
 		cvar = Utils.cvar(runs,cmean);
-		idc = cvar/(cmean);
+		idc = cvar/cmean;
 		log.info(dist.getDistributionName() + " [ MEAN: " + cmean + " VAR: " + cvar + " IDC: " + idc + " ]");
 		
 		progress.updateCurrentAmmount(1);
@@ -358,9 +358,9 @@ public class SimulationRunners {
 	}
 	
 	public static double[][] simulateMG1SJN() {
-		double mu = 4;
+		double mu = 1;
 		double lambda = 0.8*mu;
-		int N = 1000;
+		int N = 50;
 		
 		log.info("--------------------------------------------");
 		log.info("Simulate M/G/1 with SJN queuing-policy");
@@ -368,7 +368,7 @@ public class SimulationRunners {
 		LinkedList<double[]> runs = new LinkedList<double[]>();
 		double[] xs = null;
 		for (int x = 0; x < N; x ++) {
-			SJNSimulator s = new SJNSimulator(new Distribution[]{new ExponentialDistribution(lambda)},new ExponentialDistribution(mu),100000);
+			SJNSimulator s = new SJNSimulator(new Distribution[]{new ExponentialDistribution(lambda)},new ExponentialDistribution(mu),10000000);
 			s.run();
 			xs = new double[s.getNumberOfClasses()];
 			for (int i = 0; i < s.getNumberOfClasses(); i ++) {

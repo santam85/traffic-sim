@@ -8,3 +8,5 @@ check dei parametri in handleMG1SimulationWithVariableRho
 
 Aggiungere probabilitˆ di stato teorica nel plot.
 Cavare quella teorica di eta con pareto in mg1
+
+Controllo parametri primo tab sui random
