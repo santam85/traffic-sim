@@ -82,7 +82,7 @@ public class GraphUtils {
         renderer.setErrorIndicatorPaint(Color.DARK_GRAY);
         
         for (int i=0; i<dataset.getRowCount();i++){
-        	renderer.setSeriesShape(i, new Ellipse2D.Double(-2,-2,4,4));
+        	renderer.setSeriesShape(i, new Ellipse2D.Double(-1.5,-1.5,3,3));
         }
         
         JFreeChart chart = new JFreeChart(chartTitle,
