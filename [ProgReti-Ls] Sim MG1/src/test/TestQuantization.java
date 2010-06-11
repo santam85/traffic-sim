@@ -1,7 +1,6 @@
 package test;
 
 import simulator.SimulationRunners;
-import simulator.misc.LogaritmicQuantizator;
 
 public class TestQuantization {
 
