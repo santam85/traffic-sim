@@ -1,21 +1,28 @@
 package simulator;
 
 import simulator.distribution.Distribution;
+import simulator.distribution.ExponentialDistribution;
 import simulator.events.Arrival;
 import simulator.events.ComparableEvent;
 import simulator.events.Departure;
 import simulator.events.Event;
 import simulator.events.OccurrenceTimeComparedEvent;
 import simulator.events.ServiceTimeComparedEvent;
+import simulator.misc.LogaritmicQuantizator;
 
 public class SJNSimulator extends Simulator {
 
-	public SJNSimulator(Distribution[] arrivalTimeDistribution, Distribution serviceTimeDistribution){
-		super(arrivalTimeDistribution,serviceTimeDistribution);
+	private LogaritmicQuantizator quantizator;
+	
+	public SJNSimulator(Distribution[] arrivalTimeDistribution, ExponentialDistribution serviceTimeDistribution){
+		this(arrivalTimeDistribution,serviceTimeDistribution,1000);
 	}
 	
-	public SJNSimulator(Distribution[] arrivalTimeDistribution, Distribution serviceTimeDistribution, int totalArrivals){
+	public SJNSimulator(Distribution[] arrivalTimeDistribution, ExponentialDistribution serviceTimeDistribution, int totalArrivals){
 		super(arrivalTimeDistribution,serviceTimeDistribution,totalArrivals);
+		
+		quantizator = new LogaritmicQuantizator(1.0/serviceTimeDistribution.getMu());
+		this.waitTime = new double[quantizator.getIntervalNumber()];
 	}
 	
 	protected ComparableEvent generateNewDepartureInFutureEventList(Event e,double occurrenceTime) {
@@ -28,6 +35,12 @@ public class SJNSimulator extends Simulator {
 	
 	protected ComparableEvent generateNewArrivalInFutureEventList(Arrival a) {
 		return new OccurrenceTimeComparedEvent(generateArrival(a.getPriorityClass()));
+	}
+
+	@Override
+	protected int generatePriorityClass(Arrival a) {
+		System.out.println(a.getServiceTime());
+		return quantizator.getDiscretizationClass(a.getServiceTime());
 	}
 
 }

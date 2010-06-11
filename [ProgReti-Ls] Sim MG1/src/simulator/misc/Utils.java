@@ -1,4 +1,4 @@
-package simulator;
+package simulator.misc;
 
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.distribution.TDistributionImpl;

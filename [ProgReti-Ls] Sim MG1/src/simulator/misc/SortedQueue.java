@@ -1,4 +1,4 @@
-package simulator;
+package simulator.misc;
 
 import java.util.Collection;
 import java.util.Iterator;

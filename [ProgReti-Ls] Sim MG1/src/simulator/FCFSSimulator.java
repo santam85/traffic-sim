@@ -28,4 +28,9 @@ public class FCFSSimulator extends Simulator {
 	protected ComparableEvent generateNewArrivalInFutureEventList(Arrival a) {
 		return new OccurrenceTimeComparedEvent(generateArrival(a.getPriorityClass()));
 	}
+
+	@Override
+	protected int generatePriorityClass(Arrival a) {
+		return a.getPriorityClass();
+	}
 }

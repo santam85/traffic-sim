@@ -47,6 +47,8 @@ public abstract class Simulator {
 		this.arrivalTimeDistribution = arrivalTimeDistribution;
 		this.serviceTimeDistribution = serviceTimeDistribution;
 		this.totalArrivals = totalArrivals;
+		
+		init();
 	}
 	
 	public int getTotalArrivals() {
@@ -80,7 +82,6 @@ public abstract class Simulator {
 	}
 	
 	public void run() {
-		init();
 		
 		//System.out.println("---------------------------------------------");
 		while (futureEventList.size() > 0){
@@ -111,7 +112,8 @@ public abstract class Simulator {
 				k--; departures++; departuresByClass[e.getPriorityClass()]++;
 				if (k > 0) {
 					Arrival a = serviceEvent();
-					waitTime[a.getPriorityClass()] += (now - a.getOccurrenceTime());
+					waitTime[generatePriorityClass(a)] += (now - a.getOccurrenceTime());
+					// waitTime[a.getPriorityClass()] += (now - a.getOccurrenceTime());
 					futureEventList.add(generateNewDepartureInFutureEventList(a,now + a.getServiceTime())); // specialization point
 					// futureEventList.add(new OccurrenceTimeComparedEvent(new Departure(now + a.getServiceTime(),a.getId(),a.getPriorityClass()))); 
 				}
@@ -143,6 +145,8 @@ public abstract class Simulator {
 	abstract protected ComparableEvent generateNewArrivalInEventList(Arrival a) ;
 	
 	abstract protected ComparableEvent generateNewArrivalInFutureEventList(Arrival a) ;
+	
+	abstract protected int generatePriorityClass(Arrival a) ;
 	
 	protected double generateServiceTime(){
 		return serviceTimeDistribution.nextValue();

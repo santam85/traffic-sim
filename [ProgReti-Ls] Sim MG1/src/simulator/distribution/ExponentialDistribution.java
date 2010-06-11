@@ -15,6 +15,10 @@ public class ExponentialDistribution extends Distribution {
 		this.mu = mu;
 	}
 	
+	public double getMu() {
+		return mu;
+	}
+	
 	@Override
 	public double nextValue() {
 		return  -Math.log(rp.nextRandom()*1.0)/mu;

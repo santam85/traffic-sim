@@ -13,9 +13,9 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.DefaultXYDataset;
 
-import simulator.Utils;
 import simulator.distribution.Distribution;
 import simulator.distribution.UniformDistribution;
+import simulator.misc.Utils;
 import simulator.random.Provider;
 import simulator.random.RandomProvider;
 

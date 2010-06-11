@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import simulator.distribution.Distribution;
 import simulator.distribution.ExponentialDistribution;
 import simulator.distribution.UniformDistribution;
+import simulator.misc.Utils;
 import simulator.random.Provider;
 import simulator.random.RandomProvider;
 
@@ -350,6 +351,23 @@ public class SimulationRunners {
 		
 		log.info("--------------------------------------------");
 		
+		return res;
+	}
+	
+	public static double[][] simulateMG1SJN() {
+		double[][] res = null;
+		double mu = 2;
+		double lambda = 0.8*mu;
+		
+		log.info("--------------------------------------------");
+		log.info("Simulate M/G/1 with SJN queuing-policy");
+		
+		SJNSimulator s = new SJNSimulator(new Distribution[]{new ExponentialDistribution(lambda)},new ExponentialDistribution(mu));
+		s.run();
+		s.getEtaByClass(0);
+		
+		
+		log.info("--------------------------------------------");
 		return res;
 	}
 

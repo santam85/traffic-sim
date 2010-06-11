@@ -13,7 +13,6 @@ import javax.swing.SwingUtilities;
 import simulator.ISimulationProgressListener;
 import simulator.SimulationProgress;
 import simulator.SimulationRunners;
-import simulator.Utils;
 import simulator.distribution.DeterministicDistribution;
 import simulator.distribution.Distribution;
 import simulator.distribution.DistributionType;
@@ -21,6 +20,7 @@ import simulator.distribution.ExponentialDistribution;
 import simulator.distribution.ParetoDistribution;
 import simulator.distribution.SPPDistribution;
 import simulator.distribution.UniformDistribution;
+import simulator.misc.Utils;
 import simulator.random.Provider;
 
 /**
