@@ -85,12 +85,14 @@ public class GraphUtils {
         	renderer.setSeriesShape(i, new Ellipse2D.Double(-1.5,-1.5,3,3));
         }
         
+        
         JFreeChart chart = new JFreeChart(chartTitle,
                                           new Font("Helvetica", Font.BOLD, 14),
                                           plot,
                                           true);
 
 		ChartFrame f = new ChartFrame(frameTitle, chart);
+		chart.setBackgroundPaint(Color.WHITE);
 		f.pack();
 		f.setVisible(true);
 	}
