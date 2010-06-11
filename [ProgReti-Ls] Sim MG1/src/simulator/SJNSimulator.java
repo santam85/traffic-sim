@@ -20,9 +20,17 @@ public class SJNSimulator extends Simulator {
 	}
 	
 	public SJNSimulator(Distribution[] arrivalTimeDistribution, ExponentialDistribution serviceTimeDistribution, int totalArrivals){
+		this(arrivalTimeDistribution,serviceTimeDistribution,totalArrivals,20);
+	}
+	
+	public SJNSimulator(Distribution[] arrivalTimeDistribution, ExponentialDistribution serviceTimeDistribution, int totalArrivals, int discretizationStep){
+		this(arrivalTimeDistribution,serviceTimeDistribution,totalArrivals,discretizationStep,5.0);
+	}
+	
+	public SJNSimulator(Distribution[] arrivalTimeDistribution, ExponentialDistribution serviceTimeDistribution, int totalArrivals, int discretizationStep, double multiplier){
 		super(arrivalTimeDistribution,serviceTimeDistribution,totalArrivals);
 		
-		quantizator = new LogaritmicQuantizator(1.0/serviceTimeDistribution.getMu());
+		quantizator = new LogaritmicQuantizator(1.0/serviceTimeDistribution.getMu(),discretizationStep,multiplier);
 		classes = quantizator.getIntervalNumber();
 		this.waitTime = new double[classes];
 		

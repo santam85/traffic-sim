@@ -4,16 +4,21 @@ import java.util.LinkedList;
 
 public class LogaritmicQuantizator {
 
-	private double mean, step, a, b;
+	private double mean, step, a, b, multiplier;
 	private LinkedList<QuantizationInterval> intervals;
 	
 	public LogaritmicQuantizator(double mean) {
-		this(mean,mean/20);
+		this(mean,0);
 	}
 	
-	public LogaritmicQuantizator(double mean, double step) {
+	public LogaritmicQuantizator(double mean, double discretizationStep) {
+		this(mean,discretizationStep,10);
+	}
+	
+	public LogaritmicQuantizator(double mean, double discretizationStep, double multiplier) {
 		this.mean = mean;
-		this.step = step;
+		this.step = mean/discretizationStep;
+		this.multiplier = multiplier;
 		intervals = new LinkedList<QuantizationInterval>();
 		
 		double tmp = Math.pow(10,- mean);
@@ -31,7 +36,7 @@ public class LogaritmicQuantizator {
 			intervals.add(new QuantizationInterval(x,tmp,x + ((tmp - x)/2.0)));
 			x = tmp;
 		}
-		for (; x < 10*mean; y += step) {
+		for (; x < multiplier*mean; y += step) {
 			double tmp = mean - a + Math.pow(10,y + b - mean);
 			intervals.add(new QuantizationInterval(x,tmp,x + ((tmp - x)/2.0)));
 			x = tmp;
