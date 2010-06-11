@@ -17,7 +17,6 @@ public class SimulationRunners {
 	private static final Logger log = Logger.getLogger("simulation");
 	static {
 		log.setLevel(Level.INFO);
-		log.addAppender(new org.apache.log4j.ConsoleAppender(new org.apache.log4j.SimpleLayout()));
 	}
 	
 	private static final SimulationProgress progress = SimulationProgress.getInstance();

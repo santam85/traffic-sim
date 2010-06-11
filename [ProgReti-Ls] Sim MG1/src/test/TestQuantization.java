@@ -13,7 +13,7 @@ public class TestQuantization {
 		// LogaritmicQuantizator q = new LogaritmicQuantizator(2);
 		// System.out.println(q.discretize(4) + " " + q.getDiscretizationClass(4));
 		
-		SimulationRunners.simulateMG1SJN();
+		// SimulationRunners.simulateMG1SJN();
 	}
 
 }
