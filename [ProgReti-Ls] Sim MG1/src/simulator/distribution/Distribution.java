@@ -23,4 +23,8 @@ public abstract class Distribution {
 	}
 	
 	public abstract String toString();
+	
+	public String getProviderName(){
+		return rp.toString();
+	}
 }

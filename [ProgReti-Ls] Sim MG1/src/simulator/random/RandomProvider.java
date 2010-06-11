@@ -60,4 +60,10 @@ public class RandomProvider {
 			z = (a * seed + c) % m;
 			return (z*1.0)/m;
 	}
+	
+	@Override
+	public String toString(){
+		return p.toString();
+		
+	}
 }
