@@ -9,7 +9,7 @@
  * Created on Jun 3, 2010, 5:22:48 PM
  */
 
-package gui;
+package gui.panels;
 
 /**
  *
