@@ -73,7 +73,7 @@ public abstract class Simulator {
 		return history;
 	}
 	
-	public double[] getStatesProbobility() {
+	public double[] getStatesProbability() {
 		double[] probabilities = new double[states.size()];
 		for (int i = 0; i < states.size(); i ++) {
 			probabilities[i] = states.get(i)/now;

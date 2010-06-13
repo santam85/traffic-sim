@@ -218,7 +218,7 @@ public class SimulationRunners {
 			Simulator s = new FCFSSimulator(new Distribution[]{new ExponentialDistribution(lambda)},dist,arrivals);
 			s.run();
 			String out = "";
-			double[] tmp = s.getStatesProbobility();
+			double[] tmp = s.getStatesProbability();
 			double TP = 0;
 			for (int i = 0; i < tmp.length; i ++) {
 				if (prob.size() <= i) {
