@@ -230,8 +230,10 @@ public class GraphUtils {
 		renderer.setSeriesPaint(0, Color.BLACK);
 		
 		XYPlot plot = new XYPlot(dataset, x, y, renderer);
-
+		
 		JFreeChart chart = new JFreeChart(plot);
+		chart.setBackgroundPaint(Color.white);
+		
 		ChartFrame f = new ChartFrame(frameTitle, chart);
 		f.pack();
 		f.setVisible(true);
