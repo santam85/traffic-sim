@@ -243,18 +243,20 @@ public class MG1Panel extends JPanel implements ActionListener {
 				y.add(res[0]);
 				c.add(res[2]);
 
-				double[] t1= new double[rhos.length];
-				double[] t2= new double[rhos.length];
-				//Generazione delle funz. teoriche
-				for(int i=0; i<rhos.length;i++){
-					if(d.getClass()==DeterministicDistribution.class)
-						t1[i]=(1.0/mu)*(rhos[i]/(2*(1-rhos[i])));
-					else
-						t1[i]=(1.0/mu)*(rhos[i]/((1-rhos[i])));
-					t2[i]=0;
+				if(d.getClass()==DeterministicDistribution.class || d.getClass()==ExponentialDistribution.class){
+					double[] t1= new double[rhos.length];
+					double[] t2= new double[rhos.length];
+					//Generazione delle funz. teoriche
+					for(int i=0; i<rhos.length;i++){
+						if(d.getClass()==DeterministicDistribution.class)
+							t1[i]=(1.0/mu)*(rhos[i]/(2*(1-rhos[i])));
+						else if(d.getClass()==ExponentialDistribution.class)
+							t1[i]=(1.0/mu)*(rhos[i]/((1-rhos[i])));
+						t2[i]=0;
+					}
+					y.add(t1);
+					c.add(t2);
 				}
-				y.add(t1);
-				c.add(t2);
 
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {

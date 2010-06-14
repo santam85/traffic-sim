@@ -12,11 +12,9 @@ import simulator.events.Event;
 import simulator.events.OccurrenceTimeComparedEvent;
 
 /**
- * @author Santa
- *
- */
-/**
- * @author Santa
+ * Class implementing the simulator
+ * 
+ * @author Andrea Zagnoli, Marco Santarelli, Michael Gattavecchia. 
  *
  */
 public abstract class Simulator {

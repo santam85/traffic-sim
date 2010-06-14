@@ -1,12 +1,5 @@
 COSE DA FARE
-Aggiungere scatter plot al primo tab
-generatore traffico con pareto e alfa eg =1 si pianta
-check dei parametri in handleMG1SimulationWithVariableRho 
-(per il primo punto opzionale) 	-> confronto con i risultati teorici M/D/1 e M/M/1
-							   	-> check consistency (Simulator) non da sempre risultati uguali, xk?
-(per il secondo punto opzionale)-> SimulatorSJF da modificare del tutto per supportare lo scheduling SJF (per ora Ë solo una mera copia di Simulator)
-
 Aggiungere probabilità di stato teorica nel plot.
-Cavare quella teorica di eta con pareto in mg1
 
 Controllo parametri primo tab sui random
+Non vanno più i pannelli dei random

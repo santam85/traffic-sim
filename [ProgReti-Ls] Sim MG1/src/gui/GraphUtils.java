@@ -12,6 +12,8 @@ import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
+import org.jfree.chart.axis.TickUnitSource;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
@@ -34,6 +36,7 @@ import simulator.events.Arrival;
 import simulator.events.ComparableEvent;
 
 /**
+ * Class containing methods for displaying charts
  * @author Andrea Zagnoli, Marco Santarelli, Michael Gattavecchia. 
  *
  */
@@ -209,32 +212,26 @@ public class GraphUtils {
 			String chartTitle, String xAxisLabel, String yAxisLabel,
 			String legendKey, LinkedList<ComparableEvent> history) {
 		int k = 0;
-		XYSeries series = new XYSeries("Series 1");
+		XYSeries series = new XYSeries(legendKey);
 
 		for (int i = 0; i < history.size(); i++) {
-			series
-					.add(
-							history.get(i).getEvent().getOccurrenceTime(),
-							(history.get(i).getEvent().getClass() == Arrival.class) ? k++
-									: k--);
+			series.add(history.get(i).getEvent().getOccurrenceTime(),
+					(history.get(i).getEvent().getClass() == Arrival.class) ? k++ : k--);
 		}
 
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		dataset.addSeries(series);
-
-		JFreeChart chart = ChartFactory.createXYLineChart(chartTitle,
-				xAxisLabel, yAxisLabel, dataset, PlotOrientation.VERTICAL,
-				true, true, true);
-
-		XYPlot plot = (XYPlot) chart.getPlot();
+		
+		NumberAxis y = new NumberAxis(yAxisLabel);
+		NumberAxis x = new NumberAxis(xAxisLabel);
+		y.setTickUnit(new NumberTickUnit(1.0));
 		XYStepRenderer renderer = new XYStepRenderer();
 		renderer.setSeriesStroke(0, new BasicStroke(1.2f));
-
 		renderer.setSeriesPaint(0, Color.BLACK);
-		// renderer.setBaseToolTipGenerator(new StandardXYToolTipGenerator());
-		// renderer.setDefaultEntityRadius(6);
-		plot.setRenderer(renderer);
+		
+		XYPlot plot = new XYPlot(dataset, x, y, renderer);
 
+		JFreeChart chart = new JFreeChart(plot);
 		ChartFrame f = new ChartFrame(frameTitle, chart);
 		f.pack();
 		f.setVisible(true);
