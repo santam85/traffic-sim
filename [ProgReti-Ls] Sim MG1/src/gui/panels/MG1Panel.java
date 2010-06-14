@@ -24,7 +24,6 @@ public class MG1Panel extends JPanel implements ActionListener {
 
 	private javax.swing.JTextField arrivals;
 	private javax.swing.ButtonGroup buttonGroup1;
-	private javax.swing.JCheckBox displayKCbx;
 	private javax.swing.JComboBox distCbx;
 	private javax.swing.JRadioButton distRbt;
 	private javax.swing.JRadioButton estimateRbtn;
@@ -49,7 +48,6 @@ public class MG1Panel extends JPanel implements ActionListener {
 		distRbt.addActionListener(this);
 		rhoRbt.addActionListener(this);
 		estimateRbtn.addActionListener(this);
-		displayKCbx.addActionListener(this);
 		distRbt.setSelected(true);
 
 		executor = e;
@@ -68,7 +66,6 @@ public class MG1Panel extends JPanel implements ActionListener {
 		distRbt = new javax.swing.JRadioButton();
 		rhoRbt = new javax.swing.JRadioButton();
 		estimateRbtn = new javax.swing.JRadioButton();
-		displayKCbx = new javax.swing.JCheckBox();
 		jLabel13 = new javax.swing.JLabel();
 		arrivals = new javax.swing.JTextField();
 		buttonGroup1 = new javax.swing.ButtonGroup();
@@ -88,7 +85,6 @@ public class MG1Panel extends JPanel implements ActionListener {
 		rhoRbt.setText("Variable rho");
 		buttonGroup1.add(estimateRbtn);
 		estimateRbtn.setText("Estimate state probability");
-		displayKCbx.setText("Display k(t) graph");
 		jLabel13.setText("# arrivals:");
 		arrivals.setText("1000");
 
@@ -99,7 +95,6 @@ public class MG1Panel extends JPanel implements ActionListener {
 				.add(jPanel3Layout.createSequentialGroup()
 						.addContainerGap()
 						.add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-								.add(displayKCbx)
 								.add(estimateRbtn)
 								.add(simulate)
 								.add(jPanel3Layout.createSequentialGroup()
@@ -151,7 +146,6 @@ public class MG1Panel extends JPanel implements ActionListener {
 														.addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
 														.add(estimateRbtn)
 														.addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-														.add(displayKCbx)
 														.addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 14, Short.MAX_VALUE)
 														.add(simulate)
 														.addContainerGap())

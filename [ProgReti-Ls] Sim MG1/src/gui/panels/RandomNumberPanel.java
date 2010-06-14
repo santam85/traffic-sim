@@ -63,8 +63,10 @@ public class RandomNumberPanel extends JPanel implements ActionListener {
 	       buttonGroup2.add(confRbtn);
 	       confRbtn.setText("Variable confidence level");
 	       confidenceLbl.setText("Confidence level:");
-	       scatterPlotBtn.setText("Scatter plot");
-
+	       scatterPlotBtn.setText("Distribution Charts");
+	       confidenceTxt.setText("0.95");
+	       runsRbtn.setSelected(true);
+	       
 	       org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(this);
 	       this.setLayout(jPanel1Layout);
 	       jPanel1Layout.setHorizontalGroup(
@@ -118,7 +120,7 @@ public class RandomNumberPanel extends JPanel implements ActionListener {
 				handleTestConfidence();
 		 }
 		 else if (e.getSource() == this.scatterPlotBtn) {
-			 handleScatteredPlot();
+			 handleChartsPlot();
 		 }		
 		 else if (e.getSource() == this.runsRbtn || e.getSource() == this.confRbtn) {
 			 handleConfidenceRadioButtonSelection();
@@ -163,7 +165,7 @@ public class RandomNumberPanel extends JPanel implements ActionListener {
 		}
 	}
 	
-	private void handleScatteredPlot() {
+	private void handleChartsPlot() {
 		executor.submit(new Runnable() {
 			public void run() {
 				RandomProvider rnd = new RandomProvider(Provider.Java);
@@ -219,11 +221,13 @@ public class RandomNumberPanel extends JPanel implements ActionListener {
 	private void handleConfidenceRadioButtonSelection() {
 		if (runsRbtn.isSelected()) {
 			this.confidenceLbl.setText("Confidence level:");
+			confidenceTxt.setText("0.95");
 		}
 		else if (confRbtn.isSelected()) {
 			this.confidenceLbl.setText("#runs");
+			confidenceTxt.setText("10");
 		}
-		confidenceTxt.setText("");
+		
 	}
 	
 	private boolean checkConfidenceIntervalParameters() {

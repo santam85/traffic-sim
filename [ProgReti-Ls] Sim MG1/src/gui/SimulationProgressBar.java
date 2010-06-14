@@ -8,7 +8,7 @@ import simulator.ISimulationProgressListener;
 /**
  * Class that realizes a progress bar for monitoring the simulation progress.
  * 
- * @author Andrea Zagnoli.
+ * @author Andrea Zagnoli, Marco Santarelli, Michael Gattavecchia. 
  */
 public class SimulationProgressBar extends JProgressBar implements ISimulationProgressListener {
 

@@ -12,6 +12,12 @@ import simulator.misc.Utils;
 import simulator.random.Provider;
 import simulator.random.RandomProvider;
 
+/**
+ * A container class containing the configurations for all the simulation to be executed
+ * 
+ * @author Marco Santarelli
+ *
+ */
 public class SimulationRunners {
 
 	private static final Logger log = Logger.getLogger("simulation");

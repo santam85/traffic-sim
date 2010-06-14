@@ -11,6 +11,14 @@ import simulator.events.Departure;
 import simulator.events.Event;
 import simulator.events.OccurrenceTimeComparedEvent;
 
+/**
+ * @author Santa
+ *
+ */
+/**
+ * @author Santa
+ *
+ */
 public abstract class Simulator {
 
 	protected Vector<PriorityQueue<ComparableEvent>> eventList;
@@ -36,6 +44,13 @@ public abstract class Simulator {
 		this(arrivalTimeDistribution,serviceTimeDistribution,1000);
 	}
 	
+	/**
+	 * Creates a new simulator
+	 * 
+	 * @param arrivalTimeDistribution The arrival time distribution
+	 * @param serviceTimeDistribution The service time distribution
+	 * @param totalArrivals The number of arrivals to generate before stopping the simulation
+	 */
 	public Simulator(Distribution[] arrivalTimeDistribution, Distribution serviceTimeDistribution, int totalArrivals){
 		this.history = new LinkedList<ComparableEvent>();
 		this.priorityClasses = arrivalTimeDistribution.length;
@@ -51,14 +66,30 @@ public abstract class Simulator {
 		init();
 	}
 	
+	/**
+	 * A getter for the simulation arrival limit
+	 * 
+	 * @return The arrival limit
+	 */
 	public int getTotalArrivals() {
 		return totalArrivals;
 	}
 	
+	/**
+	 * A getter for the general mean eta
+	 * 
+	 * @return The general mean eta
+	 */
 	public double getEta() {
 		return eta;
 	}
 	
+	/**
+	 * A getter for fetching the mean eta for each class
+	 * 
+	 * @param priorityClass The priority class of interes
+	 * @return The mean eta
+	 */
 	public double getEtaByClass(int priorityClass) {
 		if (priorityClass > this.etaByClass.length)
 			return -1;
@@ -69,10 +100,18 @@ public abstract class Simulator {
 		return eps;
 	}
 	
+	/**
+	 * A getter for the simulation history
+	 * @return A list of events, ordered as the servant processed them
+	 */
 	public LinkedList<ComparableEvent> getHistory() {
 		return history;
 	}
 	
+	/**
+	 * A getter for the evaluated state probability.
+	 * @return An array of the probability, ordered by state number;
+	 */
 	public double[] getStatesProbability() {
 		double[] probabilities = new double[states.size()];
 		for (int i = 0; i < states.size(); i ++) {
@@ -81,9 +120,11 @@ public abstract class Simulator {
 		return probabilities;
 	}
 	
+	
+	/**
+	 *	Starts the simulation, executing it on the caller thread. 
+	 */
 	public void run() {
-		
-		//System.out.println("---------------------------------------------");
 		while (futureEventList.size() > 0){
 			Event e = futureEventList.poll().getEvent();
 			history.add(new OccurrenceTimeComparedEvent(e));
@@ -91,8 +132,6 @@ public abstract class Simulator {
 			updateState(e);
 			
 			now = e.getOccurrenceTime();
-			
-			//System.out.println(e);
 			
 			if (e.getClass() == Arrival.class){
 				Arrival a = (Arrival)e;
@@ -129,6 +168,9 @@ public abstract class Simulator {
 		eta = eta/arrivals;
 	}
 
+	/**
+	 * Inits the simulation parameters
+	 */
 	private void init() {
 		k=0; freeTime = 0; now = 0;
 		this.etaByClass = new double[priorityClasses];
@@ -154,14 +196,29 @@ public abstract class Simulator {
 		return this.priorityClasses;
 	}
 	
+	/**
+	 * The service time generator, using the simulation service time distribution
+	 * @return A random service time
+	 */
 	protected double generateServiceTime(){
 		return serviceTimeDistribution.nextValue();
 	}
 	
+	/**
+	 * The occurrence time generator, using the simulation arrival time distribution
+	 * @param priorityClass The priority class of event to be generated
+	 * @return A random occurrence time
+	 */
 	protected double generateOccurrenceTime(int priorityClass) {
 		return now + arrivalTimeDistribution[priorityClass].nextValue();
 	}
 	
+	/**
+	 * Generates a new arrival
+	 * 
+	 * @param priorityClass The priority class of arrival to be generated
+	 * @return
+	 */
 	protected Event generateArrival(int priorityClass){
 		return new Arrival(generateOccurrenceTime(priorityClass),generateServiceTime(),priorityClass);
 	}
@@ -170,6 +227,11 @@ public abstract class Simulator {
 		return arrivals < totalArrivals;
 	}
 	
+	/**
+	 * A method for updating the system state
+	 * 
+	 * @param e Updates the system state based on the occurred event
+	 */
 	protected void updateState(Event e) {
 		double elapsedTime = e.getOccurrenceTime() - now;
 		if (states.size() <= k) {
@@ -180,6 +242,10 @@ public abstract class Simulator {
 		}
 	}
 	
+	/**
+	 * This method returns the correct event to be processed from the various queues
+	 * @return The event to be serviced
+	 */
 	protected Arrival serviceEvent() {
 		ComparableEvent e = null;
 		for (int i = 0; i < this.priorityClasses && e == null; i ++) {

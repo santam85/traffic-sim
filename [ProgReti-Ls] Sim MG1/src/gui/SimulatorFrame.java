@@ -16,7 +16,7 @@ import simulator.SimulationProgress;
 
 /**
  *
- * @author andreazagnoli
+ * @author Andrea Zagnoli, Marco Santarelli, Michael Gattavecchia. 
  */
 public class SimulatorFrame extends javax.swing.JFrame implements ActionListener {
 

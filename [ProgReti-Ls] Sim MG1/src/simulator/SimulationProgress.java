@@ -11,7 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * respectively (in byte or whatever consistent unit) the total ammount to index and the ammount currently indexed. Every time one of this two operation is invoked, an event is generated 
  * notifying the current progress of the process.
  * 
- * @author Alessandro Montalti, Andrea Zagnoli, Marco Santarelli, Matteo Desanti. 
+ * @author Andrea Zagnoli, Marco Santarelli, Michael Gattavecchia. 
  */
 public class SimulationProgress {
 	

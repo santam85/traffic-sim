@@ -12,15 +12,17 @@ import org.apache.log4j.spi.Filter;
 import org.apache.log4j.spi.LoggingEvent;
 
 /**
- *
- * @author andreazagnoli
+ * 
+ * @author Andrea Zagnoli, Marco Santarelli, Michael Gattavecchia. 
  */
 public class ConsoleFrame extends javax.swing.JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 2798836000453178812L;
 	private static ConsoleFrame obj;
 	
-	/** Creates new form ConsoleFrame */
+    /**
+     * Creates new form ConsoleFrame
+     */
     private ConsoleFrame() {
         initComponents();
         

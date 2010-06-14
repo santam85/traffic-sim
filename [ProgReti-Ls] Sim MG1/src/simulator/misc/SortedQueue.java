@@ -6,16 +6,17 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class SortedQueue<E extends Comparable<E>> implements Queue<E> {
-	
+
 	private LinkedList<E> queue;
-	
-	public SortedQueue(){
+
+	public SortedQueue() {
 		queue = new LinkedList<E>();
 	}
+
 	@Override
 	public boolean add(E e) {
-		int i =0;
-		while(i<queue.size() && queue.get(i).compareTo(e) >= 0)
+		int i = 0;
+		while (i < queue.size() && queue.get(i).compareTo(e) >= 0)
 			i++;
 		queue.add(i, e);
 		return true;
