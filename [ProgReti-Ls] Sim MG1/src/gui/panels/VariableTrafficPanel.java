@@ -1,5 +1,6 @@
 package gui.panels;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.ExecutorService;
@@ -58,18 +59,9 @@ public class VariableTrafficPanel extends JPanel implements ActionListener {
 		runs = new javax.swing.JTextField();
 		generateReport = new javax.swing.JButton();
 		additionalParametersPanel = new javax.swing.JPanel();
-
+		additionalParametersPanel.setLayout(new BorderLayout());
+		
 		jLabel1.setText("Distribution type");
-
-		org.jdesktop.layout.GroupLayout placeholderPanelLayout = new org.jdesktop.layout.GroupLayout(
-				placeholderPanel);
-		placeholderPanel.setLayout(placeholderPanelLayout);
-		placeholderPanelLayout.setHorizontalGroup(placeholderPanelLayout
-				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-				.add(0, 288, Short.MAX_VALUE));
-		placeholderPanelLayout.setVerticalGroup(placeholderPanelLayout
-				.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-				.add(0, 97, Short.MAX_VALUE));
 
 		jLabel2.setText("Lambda:");
 		lambda.setText("5");
@@ -222,6 +214,7 @@ public class VariableTrafficPanel extends JPanel implements ActionListener {
 		default:
 			placeholderPanel.removeAll();
 		}
+		this.validate();
 		this.repaint();
 		
 	}
