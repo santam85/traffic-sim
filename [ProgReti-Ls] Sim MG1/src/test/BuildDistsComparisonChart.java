@@ -4,6 +4,10 @@ import gui.GraphUtils;
 
 import java.util.LinkedList;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.SimpleLayout;
+
 import simulator.SimulationRunners;
 import simulator.distribution.DeterministicDistribution;
 import simulator.distribution.Distribution;
@@ -13,10 +17,17 @@ import simulator.misc.Utils;
 
 public class BuildDistsComparisonChart {
 
+	private static final Logger log = Logger.getLogger("simulation");
+	static {
+		log.setLevel(Level.INFO);
+	}
+	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		Logger.getLogger("simulation").addAppender(new org.apache.log4j.ConsoleAppender(new SimpleLayout(),org.apache.log4j.ConsoleAppender.SYSTEM_OUT));
+		
 		int runs = 100;
 		int arrivals = 1000;
 		double mu = 5;
