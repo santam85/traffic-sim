@@ -1,5 +1,2 @@
 COSE DA FARE
 Aggiungere probabilità di stato teorica nel plot.
-
-Controllo parametri primo tab sui random
-Non vanno più i pannelli dei random
