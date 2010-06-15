@@ -12,7 +12,7 @@ import simulator.events.ComparableEvent;
 import simulator.random.Provider;
 import simulator.random.RandomProvider;
 
-public class Simulation {
+public class StateChart {
 
 	/**
 	 * @param args
