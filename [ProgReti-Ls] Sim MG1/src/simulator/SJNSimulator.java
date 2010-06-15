@@ -1,4 +1,4 @@
-package simulator;
+ package simulator;
 
 import simulator.distribution.Distribution;
 import simulator.distribution.ExponentialDistribution;

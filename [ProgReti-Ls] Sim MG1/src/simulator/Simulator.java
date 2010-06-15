@@ -12,7 +12,10 @@ import simulator.events.Event;
 import simulator.events.OccurrenceTimeComparedEvent;
 
 /**
- * Class implementing the simulator
+ * Abstract class implementing the general algoritm for a single-servitor multiple-incoming prioritized queues simulator. 
+ * Concrete implementation must particularize methods specifying
+ * 	- which kind of ComparableEvent is added to a particular queue
+ * 	- computing the priority of a particular arrival
  * 
  * @author Andrea Zagnoli, Marco Santarelli, Michael Gattavecchia. 
  *

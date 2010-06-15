@@ -6,7 +6,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * The object of this class, created as a singleton and returned using the getInstance method, is used to trace the progress of the indexing progress.
+ * The object of this class, created as a singleton and returned using the getInstance method, is used to trace the progress of the simulation.
  * Using two main methods, <code>updateTotalAmmountToIndex()</code> and <code>updateAmmountCurrentlyIndexed()</code>, is possible to update 
  * respectively (in byte or whatever consistent unit) the total ammount to index and the ammount currently indexed. Every time one of this two operation is invoked, an event is generated 
  * notifying the current progress of the process.
@@ -34,7 +34,7 @@ public class SimulationProgress {
 	/**
 	 * It returns the only instance of IndexingProgress
 	 * 
-	 * @return IndexingProgress instance
+	 * @return SimulationProgress instance
 	 */
 	public static SimulationProgress getInstance() {
 		return obj;
