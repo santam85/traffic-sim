@@ -2,19 +2,44 @@ package simulator.misc;
 
 import java.util.LinkedList;
 
+/**
+ * The LogaritmicQuantizator class serves as an interval discretizator following a logaritmic function;
+ * it subdivides the x-axis in intervals of different sizes (the nearer to the mean parameter, the smaller) 
+ * and assignes to each one a class (an increasing number starting for zero) and a representative value
+ * (the mid-one of the interval)
+ * 
+ * @author Andrea Zagnoli, Marco Santarelli, Michael Gattavecchia
+ */
 public class LogaritmicQuantizator {
 
 	private double mean, step, a, b, multiplier;
 	private LinkedList<QuantizationInterval> intervals;
 
+	/**
+	 * Basic constructor 
+	 * 
+	 * @param mean The value around which intervals are concentrated 
+	 */
 	public LogaritmicQuantizator(double mean) {
 		this(mean, 0);
 	}
 
+	/**
+	 * 
+	 * 
+	 * @param mean The value around which intervals are concentrated 
+	 * @param discretizationStep The number of desired intervals between 0 and the mean value
+	 */
 	public LogaritmicQuantizator(double mean, double discretizationStep) {
 		this(mean, discretizationStep, 10);
 	}
 
+	/**
+	 * 
+	 * @param mean The value around which intervals are concentrated 
+	 * @param discretizationStep The number of desired intervals between 0 and the mean value
+	 * @param multiplier The multiplier value which defines the upper limit of discretizations [0,multiplier*mean]
+	 */
 	public LogaritmicQuantizator(double mean, double discretizationStep,
 			double multiplier) {
 		this.mean = mean;
@@ -53,6 +78,12 @@ public class LogaritmicQuantizator {
 		 */
 	}
 
+	/**
+	 * Returns the class to which the given value belongs 
+	 * 
+	 * @param value The value to discretize
+	 * @return The discretization class
+	 */
 	public int getDiscretizationClass(double value) {
 		if (value <= 0)
 			return 0;
@@ -64,6 +95,12 @@ public class LogaritmicQuantizator {
 		return i - 1;
 	}
 
+	/**
+	 * Associates the given value to the representative value of its belonging interval
+	 * 
+	 * @param value The value to discretize
+	 * @return Its discretized value
+	 */
 	public double discretize(double value) {
 		if (value < 0)
 			return 0;
@@ -75,6 +112,12 @@ public class LogaritmicQuantizator {
 		return intervals.get(i - 1).yc;
 	}
 
+	/**
+	 * Returns the representative value for the given class
+	 * 
+	 * @param c The class identifying the interval
+	 * @return The representative value of the interval
+	 */
 	public double getDiscretizationValueByClass(int c) {
 		if (c < 0 || c >= intervals.size()) {
 			return -1;
@@ -82,6 +125,11 @@ public class LogaritmicQuantizator {
 		return intervals.get(c).yc;
 	}
 
+	/**
+	 * Returns the number of intervals 
+	 * 
+	 * @return
+	 */
 	public int getIntervalNumber() {
 		return intervals.size();
 	}
