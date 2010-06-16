@@ -1,5 +1,10 @@
 package simulator.events;
 
+/**
+ * A wrapper class for comparing events by service time.
+ * 
+ * @author Andrea Zagnoli, Marco Santarelli, Michael Gattavecchia. 
+ */
 public class ServiceTimeComparedEvent extends ComparableEvent {
 
 	public ServiceTimeComparedEvent(Event event) {

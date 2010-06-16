@@ -5,6 +5,12 @@ import java.util.Random;
 
 import org.apache.commons.math.random.MersenneTwister;
 
+/**
+ * The source for the pseudo-random numbers.
+ * 
+ * @author Andrea Zagnoli, Marco Santarelli, Michael Gattavecchia. 
+ *
+ */
 public class RandomProvider {
 	private long a = 16807,
 				 c = 0,
@@ -17,10 +23,18 @@ public class RandomProvider {
 	private SecureRandom sr;
 	
 	
+	/**
+	 * Default costructor. Uses Java.Random provider by default.
+	 */
 	public RandomProvider(){
 		this(Provider.Java);
 	}
 	
+	/**
+	 * Costructs a random provided with the specified source for randomness.
+	 * 
+	 * @param p
+	 */
 	public RandomProvider(Provider p){
 		this.p = p;
 		sr=new SecureRandom();
@@ -28,6 +42,12 @@ public class RandomProvider {
 		rd=new Random();
 	}
 	
+	/**
+	 * Costructs a random provided with the specified source for randomness and seed.
+	 * 
+	 * @param p The 
+	 * @param seed
+	 */
 	public RandomProvider(Provider p,long seed){
 		this.p=p;
 		this.z=seed;
@@ -36,10 +56,20 @@ public class RandomProvider {
 		rd=new Random(seed);
 	}
 	
+	/**
+	 * Setter for the randomness provider type
+	 * 
+	 * @param p The provider type
+	 */
 	public void setRandomnessProvider(Provider p){
 		this.p=p;
 	}
 	
+	/**
+	 * Method for pseudo-random number generation
+	 * 
+	 * @return A random number between 0 and 1 (excluded)
+	 */
 	public double nextRandom(){
 		switch(p){
 		case Ran0: 

@@ -1,5 +1,10 @@
 package simulator.events;
 
+/**
+ * A wrapper class for comparing events by occurrence time
+ * 
+ * @author Andrea Zagnoli, Marco Santarelli, Michael Gattavecchia. 
+ */
 public class OccurrenceTimeComparedEvent extends ComparableEvent {
 
 	public OccurrenceTimeComparedEvent(Event event) {
