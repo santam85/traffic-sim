@@ -1,0 +1,122 @@
+\beamer@endinputifotherversion {3.07pt}
+\headcommand {\slideentry {0}{0}{1}{1/1}{}{0}}
+\headcommand {\beamer@framepages {1}{1}}
+\headcommand {\sectionentry {1}{Introduzione}{2}{Introduzione}{0}}
+\headcommand {\beamer@sectionpages {1}{1}}
+\headcommand {\beamer@subsectionpages {1}{1}}
+\headcommand {\slideentry {1}{0}{2}{2/2}{}{0}}
+\headcommand {\beamer@framepages {2}{2}}
+\headcommand {\beamer@subsectionentry {0}{1}{1}{4}{Gruppo di lavoro}}\headcommand {\beamer@subsectionpages {2}{3}}
+\headcommand {\slideentry {1}{1}{1}{4/4}{Gruppo di lavoro}{0}}
+\headcommand {\beamer@framepages {4}{4}}
+\headcommand {\sectionentry {2}{Generazione di numeri casuali}{5}{Generazione di numeri casuali}{0}}
+\headcommand {\beamer@sectionpages {2}{4}}
+\headcommand {\beamer@subsectionpages {4}{4}}
+\headcommand {\slideentry {2}{0}{2}{5/5}{}{0}}
+\headcommand {\beamer@framepages {5}{5}}
+\headcommand {\beamer@subsectionentry {0}{2}{1}{6}{Generatori lineari congruenziali}}\headcommand {\beamer@subsectionpages {5}{5}}
+\headcommand {\slideentry {2}{1}{1}{6/6}{Generatori lineari congruenziali}{0}}
+\headcommand {\beamer@framepages {6}{6}}
+\headcommand {\beamer@subsectionentry {0}{2}{2}{7}{Classe {\tt util.Random}}}\headcommand {\beamer@subsectionpages {6}{6}}
+\headcommand {\slideentry {2}{2}{1}{7/7}{Classe {\tt util.Random}}{0}}
+\headcommand {\beamer@framepages {7}{7}}
+\headcommand {\beamer@subsectionentry {0}{2}{3}{8}{Generatore {\it ran0}}}\headcommand {\beamer@subsectionpages {7}{7}}
+\headcommand {\slideentry {2}{3}{1}{8/8}{Generatore {\it ran0}}{0}}
+\headcommand {\beamer@framepages {8}{8}}
+\headcommand {\beamer@subsectionentry {0}{2}{4}{9}{Generatore {\tt MersenneTwister}}}\headcommand {\beamer@subsectionpages {8}{8}}
+\headcommand {\slideentry {2}{4}{1}{9/9}{Generatore {\tt MersenneTwister}}{0}}
+\headcommand {\beamer@framepages {9}{9}}
+\headcommand {\sectionentry {3}{Analisi del generatore}{10}{Analisi del generatore}{0}}
+\headcommand {\beamer@sectionpages {5}{9}}
+\headcommand {\beamer@subsectionpages {9}{9}}
+\headcommand {\beamer@subsectionentry {0}{3}{1}{10}{Scatter Plot}}\headcommand {\beamer@subsectionpages {10}{9}}
+\headcommand {\slideentry {3}{1}{1}{10/10}{Scatter Plot}{0}}
+\headcommand {\beamer@framepages {10}{10}}
+\headcommand {\slideentry {3}{1}{2}{11/11}{Scatter Plot}{0}}
+\headcommand {\beamer@framepages {11}{11}}
+\headcommand {\beamer@subsectionentry {0}{3}{2}{12}{Stima del valore medio}}\headcommand {\beamer@subsectionpages {10}{11}}
+\headcommand {\slideentry {3}{2}{1}{12/12}{Stima del valore medio}{0}}
+\headcommand {\beamer@framepages {12}{12}}
+\headcommand {\slideentry {3}{2}{2}{13/13}{Stima del valore medio}{0}}
+\headcommand {\beamer@framepages {13}{13}}
+\headcommand {\beamer@subsectionentry {0}{3}{3}{14}{Intervallo di confidenza}}\headcommand {\beamer@subsectionpages {12}{13}}
+\headcommand {\slideentry {3}{3}{1}{14/14}{Intervallo di confidenza}{0}}
+\headcommand {\beamer@framepages {14}{14}}
+\headcommand {\slideentry {3}{3}{2}{15/15}{Intervallo di confidenza}{0}}
+\headcommand {\beamer@framepages {15}{15}}
+\headcommand {\slideentry {3}{3}{3}{16/16}{Intervallo di confidenza}{0}}
+\headcommand {\beamer@framepages {16}{16}}
+\headcommand {\sectionentry {4}{Modelli di traffico}{17}{Modelli di traffico}{0}}
+\headcommand {\beamer@sectionpages {10}{16}}
+\headcommand {\beamer@subsectionpages {14}{16}}
+\headcommand {\slideentry {4}{0}{4}{17/17}{}{0}}
+\headcommand {\beamer@framepages {17}{17}}
+\headcommand {\slideentry {4}{0}{5}{18/18}{}{0}}
+\headcommand {\beamer@framepages {18}{18}}
+\headcommand {\sectionentry {5}{Simulatore $M/G/1$}{19}{Simulatore $M/G/1$}{0}}
+\headcommand {\beamer@sectionpages {17}{18}}
+\headcommand {\beamer@subsectionpages {17}{18}}
+\headcommand {\slideentry {5}{0}{6}{19/19}{}{0}}
+\headcommand {\beamer@framepages {19}{19}}
+\headcommand {\slideentry {5}{0}{7}{20/20}{}{0}}
+\headcommand {\beamer@framepages {20}{20}}
+\headcommand {\slideentry {5}{0}{8}{21/21}{}{0}}
+\headcommand {\beamer@framepages {21}{21}}
+\headcommand {\sectionentry {6}{Simulatore $M/G/1//Prio$}{22}{Simulatore $M/G/1//Prio$}{0}}
+\headcommand {\beamer@sectionpages {19}{21}}
+\headcommand {\beamer@subsectionpages {19}{21}}
+\headcommand {\beamer@subsectionentry {0}{6}{1}{22}{Sistemi $M/G/1/Prio$}}\headcommand {\beamer@subsectionpages {22}{21}}
+\headcommand {\slideentry {6}{1}{1}{22/22}{Sistemi $M/G/1/Prio$}{0}}
+\headcommand {\beamer@framepages {22}{22}}
+\headcommand {\slideentry {6}{1}{2}{23/23}{Sistemi $M/G/1/Prio$}{0}}
+\headcommand {\beamer@framepages {23}{23}}
+\headcommand {\slideentry {6}{1}{3}{24/24}{Sistemi $M/G/1/Prio$}{0}}
+\headcommand {\beamer@framepages {24}{24}}
+\headcommand {\slideentry {6}{1}{4}{25/25}{Sistemi $M/G/1/Prio$}{0}}
+\headcommand {\beamer@framepages {25}{25}}
+\headcommand {\beamer@subsectionentry {0}{6}{2}{26}{Analisi tecnica}}\headcommand {\beamer@subsectionpages {22}{25}}
+\headcommand {\slideentry {6}{2}{1}{26/26}{Analisi tecnica}{0}}
+\headcommand {\beamer@framepages {26}{26}}
+\headcommand {\sectionentry {7}{Simulazioni opzionali}{27}{Simulazioni opzionali}{0}}
+\headcommand {\beamer@sectionpages {22}{26}}
+\headcommand {\beamer@subsectionpages {26}{26}}
+\headcommand {\beamer@subsectionentry {0}{7}{1}{27}{Stima della probabilit\`a di stato del sistema $M/G/1$}}\headcommand {\beamer@subsectionpages {27}{26}}
+\headcommand {\slideentry {7}{1}{1}{27/27}{Stima della probabilit\`a di stato del sistema $M/G/1$}{0}}
+\headcommand {\beamer@framepages {27}{27}}
+\headcommand {\slideentry {7}{1}{2}{28/28}{Stima della probabilit\`a di stato del sistema $M/G/1$}{0}}
+\headcommand {\beamer@framepages {28}{28}}
+\headcommand {\beamer@subsectionentry {0}{7}{2}{29}{Sistema $M/G/1$ con politica Shortest Job Next}}\headcommand {\beamer@subsectionpages {27}{28}}
+\headcommand {\slideentry {7}{2}{1}{29/29}{Sistema $M/G/1$ con politica Shortest Job Next}{0}}
+\headcommand {\beamer@framepages {29}{29}}
+\headcommand {\slideentry {7}{2}{2}{30/30}{Sistema $M/G/1$ con politica Shortest Job Next}{0}}
+\headcommand {\beamer@framepages {30}{30}}
+\headcommand {\slideentry {7}{2}{3}{31/31}{Sistema $M/G/1$ con politica Shortest Job Next}{0}}
+\headcommand {\beamer@framepages {31}{31}}
+\headcommand {\sectionentry {8}{Note tecniche generali}{32}{Note tecniche generali}{0}}
+\headcommand {\beamer@sectionpages {27}{31}}
+\headcommand {\beamer@subsectionpages {29}{31}}
+\headcommand {\slideentry {8}{0}{4}{32/32}{}{0}}
+\headcommand {\beamer@framepages {32}{32}}
+\headcommand {\slideentry {8}{0}{5}{33/33}{}{0}}
+\headcommand {\beamer@framepages {33}{33}}
+\headcommand {\slideentry {8}{0}{6}{34/34}{}{0}}
+\headcommand {\beamer@framepages {34}{34}}
+\headcommand {\slideentry {8}{0}{7}{35/35}{}{0}}
+\headcommand {\beamer@framepages {35}{35}}
+\headcommand {\sectionentry {9}{Conclusioni}{36}{Conclusioni}{0}}
+\headcommand {\beamer@sectionpages {32}{35}}
+\headcommand {\beamer@subsectionpages {32}{35}}
+\headcommand {\slideentry {9}{0}{8}{36/36}{}{0}}
+\headcommand {\beamer@framepages {36}{36}}
+\headcommand {\sectionentry {11}{Bibliografia}{37}{Bibliografia}{0}}
+\headcommand {\beamer@sectionpages {37}{36}}
+\headcommand {\beamer@subsectionpages {37}{36}}
+\headcommand {\slideentry {11}{0}{9}{37/37}{}{0}}
+\headcommand {\beamer@framepages {37}{37}}
+\headcommand {\slideentry {11}{0}{10}{38/38}{}{0}}
+\headcommand {\beamer@framepages {38}{38}}
+\headcommand {\beamer@partpages {1}{38}}
+\headcommand {\beamer@subsectionpages {37}{38}}
+\headcommand {\beamer@sectionpages {37}{38}}
+\headcommand {\beamer@documentpages {38}}
+\headcommand {\def \inserttotalframenumber {37}}

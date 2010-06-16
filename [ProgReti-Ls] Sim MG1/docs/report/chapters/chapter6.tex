@@ -1,0 +1,33 @@
+\chapter{Struttura del codice sorgente}
+\label{ch:optional}
+
+\section{Struttura dei package}
+
+Il codice sorgente \`e stato strutturato in tre package principali al fine di ottenere una buona separazione delle varie componenti presenti all'interno del progetto.
+
+Si riporta di seguito la struttura completa dei package:
+
+{\tt
+\begin{itemize}
+\item[\textbullet] gui
+	\begin{itemize}
+		\item[\textbullet] panels
+	\end{itemize}
+\item[\textbullet] simulator
+	\begin{itemize}
+		\item[\textbullet] distribution
+		\item[\textbullet] events
+		\item[\textbullet] misc
+		\item[\textbullet] random
+	\end{itemize}
+\item[\textbullet] launchers
+\end{itemize}
+}
+
+All'interno del package {\tt gui} sono state implementate le classe dedicate all'interfaccia grafica. Il package {\tt gui.panels} contiene i pannelli dell'interfaccia dedicati a ciascuna tipologia di simulazioni.
+
+Il package {\tt simulator} contiene la gerarchia di classi relative all'implementazione dei vari meccanismi di simulazione, fattorizzando le operazioni comuni all'interno della classe padre {\tt Simulator}.
+\`E stato necessario implementare numerose tipologie di simulatore poich\'e in ciascuna delle politiche di scheduling considerate gli eventi da elaborare vengono gestiti in maniera specifica.
+I package {\tt distribution}, {\tt events}, {\tt misc} e {\tt random}, contenuti all'interno di {\tt simulator}, contengono le classi utilizzate dal simulatore per modellare eventi, distribuzioni di numeri casuali e le implementazioni dei metodi utili ai fini dei calcoli statistici.
+
+Il package {\tt launcher} contiene gli entry-point dell'applicazione: in particolare la classe {\tt SimulatorGUI} provvede all'avvio del simulatore, mentre gli ulteriori metodi presenti al suo interno avviano alcune interessanti simulazioni accessorie non accedibili dall'interfaccia grafica principale.

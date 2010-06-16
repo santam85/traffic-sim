@@ -1,0 +1,125 @@
+\NeedsTeXFormat{LaTeX2e}
+
+\ProvidesPackage{deistesi}[2002/10/10  Redefines maketitle for D.E.I.S. University of Bologna Thesis and changes title size; modified by Cesare Monti from modified by Franco Callegati see line commented above]
+\RequirePackage{ifthen}
+\RequirePackage{multicol}
+
+
+%%%%%%%
+ \newif\ifpdf
+ \ifx\pdfoutput\undefined
+ \pdffalse % we are not running PDFLaTeX
+ \else
+ \pdfoutput=1 % we are running PDFLaTeX
+ \pdftrue
+ \fi
+%%%%%%%
+ \ifpdf
+ \usepackage[pdftex]{graphicx}
+ \else
+ \usepackage{graphicx}
+ \fi
+%%%%%%%%%%%%%%%
+ \ifpdf
+ \DeclareGraphicsExtensions{.pdf, .jpg, .tif}
+ \else
+ \DeclareGraphicsExtensions{.eps, .jpg}
+ \fi
+%%%%%%%%%%%%%%%
+
+
+\newcommand{\@faculty}{?}
+\newcommand{\@course}{?}
+\newcommand{\@subject}{?}
+\newcommand{\@reporttitle}{Senza Titolo}
+\newcommand{\@courseyear}{?}
+\newcommand{\@prof}{?}
+\newcommand{\@authors}{?}
+
+\newcommand{\faculty}[1]{
+  \renewcommand{\@faculty}{#1}}
+\newcommand{\course}[1]{%
+  \renewcommand{\@course}{#1}}
+\newcommand{\subject}[1]{%
+  \renewcommand{\@subject}{#1}}
+\newcommand{\reporttitle}[1]{%
+  \renewcommand{\@reporttitle}{\LARGE{#1}}}
+\newcommand{\courseyear}[1]{%
+  \renewcommand{\@courseyear}{#1}}
+\newcommand{\prof}[1]{%
+  \renewcommand{\@prof}{#1}}
+\newcommand{\authors}[1]{%
+  \renewcommand{\@authors}{#1}}
+
+\newcommand{\clearemptydoublepage}{\newpage{\pagestyle{empty}%
+  \cleardoublepage}}
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %                                   %
+    %  Formattazione dell'intestazione  %
+    %  della tesi                       %
+    %                                   %
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand\maketitle{\begin{titlepage}{
+
+               %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+               % Scelta delle dimensioni della pagina %
+               %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\setlength{\textwidth}{12.5cm}
+%\setlength{\textheight}{21cm}
+%\setlength{\footskip}{3cm}
+
+
+
+
+
+  \fontfamily{ptm} \selectfont
+  \begin{center}
+  \begin{Large}
+    \uppercase{Alma Mater Studiorum \medskip\\ Universit\`a degli Studi di Bologna}
+  \end{Large}\\
+  \rule{9cm}{.4pt}\\
+  \smallskip
+  \begin{large}
+  \uppercase{\@faculty} \\
+  \@course\\
+  \vspace{20ex}
+  {\setlength{\baselineskip}{1.5\baselineskip}
+  \begin{Large}
+      \@reporttitle
+  \end{Large}\\
+  }
+  \smallskip
+  \vspace{1ex}
+  \@subject\\
+
+  \vspace{15ex} 
+  \@authors\\
+
+  \vspace{17ex} 
+  \@prof\\
+
+  %\vspace{1ex} 
+
+  \rule{9cm}{.4pt}\\	%horyzontal separating line
+  \medskip
+  \uppercase{Anno Accademico \@courseyear}\\
+  \end{large}
+  \end{center}
+  }
+
+%  \vfill
+
+\end{titlepage}}
+
+%\ifthenelse{\boolean{@twoside}}%
+%  {\setlength{\oddsidemargin}{3.5cm}%
+%   \setlength{\evensidemargin}{0.5cm}}%
+%  {\setlength{\oddsidemargin}{1.00in}%
+%   \setlength{\evensidemargin}{1.00in}}
+%
+%\endinput
+
+

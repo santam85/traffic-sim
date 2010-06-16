@@ -1,0 +1,130 @@
+\documentclass[12pt,a4paper,oneside,openright]{book}
+
+
+               %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+               % Packages			    %
+               %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[italian]{babel}
+%\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{report}
+\usepackage{fancyhdr}
+
+
+               %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+               % First page background		      %
+               %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{eso-pic}
+\newcommand\BackgroundPic{
+\put(0,0){
+\parbox[b][\paperheight]{\paperwidth}{%
+\vfill
+\centering
+\includegraphics[width=\paperwidth,height=\paperheight,
+keepaspectratio]{figures/background.png}%
+\vfill
+}}}
+
+               %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+               % Page size			      %
+               %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\setlength{\textwidth}{12.5cm}
+%\setlength{\textheight}{19cm}
+%\setlength{\footskip}{3cm}
+
+\setlength{\textwidth}{14cm}
+\setlength{\textheight}{21cm}
+\setlength{\footskip}{1.5cm}
+
+\setlength{\oddsidemargin}{1cm}
+\setlength{\evensidemargin}{1cm}
+
+
+
+               %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+               % General Informations		    %
+               %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\reporttitle{Traffic Simulator}
+\subject{Progetto di Reti di Telecomunicazioni L-S}
+\authors{Michael Gattavecchia - \emph{0000362269}	\\
+		Marco Santarelli - \emph{0000366521}	\\
+		Andrea Zagnoli - \emph{0000367565}}
+\courseyear{2009/10}
+\faculty{II facolt\`a di Ingegneria - Cesena}
+\course{Ingegneria Informatica}
+\prof{ing. Walter Cerroni}
+               %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+               % Contents Begin			    %
+               %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setlength{\headheight}{15pt} %Per eliminare un Warning
+\begin{document}
+
+% Background image generation
+\AddToShipoutPicture{\BackgroundPic}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+% Introduction		%
+% title, index, summary %
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\frontmatter 
+\maketitle
+\pagestyle{plain} 
+
+%%% Background image removal %%%%
+\ClearShipoutPicture		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\tableofcontents
+
+
+%introduction
+\input{./introduction/introduction.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+% Document's body	%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\mainmatter
+
+% pagestyle
+\pagestyle{fancy} \fancyhead[LE,RO]{\bfseries\thepage}
+
+
+% chapters
+\input{./chapters/chapter1.tex}
+\input{./chapters/chapter2.tex}
+\input{./chapters/chapter3.tex}
+\input{./chapters/chapter4.tex}
+\input{./chapters/chapter5.tex}
+\input{./chapters/chapter6.tex}
+\input{./chapters/conclusions.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+% Ending part of the	%
+%	document	%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\backmatter
+
+%\input{./appendix/appendix.tex}
+
+%bibliography
+\input{./bibliography/bibliography.tex}
+
+
+% list of the figures
+\listoffigures
+
+
+% list of the tables
+\listoftables
+
+
+% document end
+\end{document}
