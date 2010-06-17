@@ -293,7 +293,7 @@ public class SimulationRunners {
 		//
 		LinkedList<double[][]> res = new LinkedList<double[][]>();
 		//double[99][type.equals("2")?2 + 1:3 + 1][4]
-		for (int i = 0; i < (type.equals("2")?2 + 1:3 + 1); i ++) {	
+		for (int i = 0; i < (type.equals("2")?2 + 3:3 + 4); i ++) {	
 			res.add(new double[99][4]);
 		}
 		
@@ -351,6 +351,24 @@ public class SimulationRunners {
 			res.get(rhos.length)[i][1] = 1.0/mu*(rho/(1.0 - rho));
 			res.get(rhos.length)[i][2] = 0;
 			res.get(rhos.length)[i][3] = 0;
+			
+			res.get(rhos.length+1)[i][0] = x;
+			res.get(rhos.length+1)[i][1] = (0.5*rho*(2.0/mu))/(1.0-rhos[0]);
+			res.get(rhos.length+1)[i][2] = 0;
+			res.get(rhos.length+1)[i][3] = 0;
+			
+			res.get(rhos.length+2)[i][0] = x;
+			res.get(rhos.length+2)[i][1] = (0.5*rho*(2.0/mu))/((1.0-rhos[0])*(1-rhos[0]-rhos[1]));
+			res.get(rhos.length+2)[i][2] = 0;
+			res.get(rhos.length+2)[i][3] = 0;
+			
+			if(rhos.length==3){
+				res.get(rhos.length+3)[i][0] = x;
+				res.get(rhos.length+3)[i][1] = (0.5*rho*(2.0/mu))/((1.0-rhos[0]-rhos[1])*(1-rhos[0]-rhos[1]-rhos[2]));
+				res.get(rhos.length+3)[i][2] = 0;
+				res.get(rhos.length+3)[i][3] = 0;
+			
+			}
 			
 			progress.updateCurrentAmmount(1);
 		}

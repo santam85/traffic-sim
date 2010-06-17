@@ -126,8 +126,26 @@ public class MG1PrioPanel extends JPanel implements ActionListener {
 			public void run() {
 				final LinkedList<double[][]> res = SimulationRunners.simulateMG1PrioWithVariableRhos(mu,N,classes.getSelectedItem().toString(),arrivals);
 				final String[] keys = new String[res.size()];
-				for(int i=0;i<keys.length;i++){
-					keys[i] = "C"+i;
+				if(keys.length == 5){
+					int i=0;
+					for(;i<2;i++){
+						keys[i] = "C"+i;
+					}
+					keys[i] = "FCFS";
+					i++;
+					for(;i<5;i++){
+						keys[i] = "C"+(i-3)+" (Theo)";
+					}
+				}else if(keys.length==7){
+					int i=0;
+					for(;i<3;i++){
+						keys[i] = "C"+i;
+					}
+					keys[i] = "FCFS";
+					i++;
+					for(;i<7;i++){
+						keys[i] = "C"+(i-4)+" (Theo)";
+					}
 				}
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
