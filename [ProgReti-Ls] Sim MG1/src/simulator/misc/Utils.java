@@ -56,7 +56,7 @@ public class Utils {
 		TDistributionImpl td = new TDistributionImpl(runs - 1);
 		double ts = 0;
 		try {
-			ts = td.inverseCumulativeProbability(levelOfConfidence);
+			ts = td.inverseCumulativeProbability(1-((1-levelOfConfidence)/2));
 		} catch (MathException e) {
 			e.printStackTrace();
 		}
