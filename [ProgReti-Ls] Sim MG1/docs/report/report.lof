@@ -4,7 +4,7 @@
 \contentsline {figure}{\numberline {1.1}{\ignorespaces Distribuzione dei valori generati da {\tt util.Random}}}{5}
 \contentsline {figure}{\numberline {1.2}{\ignorespaces Media dei campioni in funzione della numerosit\`a}}{6}
 \contentsline {figure}{\numberline {1.3}{\ignorespaces Intervallo di confidenza in funzione del numero di campioni}}{7}
-\contentsline {figure}{\numberline {1.4}{\ignorespaces Intervallo di confidenza in funzione del livello di confidenza}}{7}
+\contentsline {figure}{\numberline {1.4}{\ignorespaces Intervallo di confidenza in funzione del livello di confidenza}}{8}
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {2.1}{\ignorespaces Esito della simulazione di varie tipologie di traffico (console)}}{10}
 \contentsline {figure}{\numberline {2.2}{\ignorespaces Struttura del package {\tt simulator.distribution}}}{11}
